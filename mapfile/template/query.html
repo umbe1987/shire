@@ -1,0 +1,35 @@
+# MapServer Template
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<style>
+      table, th, td {
+      border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- http://www.mapserver.org/mapfile/template.html -->
+
+    <table>
+	  <tr>
+	    <th>Layer name</th>
+		<td>[cl]</td> <!-- Current layer name. -->
+	  </tr>
+	  <tr>
+	    <th>Consumi</th>
+		<td>[item name="consumi" format="$value"]</td> <!-- An attribute table “item”, with list formatting options. The “name” attribute is required. -->
+	  </tr>
+	  <tr>
+	    <th>X</th>
+		<td>[shpmidx]</td> <!-- X coordinate of middle of the extent of the current shape. -->
+	  </tr>
+	  <tr>
+	    <th>Y</th>
+		<td>[shpmidy]</td> <!-- X coordinate of middle of the extent of the current shape. -->
+	  </tr>
+	</table>
+	
+  </body>
+</html>

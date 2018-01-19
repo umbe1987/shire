@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Umbe MapViewer</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../v4.2.0/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="../css/ol-umbe_3.css" type="text/css">
+    <link rel="stylesheet" href="../sidebar-v2-master/css/ol3-sidebar.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- Because Bootstrap is not compatible with jquery > 3 -->
+    <!-- <script src="../js/jquery-3.2.1.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="../proj4js-2.4.3/dist/proj4.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <script src="../v4.2.0/build/ol.js"></script>
+    <script src="../sidebar-v2-master/js/ol3-sidebar.js"></script>
+
+</head>
+
+<body>
+
+    <div style="display: none;">
+        <!-- Popup -->
+        <div id="popup" title="POPUP UMBE"></div>
+    </div>
+
+
+
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#layers" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#basemap" role="tab"><i class="fa fa-map-o"></i></a></li>
+                <li><a href="#position" role="tab"><i class="fa fa-map-marker"></i></a></li>
+                <li class="disabled"><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>
+            </ul>
+
+            <ul role="tablist">
+                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+            </ul>
+        </div>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="layers">
+                <h1 class="sidebar-header">Layers<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                <div class="checkbox">
+                    <label><input type="checkbox" id="layer1">Layer 1</label>
+                </div>
+            </div>
+
+            <div class="sidebar-pane" id="basemap">
+                <h1 class="sidebar-header">Basemap<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                <div class="radio">
+                    <label><input type="radio" name="optradio" id="basemap1" checked>OSM</label>
+                    <br>
+                    <label><input type="radio" name="optradio" id="basemap2">ESRI World Imagery</label>
+                    <br>
+                    <label><input type="radio" name="optradio" id="basemap3">TileMill</label>
+                </div>
+            </div>
+            <div class="sidebar-pane" id="position">
+                <h1 class="sidebar-header">
+                    sidebar-v2
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <label for="track">
+                    track position
+                    <input id="track" type="checkbox"/>
+                </label>
+                <p id="info" style="display: none;"></p>
+            </div>
+
+            <div class="sidebar-pane" id="messages">
+                <h1 class="sidebar-header">Messages<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+            </div>
+
+            <div class="sidebar-pane" id="settings">
+                <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+            </div>
+        </div>
+    </div>
+
+    <div id="map" class="sidebar-map"></div>
+
+    <script>
+
+        // define projection
+
+        proj4.defs('EPSG:3857', '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs');
+
+        // define extent
+
+        var imageExtent = [884148, 5588735, 1172521, 5764462];
+
+        // define sources
+
+        // Mapserver WMS
+        var wmsSource = new ol.source.ImageWMS({
+            url: 'https://192.168.0.100/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/wineshire/mapfile/mapfile/test9_linux.map',
+            params: {
+                'LAYERS': 'cantine',
+                'CRS': 'EPSG:3857',
+                'BBOX': '884148,5588735,1172521,5764462',
+                'WIDTH': '800',
+                'HEIGHT': '500',
+                'FORMAT': 'image/png'
+            },
+            projection: 'EPSG:3857',
+            serverType: 'mapserver',
+            imageExtent: imageExtent
+        });
+
+        var osmBasemap = new ol.source.OSM();
+
+        var esriBasemap = new ol.source.XYZ({
+                            url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                            attributions: 'Tiles © Esri — Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
+        });
+
+        // define layers
+
+        var layer1 = new ol.layer.Image({
+            title: 'cantine',
+            visible: false,
+            source: wmsSource
+        });
+
+        var basemap1 = new ol.layer.Tile({
+            title: 'OSM',
+            type: 'base',
+            visible: true,
+            source: osmBasemap
+        });
+
+        var basemap2 = new ol.layer.Tile({
+            title: 'ESRI_WorldImagery',
+            type: 'base',
+            visible: false,
+            source: esriBasemap
+        });
+        
+
+        // define layer groups
+
+        var overlays_group = new ol.layer.Group({
+            title: 'Overlays',
+            layers: [
+                layer1,
+            ]
+        });
+
+        var basemap_group = new ol.layer.Group({
+            title: 'Basemaps',
+            layers: [
+                basemap1,
+                basemap2,
+            ]
+        });
+
+        // define array of layer groups
+
+        var layer_groups = [
+            basemap_group,
+            overlays_group,
+        ]
+
+        // define view
+
+        var view = new ol.View({
+            center: ol.extent.getCenter(imageExtent),
+            zoom: 8
+        });
+
+        // define map
+
+        var map = new ol.Map({
+            layers: layer_groups,
+            target: 'map',
+            view: view
+        });
+
+        // Geolocation (https://openlayers.org/en/latest/examples/geolocation.html)
+
+        var geolocation = new ol.Geolocation({
+            projection: view.getProjection()
+        });
+
+        function el(id) {
+            return document.getElementById(id);
+        }
+
+        el('track').addEventListener('change', function() {
+            geolocation.setTracking(this.checked);
+        });
+
+        // handle geolocation error
+
+        geolocation.on('error', function(error) {
+            var info = document.getElementById('info');
+            info.innerHTML = error.message;
+            info.style.display = '';
+        });
+
+        // render position feature
+
+        var positionFeature = new ol.Feature();
+        positionFeature.setStyle(new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 6,
+                fill: new ol.style.Fill({
+                    color: '#3399CC'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#fff',
+                    width: 2
+                })
+            })
+        }));
+
+        geolocation.on('change:position', function() {
+            var coordinates = geolocation.getPosition();
+            positionFeature.setGeometry(coordinates ?
+                new ol.geom.Point(coordinates) : null);
+        });
+
+        // add position feature to map
+
+        new ol.layer.Vector({
+            map: map,
+            source: new ol.source.Vector({
+                features: [positionFeature]
+            })
+        });
+
+        // Popup
+
+        var popup = new ol.Overlay({
+            element: document.getElementById('popup')
+        });
+        map.addOverlay(popup);
+
+        // Add a click handler to the map to render the popup.
+
+        map.on('singleclick', function(evt) {
+            var element = popup.getElement();
+            var coordinate = evt.coordinate;
+            var viewResolution = /** @type {number} */ (view.getResolution());
+            var url = '';
+            var root = map.getLayerGroup();
+            var groups = root.getLayers();
+            groups.forEach(function(group) {
+                layers = group.getLayers();
+                layers.forEach(function(layer) {
+                    if (layer.get('type') != 'base') {
+                        var visible = layer.getVisible();
+                        if (visible) {
+                            url += layer.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
+                                'INFO_FORMAT': 'text/html'
+                            });
+                            $.get(url, function(data) {
+                                if (data.length != 0) {
+                                    $(element).popover('destroy');
+                                    popup.setPosition(coordinate);
+                                    $(element).popover({
+                                        'placement': 'top',
+                                        'animation': false,
+                                        'html': true,
+                                        'content': data
+                                    });
+                                    $(element).popover('show');
+                                } else {
+                                    popup.setPosition(undefined);
+                                }
+                            })
+                        }
+                    }
+                })
+            })
+        });
+
+        // sidebar object
+
+        var sidebar = new ol.control.Sidebar({
+            element: 'sidebar',
+            position: 'left'
+        });
+
+        // add sidebar to map
+
+        map.addControl(sidebar);
+
+        // Set layer visibility on/off through checkboxes
+
+        $('input[type=checkbox]').on('change', function() {
+            var layer = {
+                layer1: layer1,
+            }[$(this).attr('id')];
+            layer.setVisible(!layer.getVisible());
+        });
+
+        // Choose basemap through radio buttons
+        $('input[type=radio]').on('change', function() {
+            var basemaps = {
+                basemap1: basemap1,
+                basemap2: basemap2,
+            };
+
+            // turn off all basemaps...
+            for (i in basemaps) {
+                basemaps[i].setVisible(false);
+            }
+
+            // then turn on only clicked basemap
+            basemaps[$(this).attr('id')].setVisible(true);
+        });
+
+    </script>
+</body>
+
+</html>

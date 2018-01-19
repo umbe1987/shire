@@ -1,0 +1,8 @@
+SYMBOLSET
+  SYMBOL
+    NAME "wine"
+    TYPE svg
+    IMAGE "img/wine.svg"
+  END
+
+END

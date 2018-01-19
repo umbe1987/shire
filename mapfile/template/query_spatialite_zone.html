@@ -1,0 +1,32 @@
+# MapServer Template
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<style>
+      table, th, td {
+      border: 1px solid black;
+      padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- http://www.mapserver.org/mapfile/template.html -->
+
+    <table>
+	  <tr>
+	    <th>Layer name</th>
+		<td>[cl]</td> <!-- Current layer name. -->
+	  </tr>
+	  <tr>
+	    <th>NOME ZONA</th>
+		<td>[item name="nome_zona" format="$value"]</td> <!-- An attribute table “item”, with list formatting options. The “name” attribute is required. -->
+	  </tr>
+	  <tr>
+	    <th>VITIGNI</th>
+		<td>[item name="vitigni" format="$value"]</td> <!-- An attribute table “item”, with list formatting options. The “name” attribute is required. -->
+	  </tr>
+	</table>
+	
+  </body>
+</html>
