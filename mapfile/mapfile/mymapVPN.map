@@ -2,7 +2,7 @@ MAP
     #
     # Define Projections
     #
-    CONFIG "PROJ_LIB" "/home/umberto/Documents/apps/projects/wineshire/mapfile/proj/SHARE"
+    CONFIG "PROJ_LIB" "/home/umberto/Documents/webgis/mapserver/bin/proj/SHARE"
     PROJECTION
       "init=epsg:3857"
     END # PROJECTION
@@ -32,7 +32,7 @@ MAP
       #IMAGEURL ""
       METADATA
         "ows_title"                     "WFS/WMS (queryable) sample" ## REQUIRED
-        "ows_onlineresource"            "https://192.168.0.100/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/wineshire/mapfile/mapfile/test10_linux.map&" ## Recommended
+        "ows_onlineresource"            "https://test.airdns.org:12010/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/wineshire/mapfile/mapfile/mymapVPN.map&" ## Recommended
         "ows_srs"                       "EPSG:3857"
         "ows_abstract"                  "WFS/WMS (queryable) sample Mapserver Umberto." ## Recommended
         "ows_enable_request"            "*"  # necessary
