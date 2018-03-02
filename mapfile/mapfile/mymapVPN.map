@@ -2,7 +2,7 @@ MAP
     #
     # Define Projections
     #
-    CONFIG "PROJ_LIB" "/home/umberto/Documents/webgis/mapserver/bin/proj/SHARE"
+    CONFIG "PROJ_LIB" "/home/umberto/Documents/apps/projects/wineshire/mapfile/proj/SHARE"
     PROJECTION
       "init=epsg:3857"
     END # PROJECTION
