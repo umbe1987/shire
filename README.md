@@ -8,4 +8,4 @@ The files with "VPN" suffix are meant only for tests of this repository's owner 
 
 Finally, the project is meant to work in HTTPS only. Some issues are expected when tested with HTTP.
 
-Tested on linux and Windows. For Windows users: path might require o change the dir separator from '\' to '\\'.
+Tested on linux and Windows. For Windows users: path might require o change the dir separator from '\\' to '\\\'.
