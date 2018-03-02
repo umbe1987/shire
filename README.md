@@ -7,3 +7,5 @@ Also, change the path of the mapserv aplication to your actual path (MapServer i
 The files with "VPN" suffix are meant only for tests of this repository's owner and should not be used.
 
 Finally, the project is meant to work in HTTPS only. Some issues are expected when tested with HTTP.
+
+Tested on linux and Windows. For Windows users: path might require o change the dir separator from '\' to '\\'.
