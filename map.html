@@ -55,9 +55,9 @@
             <div class="sidebar-pane" id="layers">
                 <h1 class="sidebar-header">Layers<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
                 <div class="checkbox">
-                    <label><input type="checkbox" id="layer1">Layer 1</label>
+                    <label><input type="checkbox" id="layer1">Layer 1</label><span id='zoom_to'><i class="fa fa-search"></i></span>
                     <br>
-                    <label><input type="checkbox" id="layer2">Layer 2</label>
+                    <label><input type="checkbox" id="layer2">Layer 2</label><span id='zoom_to'><i class="fa fa-search"></i></span>
                 </div>
             </div>
 
@@ -372,6 +372,12 @@
             var params = wmsSource2.getParams();
             params.vitigni = filter;
             wmsSource2.updateParams(params);
+        });
+
+        // in the layers tab, zoom map to layer when zoom icon is clicked
+        $('.fa-search').on('click', function() {
+            var layer = layer1;
+            map.getView().fit(layer.getSource().getExtent(), map.getSize());
         });
 
     </script>

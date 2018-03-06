@@ -12,3 +12,11 @@ html, body, #map {
 	height: 100%;
 	font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
+
+label{
+	margin-right: 10px;
+}
+
+#zoom_to{
+	cursor: pointer;
+}
