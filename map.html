@@ -16,7 +16,7 @@
     <!-- Because Bootstrap is not compatible with jquery > 3 -->
     <!-- <script src="../js/jquery-3.2.1.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
-    <script src="./ol/proj4js-2.4.3/dist/proj4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
@@ -123,7 +123,7 @@
 
         // Mapserver WMS
         var wmsSource1 = new ol.source.ImageWMS({
-            url: 'https://localhost/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/wineshire/mapfile/mapfile/mymap.map',
+            url: 'https://localhost/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/shire/mapfile/mapfile/mymap.map',
             params: {
                 'LAYERS': 'cantine',
                 'CRS': 'EPSG:3857',
@@ -139,7 +139,7 @@
 
         // Mapserver WMS
         var wmsSource2 = new ol.source.ImageWMS({
-            url: 'https://localhost/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/wineshire/mapfile/mapfile/mymap.map',
+            url: 'https://localhost/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/shire/mapfile/mapfile/mymap.map',
             params: {
                 'LAYERS': 'zone',
                 'vitigni': '%',
