@@ -2,14 +2,14 @@ MAP
     #
     # Define Projections
     #
-    CONFIG "PROJ_LIB" "/home/umberto/Documents/apps/projects/wineshire/mapfile/proj/SHARE"
+    CONFIG "PROJ_LIB" "/home/umberto/Documents/apps/projects/shire/mapfile/proj/SHARE"
     PROJECTION
       "init=epsg:3857"
     END # PROJECTION
 	
     NAME "sample_WFS_WMS"
     SIZE 1000 500
-    EXTENT 884148 5588735 1172521 5764462
+    EXTENT 952014.59 5571269.68 1272301.10 5862273.22
     UNITS METERS
     SYMBOLSET "../symbol/symbol.txt"
     #TEMPLATEPATTERN "."
@@ -32,7 +32,7 @@ MAP
       #IMAGEURL ""
       METADATA
         "ows_title"                     "WFS/WMS (queryable) sample" ## REQUIRED
-        "ows_onlineresource"            "https://test.airdns.org:12010/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/wineshire/mapfile/mapfile/mymapVPN.map&" ## Recommended
+        "ows_onlineresource"            "https://test.airdns.org:12010/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/shire/mapfile/mapfile/mymapVPN.map&" ## Recommended
         "ows_srs"                       "EPSG:3857"
         "ows_abstract"                  "WFS/WMS (queryable) sample Mapserver Umberto." ## Recommended
         "ows_enable_request"            "*"  # necessary
@@ -45,7 +45,7 @@ MAP
       NAME cantine
       TYPE POINT
       CONNECTIONTYPE OGR
-      CONNECTION "/home/umberto/Documents/apps/projects/wineshire/dati/wineshire.sqlite"
+      CONNECTION "/home/umberto/Documents/apps/projects/shire/dati/wineshire.sqlite"
       DATA "cantine"
       METADATA
         "ows_title"         "cantine" ##REQUIRED
@@ -77,7 +77,7 @@ MAP
       NAME zone
       TYPE POLYGON
       CONNECTIONTYPE OGR
-      CONNECTION "/home/umberto/Documents/apps/projects/wineshire/dati/wineshire.sqlite"
+      CONNECTION "/home/umberto/Documents/apps/projects/shire/dati/wineshire.sqlite"
       DATA "zone_doc_zone_docg_zone_igt"
       FILTER ('[vitigni]' LIKE '%vitigni%') # doesn't include NULL
       VALIDATION

@@ -8,7 +8,7 @@
     <title>Umbe MapViewer</title>
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./ol/v4.2.0/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
     <link rel="stylesheet" href="./ol/css/ol-umbe_3.css" type="text/css">
     <link rel="stylesheet" href="./ol/sidebar-v2-master/css/ol3-sidebar.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -16,11 +16,11 @@
     <!-- Because Bootstrap is not compatible with jquery > 3 -->
     <!-- <script src="../js/jquery-3.2.1.min.js"></script> -->
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
-    <script src="./ol/proj4js-2.4.3/dist/proj4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="./ol/v4.2.0/build/ol.js"></script>
+    <script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
     <script src="./ol/sidebar-v2-master/js/ol3-sidebar.js"></script>
 
 </head>
@@ -55,9 +55,9 @@
             <div class="sidebar-pane" id="layers">
                 <h1 class="sidebar-header">Layers<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
                 <div class="checkbox">
-                    <label><input type="checkbox" id="layer1">Layer 1</label>
+                    <label><input type="checkbox" id="layer1">Layer 1</label><span id='zoom_to'><i class="fa fa-search"></i></span>
                     <br>
-                    <label><input type="checkbox" id="layer2">Layer 2</label>
+                    <label><input type="checkbox" id="layer2">Layer 2</label><span id='zoom_to'><i class="fa fa-search"></i></span>
                 </div>
             </div>
 
@@ -115,9 +115,9 @@
 
         proj4.defs('EPSG:3857', '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs');
 
-        // define extent
+        // define image extent
 
-        var imageExtent = [884148, 5588735, 1172521, 5764462];
+        var imageExtent = [952014.59,5571269.68,1272301.10,5862273.22];
 
         // define sources
 
@@ -127,14 +127,10 @@
             params: {
                 'LAYERS': 'cantine',
                 'CRS': 'EPSG:3857',
-                'BBOX': '884148,5588735,1172521,5764462',
-                'WIDTH': '800',
-                'HEIGHT': '500',
                 'FORMAT': 'image/png'
             },
             projection: 'EPSG:3857',
             serverType: 'mapserver',
-            imageExtent: imageExtent
         });
 
         // Mapserver WMS
@@ -144,14 +140,10 @@
                 'LAYERS': 'zone',
                 'vitigni': '%',
                 'CRS': 'EPSG:3857',
-                'BBOX': '884148,5588735,1172521,5764462',
-                'WIDTH': '800',
-                'HEIGHT': '500',
                 'FORMAT': 'image/png'
             },
             projection: 'EPSG:3857',
             serverType: 'mapserver',
-            imageExtent: imageExtent
         });
 
         var osmBasemap = new ol.source.OSM();
@@ -166,13 +158,14 @@
         var layer1 = new ol.layer.Image({
             title: 'cantine',
             visible: false,
-            source: wmsSource1
+            source: wmsSource1,
         });
 
         var layer2 = new ol.layer.Image({
             title: 'zone',
             visible: false,
-            source: wmsSource2
+            source: wmsSource2,
+            extent: [952014.59,5571269.68,1272301.10,5862273.22]
         });
 
         var basemap1 = new ol.layer.Tile({
@@ -372,6 +365,14 @@
             var params = wmsSource2.getParams();
             params.vitigni = filter;
             wmsSource2.updateParams(params);
+        });
+
+        // in the layers tab, zoom map to layer when zoom icon is clicked
+        $('.fa-search').on('click', function() {
+            var layer = layer2;
+            view.fit(layer.getExtent(), {
+                duration:1000
+            });
         });
 
     </script>
