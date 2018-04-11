@@ -45,9 +45,9 @@
             <div class="sidebar-pane" id="layers">
                 <h1 class="sidebar-header">Layers<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
                 <div class="checkbox">
-                    <label><input type="checkbox" id="layer1">Layer 1</label><span id='zoom_to'><i class="fa fa-search"></i></span>
+                    <label><input type="checkbox" id="layer1">Layer 1</label><span id='zoom_to'><i class="fa fa-search" id="layer1_zoom"></i></span>
                     <br>
-                    <label><input type="checkbox" id="layer2">Layer 2</label><span id='zoom_to'><i class="fa fa-search"></i></span>
+                    <label><input type="checkbox" id="layer2">Layer 2</label><span id='zoom_to'><i class="fa fa-search" id="layer2_zoom"></i></span>
                 </div>
             </div>
             <div class="sidebar-pane" id="basemap">
@@ -111,8 +111,11 @@
             return response.text();
         }).then(function(text) {
             var result = parser.read(text);
-            var extent = result.Capability.Layer.Layer.find(l => l.Name === 'zone').EX_GeographicBoundingBox;
-            var extent_3857 = ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857')
+            var extent_cantine = result.Capability.Layer.Layer.find(l => l.Name === 'cantine').EX_GeographicBoundingBox;
+            var extent_cantine_3857 = ol.proj.transformExtent(extent_cantine, 'EPSG:4326', 'EPSG:3857')
+
+            var extent_zone = result.Capability.Layer.Layer.find(l => l.Name === 'zone').EX_GeographicBoundingBox;
+            var extent_zone_3857 = ol.proj.transformExtent(extent_zone, 'EPSG:4326', 'EPSG:3857')
 
             // SOURCES
 
@@ -154,13 +157,14 @@
                 title: 'cantine',
                 visible: false,
                 source: wmsSource1,
+                extent: extent_cantine_3857
             });
 
             var layer2 = new ol.layer.Image({
                 title: 'zone',
                 visible: false,
                 source: wmsSource2,
-                extent: extent_3857
+                extent: extent_zone_3857
             });
 
             var basemap1 = new ol.layer.Tile({
@@ -366,8 +370,13 @@
             // ZOOM
             // in the layers tab, zoom map to layer when zoom icon is clicked
             $('.fa-search').on('click', function() {
-                var layer = layer2;
-                view.fit(layer.getExtent(), {
+                var layer = {
+                    layer1: layer1,
+                    layer2: layer2,
+                };
+                // remove the "_zoom" suffix from "layer{n}_zoom" to get only the layer id
+                var layer_id = $(this).attr('id').replace('_zoom','');
+                view.fit(layer[layer_id].getExtent(), {
                     duration: 1000
                 });
             });
