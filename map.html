@@ -375,7 +375,7 @@
                     layer2: layer2,
                 };
                 // remove the "_zoom" suffix from "layer{n}_zoom" to get only the layer id
-                var layer_id = $(this).attr('id').replace('_zoom','');
+                var layer_id = $(this).attr('id').replace('_zoom', '');
                 view.fit(layer[layer_id].getExtent(), {
                     duration: 1000
                 });

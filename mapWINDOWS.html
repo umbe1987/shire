@@ -45,9 +45,9 @@
             <div class="sidebar-pane" id="layers">
                 <h1 class="sidebar-header">Layers<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
                 <div class="checkbox">
-                    <label><input type="checkbox" id="layer1">Layer 1</label><span id='zoom_to'><i class="fa fa-search"></i></span>
+                    <label><input type="checkbox" id="layer1">Layer 1</label><span id='zoom_to'><i class="fa fa-search" id="layer1_zoom"></i></span>
                     <br>
-                    <label><input type="checkbox" id="layer2">Layer 2</label><span id='zoom_to'><i class="fa fa-search"></i></span>
+                    <label><input type="checkbox" id="layer2">Layer 2</label><span id='zoom_to'><i class="fa fa-search" id="layer2_zoom"></i></span>
                 </div>
             </div>
             <div class="sidebar-pane" id="basemap">
@@ -103,286 +103,284 @@
 
         // WMS PARSER (https://bl.ocks.org/ThomasG77/5f9e62d3adeb5602d230a6eacbb9c443)
 
-        var base_url = 'https://localhost/cgi-bin/mapserver/mapserv.exe?map=C:\\DATI\\git\\shire\\\mapfile\\\mapfile\\mymapWINDOWS.map&'
+        var base_url = 'https://localhost/cgi-bin/mapserver/mapserv.exe?map=C:\\DATI\\git\\shire\\mapfile\\mapfile\\mymapWINDOWS.map&'
         var parser = new ol.format.WMSCapabilities();
 
         // Parse WMS Capabilities to retrieve layer extent
         fetch(base_url + 'SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities').then(function(response) {
-                return response.text();
-            }).then(function(text) {
-                    var result = parser.read(text);
-                    var extent = result.Capability.Layer.Layer.find(l => l.Name === 'zone').EX_GeographicBoundingBox;
-                    var extent_3857 = ol.proj.transformExtent(extent, 'EPSG:4326', 'EPSG:3857')
+            return response.text();
+        }).then(function(text) {
+            var result = parser.read(text);
+            var extent_cantine = result.Capability.Layer.Layer.find(l => l.Name === 'cantine').EX_GeographicBoundingBox;
+            var extent_cantine_3857 = ol.proj.transformExtent(extent_cantine, 'EPSG:4326', 'EPSG:3857')
 
-                    // SOURCES
+            var extent_zone = result.Capability.Layer.Layer.find(l => l.Name === 'zone').EX_GeographicBoundingBox;
+            var extent_zone_3857 = ol.proj.transformExtent(extent_zone, 'EPSG:4326', 'EPSG:3857')
 
-                    // Mapserver WMS
-                    var wmsSource1 = new ol.source.ImageWMS({
-                        url: base_url,
-                        params: {
-                            'LAYERS': 'cantine',
-                            'CRS': 'EPSG:3857',
-                            'FORMAT': 'image/png'
-                        },
-                        projection: 'EPSG:3857',
-                        serverType: 'mapserver',
-                    });
+            // SOURCES
 
-                    // Mapserver WMS
-                    var wmsSource2 = new ol.source.ImageWMS({
-                        url: base_url,
-                        params: {
-                            'LAYERS': 'zone',
-                            'vitigni': '%',
-                            'CRS': 'EPSG:3857',
-                            'FORMAT': 'image/png'
-                        },
-                        projection: 'EPSG:3857',
-                        serverType: 'mapserver',
-                    });
+            // Mapserver WMS
+            var wmsSource1 = new ol.source.ImageWMS({
+                url: base_url,
+                params: {
+                    'LAYERS': 'cantine',
+                    'CRS': 'EPSG:3857',
+                    'FORMAT': 'image/png'
+                },
+                projection: 'EPSG:3857',
+                serverType: 'mapserver',
+            });
 
-                    var osmBasemap = new ol.source.OSM();
+            // Mapserver WMS
+            var wmsSource2 = new ol.source.ImageWMS({
+                url: base_url,
+                params: {
+                    'LAYERS': 'zone',
+                    'vitigni': '%',
+                    'CRS': 'EPSG:3857',
+                    'FORMAT': 'image/png'
+                },
+                projection: 'EPSG:3857',
+                serverType: 'mapserver',
+            });
 
-                    var esriBasemap = new ol.source.XYZ({
-                        url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                        attributions: 'Tiles © Esri — Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
-                    });
+            var osmBasemap = new ol.source.OSM();
 
-                    // LAYER EXTENT (https://bl.ocks.org/ThomasG77/5f9e62d3adeb5602d230a6eacbb9c443)
-                    var parser = new ol.format.WMSCapabilities();
+            var esriBasemap = new ol.source.XYZ({
+                url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                attributions: 'Tiles © Esri — Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
+            });
 
-                    // Parse WMS Capabilities to retrieve layer extent
-                    fetch(base_url.concat('SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities')).then(function(response) {
-                        return response.text();
-                    }).then(function(text) {
-                        var result = parser.read(text);
-                        var extent = result.Capability.Layer.Layer.find(l => l.Name === 'zone').EX_GeographicBoundingBox;
-                        // CONTINUA
+            // LAYERS
 
-                        // LAYERS
+            var layer1 = new ol.layer.Image({
+                title: 'cantine',
+                visible: false,
+                source: wmsSource1,
+                extent: extent_cantine_3857
+            });
 
-                        var layer1 = new ol.layer.Image({
-                            title: 'cantine',
-                            visible: false,
-                            source: wmsSource1,
-                        });
+            var layer2 = new ol.layer.Image({
+                title: 'zone',
+                visible: false,
+                source: wmsSource2,
+                extent: extent_zone_3857
+            });
 
-                        var layer2 = new ol.layer.Image({
-                            title: 'zone',
-                            visible: false,
-                            source: wmsSource2,
-                            extent: extent_3857
-                        });
+            var basemap1 = new ol.layer.Tile({
+                title: 'OSM',
+                type: 'base',
+                visible: true,
+                source: osmBasemap
+            });
 
-                        var basemap1 = new ol.layer.Tile({
-                            title: 'OSM',
-                            type: 'base',
-                            visible: true,
-                            source: osmBasemap
-                        });
-
-                        var basemap2 = new ol.layer.Tile({
-                            title: 'ESRI_WorldImagery',
-                            type: 'base',
-                            visible: false,
-                            source: esriBasemap
-                        });
+            var basemap2 = new ol.layer.Tile({
+                title: 'ESRI_WorldImagery',
+                type: 'base',
+                visible: false,
+                source: esriBasemap
+            });
 
 
-                        // LAYER GROUPS
+            // LAYER GROUPS
 
-                        var overlays_group = new ol.layer.Group({
-                            title: 'Overlays',
-                            layers: [
-                                layer1,
-                                layer2,
-                            ]
-                        });
+            var overlays_group = new ol.layer.Group({
+                title: 'Overlays',
+                layers: [
+                    layer1,
+                    layer2,
+                ]
+            });
 
-                        var basemap_group = new ol.layer.Group({
-                            title: 'Basemaps',
-                            layers: [
-                                basemap1,
-                                basemap2,
-                            ]
-                        });
+            var basemap_group = new ol.layer.Group({
+                title: 'Basemaps',
+                layers: [
+                    basemap1,
+                    basemap2,
+                ]
+            });
 
-                        // define array of layer groups
+            // define array of layer groups
 
-                        var layer_groups = [
-                            basemap_group,
-                            overlays_group,
-                        ]
+            var layer_groups = [
+                basemap_group,
+                overlays_group,
+            ]
 
-                        // VIEW
+            // VIEW
 
-                        var view = new ol.View({
-                            center: ol.extent.getCenter(imageExtent),
-                            zoom: 8
-                        });
+            var view = new ol.View({
+                center: ol.extent.getCenter(imageExtent),
+                zoom: 8
+            });
 
-                        // MAP
+            // MAP
 
-                        var map = new ol.Map({
-                            layers: layer_groups,
-                            target: 'map',
-                            view: view
-                        });
+            var map = new ol.Map({
+                layers: layer_groups,
+                target: 'map',
+                view: view
+            });
 
-                        // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
+            // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
 
-                        var geolocation = new ol.Geolocation({
-                            projection: view.getProjection()
-                        });
+            var geolocation = new ol.Geolocation({
+                projection: view.getProjection()
+            });
 
-                        function el(id) {
-                            return document.getElementById(id);
-                        }
+            function el(id) {
+                return document.getElementById(id);
+            }
 
-                        el('track').addEventListener('change', function() {
-                            geolocation.setTracking(this.checked);
-                        });
+            el('track').addEventListener('change', function() {
+                geolocation.setTracking(this.checked);
+            });
 
-                        // handle geolocation error
+            // handle geolocation error
 
-                        geolocation.on('error', function(error) {
-                            var info = document.getElementById('info');
-                            info.innerHTML = error.message;
-                            info.style.display = '';
-                        });
+            geolocation.on('error', function(error) {
+                var info = document.getElementById('info');
+                info.innerHTML = error.message;
+                info.style.display = '';
+            });
 
-                        // render position feature
+            // render position feature
 
-                        var positionFeature = new ol.Feature();
-                        positionFeature.setStyle(new ol.style.Style({
-                            image: new ol.style.Circle({
-                                radius: 6,
-                                fill: new ol.style.Fill({
-                                    color: '#3399CC'
-                                }),
-                                stroke: new ol.style.Stroke({
-                                    color: '#fff',
-                                    width: 2
-                                })
-                            })
-                        }));
+            var positionFeature = new ol.Feature();
+            positionFeature.setStyle(new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 6,
+                    fill: new ol.style.Fill({
+                        color: '#3399CC'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#fff',
+                        width: 2
+                    })
+                })
+            }));
 
-                        geolocation.on('change:position', function() {
-                            var coordinates = geolocation.getPosition();
-                            positionFeature.setGeometry(coordinates ?
-                                new ol.geom.Point(coordinates) : null);
-                        });
+            geolocation.on('change:position', function() {
+                var coordinates = geolocation.getPosition();
+                positionFeature.setGeometry(coordinates ?
+                    new ol.geom.Point(coordinates) : null);
+            });
 
-                        // add position feature to map
+            // add position feature to map
 
-                        new ol.layer.Vector({
-                            map: map,
-                            source: new ol.source.Vector({
-                                features: [positionFeature]
-                            })
-                        });
+            new ol.layer.Vector({
+                map: map,
+                source: new ol.source.Vector({
+                    features: [positionFeature]
+                })
+            });
 
-                        // POPUP
+            // POPUP
 
-                        var popup = new ol.Overlay({
-                            element: document.getElementById('popup')
-                        });
-                        map.addOverlay(popup);
+            var popup = new ol.Overlay({
+                element: document.getElementById('popup')
+            });
+            map.addOverlay(popup);
 
-                        // Add a click handler to the map to render the popup.
+            // Add a click handler to the map to render the popup.
 
-                        map.on('singleclick', function(evt) {
-                            var element = popup.getElement();
-                            var coordinate = evt.coordinate;
-                            var viewResolution = /** @type {number} */ (view.getResolution());
-                            var url = '';
-                            var root = map.getLayerGroup();
-                            var groups = root.getLayers();
-                            groups.forEach(function(group) {
-                                layers = group.getLayers();
-                                layers.forEach(function(layer) {
-                                    if (layer.get('type') != 'base') {
-                                        var visible = layer.getVisible();
-                                        if (visible) {
-                                            url += layer.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
-                                                'INFO_FORMAT': 'text/html'
-                                            });
-                                            $.get(url, function(data) {
-                                                if (data.length != 0) {
-                                                    $(element).popover('destroy');
-                                                    popup.setPosition(coordinate);
-                                                    $(element).popover({
-                                                        'placement': 'top',
-                                                        'animation': false,
-                                                        'html': true,
-                                                        'content': data
-                                                    });
-                                                    $(element).popover('show');
-                                                } else {
-                                                    popup.setPosition(undefined);
-                                                }
-                                            })
-                                        }
+            map.on('singleclick', function(evt) {
+                var element = popup.getElement();
+                var coordinate = evt.coordinate;
+                var viewResolution = /** @type {number} */ (view.getResolution());
+                var url = '';
+                var root = map.getLayerGroup();
+                var groups = root.getLayers();
+                groups.forEach(function(group) {
+                    layers = group.getLayers();
+                    layers.forEach(function(layer) {
+                        if (layer.get('type') != 'base') {
+                            var visible = layer.getVisible();
+                            if (visible) {
+                                url += layer.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
+                                    'INFO_FORMAT': 'text/html'
+                                });
+                                $.get(url, function(data) {
+                                    if (data.length != 0) {
+                                        $(element).popover('destroy');
+                                        popup.setPosition(coordinate);
+                                        $(element).popover({
+                                            'placement': 'top',
+                                            'animation': false,
+                                            'html': true,
+                                            'content': data
+                                        });
+                                        $(element).popover('show');
+                                    } else {
+                                        popup.setPosition(undefined);
                                     }
                                 })
-                            })
-                        });
-
-                        // SIDEBAR
-
-                        var sidebar = new ol.control.Sidebar({
-                            element: 'sidebar',
-                            position: 'left'
-                        });
-
-                        // add sidebar to map
-
-                        map.addControl(sidebar);
-
-                        // LAYER VISIBILITY
-
-                        $('input[type=checkbox]').on('change', function() {
-                            var layer = {
-                                layer1: layer1,
-                                layer2: layer2,
-                            }[$(this).attr('id')];
-                            layer.setVisible(!layer.getVisible());
-                        });
-
-                        // BASEMAP RADIO BUTTONS
-                        $('input[type=radio]').on('change', function() {
-                            var basemaps = {
-                                basemap1: basemap1,
-                                basemap2: basemap2,
-                            };
-
-                            // turn off all basemaps...
-                            for (i in basemaps) {
-                                basemaps[i].setVisible(false);
                             }
+                        }
+                    })
+                })
+            });
 
-                            // then turn on only clicked basemap
-                            basemaps[$(this).attr('id')].setVisible(true);
-                        });
+            // SIDEBAR
 
-                        // DEFINITION QUERY (GEOMETRIC FILTERS)
-                        // update WMS parameters (filter, see mapfile) based on user selected choice
-                        $('.query').on('change', function() {
-                            var filter = $(this).val();
-                            var params = wmsSource2.getParams();
-                            params.vitigni = filter;
-                            wmsSource2.updateParams(params);
-                        });
+            var sidebar = new ol.control.Sidebar({
+                element: 'sidebar',
+                position: 'left'
+            });
 
-                        // ZOOM
-                        // in the layers tab, zoom map to layer when zoom icon is clicked
-                        $('.fa-search').on('click', function() {
-                            var layer = layer2;
-                            view.fit(layer.getExtent(), {
-                                duration: 1000
-                            });
-                        });
-                    });
+            // add sidebar to map
+
+            map.addControl(sidebar);
+
+            // LAYER VISIBILITY
+
+            $('input[type=checkbox]').on('change', function() {
+                var layer = {
+                    layer1: layer1,
+                    layer2: layer2,
+                }[$(this).attr('id')];
+                layer.setVisible(!layer.getVisible());
+            });
+
+            // BASEMAP RADIO BUTTONS
+            $('input[type=radio]').on('change', function() {
+                var basemaps = {
+                    basemap1: basemap1,
+                    basemap2: basemap2,
+                };
+
+                // turn off all basemaps...
+                for (i in basemaps) {
+                    basemaps[i].setVisible(false);
+                }
+
+                // then turn on only clicked basemap
+                basemaps[$(this).attr('id')].setVisible(true);
+            });
+
+            // DEFINITION QUERY (GEOMETRIC FILTERS)
+            // update WMS parameters (filter, see mapfile) based on user selected choice
+            $('.query').on('change', function() {
+                var filter = $(this).val();
+                var params = wmsSource2.getParams();
+                params.vitigni = filter;
+                wmsSource2.updateParams(params);
+            });
+
+            // ZOOM
+            // in the layers tab, zoom map to layer when zoom icon is clicked
+            $('.fa-search').on('click', function() {
+                var layer = {
+                    layer1: layer1,
+                    layer2: layer2,
+                };
+                // remove the "_zoom" suffix from "layer{n}_zoom" to get only the layer id
+                var layer_id = $(this).attr('id').replace('_zoom', '');
+                view.fit(layer[layer_id].getExtent(), {
+                    duration: 1000
+                });
+            });
+        });
     </script>
 </body>
 
