@@ -278,6 +278,24 @@
                 })
             });
 
+            // CHECK IF LAYER INFO SHOULD DISPLAY IN POPUP OR PANEL
+            
+            // check if info layer panel is off (as default)
+            var info_class = $("a[href$='#info']").first().parent();
+            var info_class_off = info_class.attr('class');
+
+            $("#info_settings").on('change', function() {
+                if ($(this).checked) {
+                    // remove "class "disabled" (show panel)
+                    info_class.removeClass(info_class_off);
+                    alert(info_class.attr('class'));
+                } else {
+                    // add "class "disabled" (hide panel) this is default
+                    info_class.addClass(info_class_off);
+                    alert(info_class.attr('class'));
+                }
+            })
+
             // POPUP
 
             var popup = new ol.Overlay({
