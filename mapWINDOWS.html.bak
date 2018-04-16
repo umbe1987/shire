@@ -32,9 +32,9 @@
             <ul role="tablist">
                 <li><a href="#layers" role="tab"><i class="fa fa-bars"></i></a></li>
                 <li><a href="#basemap" role="tab"><i class="fa fa-map-o"></i></a></li>
-                <li class="disabled"><a href="#info" role="tab"><i class="fa fa-info" aria-hidden="true"></i></a></li>
                 <li><a href="#query" role="tab"><i class="fa fa-filter"></i></a></li>
                 <li><a href="#position" role="tab"><i class="fa fa-map-marker"></i></a></li>
+                <li class="disabled"><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>
             </ul>
             <ul role="tablist">
                 <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
@@ -60,9 +60,6 @@
                     <label><input type="radio" name="optradio" id="basemap3">TileMill</label>
                 </div>
             </div>
-            <div class="sidebar-pane" id="info">
-                <h1 class="sidebar-header">Info<span class="sidebar-close"><i class="fa fa-info" aria-hidden="true"></i></span></h1>
-            </div>
             <div class="sidebar-pane" id="query">
                 <h1 class="sidebar-header">Query<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
                 <select class="query">
@@ -77,7 +74,7 @@
             </div>
             <div class="sidebar-pane" id="position">
                 <h1 class="sidebar-header">
-                    Geolocation
+                    sidebar-v2
                     <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
                 <label for="track">
@@ -86,11 +83,11 @@
                </label>
                 <p id="info" style="display: none;"></p>
             </div>
+            <div class="sidebar-pane" id="messages">
+                <h1 class="sidebar-header">Messages<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+            </div>
             <div class="sidebar-pane" id="settings">
                 <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                <div class="checkbox">
-                    <label><input type="checkbox" id="info_settings">Display layer info in panel instead of popups</label>
-                </div>
             </div>
         </div>
     </div>
@@ -282,24 +279,6 @@
                     features: [positionFeature]
                 })
             });
-
-            // CHECK IF LAYER INFO SHOULD DISPLAY IN POPUP OR PANEL
-            
-            // check if info layer panel is off (as default)
-            var info_class = $("a[href$='#info']").first().parent();
-            var info_class_off = info_class.attr('class');
-
-            $("#info_settings").on('change', function() {
-                if ($(this).checked) {
-                    // remove "class "disabled" (show panel)
-                    info_class.removeClass(info_class_off);
-                    alert(info_class.attr('class'));
-                } else {
-                    // add "class "disabled" (hide panel) this is default
-                    info_class.addClass(info_class_off);
-                    alert(info_class.attr('class'));
-                }
-            })
 
             // POPUP
 
