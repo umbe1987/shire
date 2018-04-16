@@ -281,18 +281,22 @@
             // CHECK IF LAYER INFO SHOULD DISPLAY IN POPUP OR PANEL
             
             // check if info layer panel is off (as default)
-            var info_class = $("a[href$='#info']").first().parent();
-            var info_class_off = info_class.attr('class');
+            var info_tab = $("a[href$='#info']").first().parent();
+            var info_class = info_tab.attr('class');
 
             $("#info_settings").on('change', function() {
-                if ($(this).checked) {
+                if (this.checked) {
                     // remove "class "disabled" (show panel)
-                    info_class.removeClass(info_class_off);
-                    alert(info_class.attr('class'));
+                    info_tab.removeClass(info_class);      
+                    info_class = 'active';
+                    info_tab.addClass(info_class);
+                    alert(info_class);
                 } else {
                     // add "class "disabled" (hide panel) this is default
-                    info_class.addClass(info_class_off);
-                    alert(info_class.attr('class'));
+                    info_tab.removeClass(info_class);      
+                    info_class = 'disabled';
+                    info_tab.addClass(info_class);
+                    alert(info_class);
                 }
             })
 
