@@ -287,13 +287,10 @@
             $("#info_settings").on('change', function() {
                 if (this.checked) {
                     // remove "class "disabled" (show panel)
-                    info_tab.removeClass(info_class);      
-                    info_class = 'active';
-                    info_tab.addClass(info_class);
+                    info_tab.removeClass(info_class);
                     alert(info_class);
                 } else {
                     // add "class "disabled" (hide panel) this is default
-                    info_tab.removeClass(info_class);      
                     info_class = 'disabled';
                     info_tab.addClass(info_class);
                     alert(info_class);
