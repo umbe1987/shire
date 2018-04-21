@@ -288,12 +288,10 @@
                 if (this.checked) {
                     // remove "class "disabled" (show panel)
                     info_tab.removeClass(info_class);
-                    alert(info_class);
                 } else {
                     // add "class "disabled" (hide panel) this is default
                     info_class = 'disabled';
                     info_tab.addClass(info_class);
-                    alert(info_class);
                 }
             })
 
@@ -306,11 +304,10 @@
 
             // Add a click handler to the map to render the popup.
 
-            map.on('singleclick', function(evt) {
-                var element = popup.getElement();
+            function getText(evt) {
                 var coordinate = evt.coordinate;
-                var viewResolution = /** @type {number} */ (view.getResolution());
                 var url = '';
+                var viewResolution = /** @type {number} */ (view.getResolution());
                 var root = map.getLayerGroup();
                 var groups = root.getLayers();
                 groups.forEach(function(group) {
@@ -322,26 +319,38 @@
                                 url += layer.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
                                     'INFO_FORMAT': 'text/html'
                                 });
-                                $.get(url, function(data) {
-                                    if (data.length != 0) {
-                                        $(element).popover('destroy');
-                                        popup.setPosition(coordinate);
-                                        $(element).popover({
-                                            'placement': 'top',
-                                            'animation': false,
-                                            'html': true,
-                                            'content': data
-                                        });
-                                        $(element).popover('show');
-                                    } else {
-                                        popup.setPosition(undefined);
-                                    }
-                                })
+                                alert("VISIBLE!!!");
+                                return url;
+                            } else {
+                                alert("NOT VISIBLE!!!");
+                                return;
                             }
                         }
                     })
                 })
-            });
+            }
+
+            map.on('singleclick', function(evt) {
+                var text = getText(evt);
+                if (text) {
+                    var element = popup.getElement();
+                    text.get(url, function(data) {
+                        if (data.length != 0) {
+                            $(element).popover('destroy');
+                            popup.setPosition(coordinate);
+                            $(element).popover({
+                                'placement': 'top',
+                                'animation': false,
+                                'html': true,
+                                'content': data
+                            });
+                            $(element).popover('show');
+                        } else {
+                            popup.setPosition(undefined);
+                        }
+                    })
+                }
+            })
 
             // SIDEBAR
 
