@@ -309,32 +309,31 @@
                 var url = '';
                 var viewResolution = /** @type {number} */ (view.getResolution());
                 var root = map.getLayerGroup();
-                var groups = root.getLayers();
-                groups.forEach(function(group) {
-                    layers = group.getLayers();
-                    layers.forEach(function(layer) {
+                var groups = root.getLayers().getArray();
+                for (var i = 0; i < groups.length; ++i) {
+                    var group = groups[i];
+                    layers = group.getLayers().getArray();
+                    for (var j = 0; j < layers.length; ++j) {
+                        var layer = layers[j];
                         if (layer.get('type') != 'base') {
                             var visible = layer.getVisible();
                             if (visible) {
                                 url += layer.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
                                     'INFO_FORMAT': 'text/html'
                                 });
-                                alert("VISIBLE!!!");
                                 return url;
-                            } else {
-                                alert("NOT VISIBLE!!!");
-                                return;
                             }
                         }
-                    })
-                })
+                    }
+                }
             }
 
             map.on('singleclick', function(evt) {
+                var coordinate = evt.coordinate;
                 var text = getText(evt);
                 if (text) {
                     var element = popup.getElement();
-                    text.get(url, function(data) {
+                    $.get(text, function(data) {
                         if (data.length != 0) {
                             $(element).popover('destroy');
                             popup.setPosition(coordinate);
