@@ -32,9 +32,9 @@
             <ul role="tablist">
                 <li><a href="#layers" role="tab"><i class="fa fa-bars"></i></a></li>
                 <li><a href="#basemap" role="tab"><i class="fa fa-map-o"></i></a></li>
+                <li class="disabled"><a href="#info" role="tab"><i class="fa fa-info" aria-hidden="true"></i></a></li>
                 <li><a href="#query" role="tab"><i class="fa fa-filter"></i></a></li>
                 <li><a href="#position" role="tab"><i class="fa fa-map-marker"></i></a></li>
-                <li class="disabled"><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li>
             </ul>
             <ul role="tablist">
                 <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
@@ -60,6 +60,9 @@
                     <label><input type="radio" name="optradio" id="basemap3">TileMill</label>
                 </div>
             </div>
+            <div class="sidebar-pane" id="info">
+                <h1 class="sidebar-header">Info<span class="sidebar-close"><i class="fa fa-info" aria-hidden="true"></i></span></h1>
+            </div>
             <div class="sidebar-pane" id="query">
                 <h1 class="sidebar-header">Query<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
                 <select class="query">
@@ -74,7 +77,7 @@
             </div>
             <div class="sidebar-pane" id="position">
                 <h1 class="sidebar-header">
-                    sidebar-v2
+                    Geolocation
                     <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
                 <label for="track">
@@ -83,11 +86,11 @@
                </label>
                 <p id="info" style="display: none;"></p>
             </div>
-            <div class="sidebar-pane" id="messages">
-                <h1 class="sidebar-header">Messages<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-            </div>
             <div class="sidebar-pane" id="settings">
                 <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                <div class="checkbox">
+                    <label><input type="checkbox" id="info_settings">Display layer info in panel instead of popups</label>
+                </div>
             </div>
         </div>
     </div>
@@ -103,7 +106,7 @@
 
         // WMS PARSER (https://bl.ocks.org/ThomasG77/5f9e62d3adeb5602d230a6eacbb9c443)
 
-        var base_url = 'https://test.airdns.org:12010/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/wineshire/mapfile/mapfile/mymapVPN.map&'
+        var base_url = 'https://localhost/cgi-bin/mapserver/mapserv.exe?map=C:\\DATI\\git\\shire\\mapfile\\mapfile\\mymapWINDOWS.map&'
         var parser = new ol.format.WMSCapabilities();
 
         // Parse WMS Capabilities to retrieve layer extent
@@ -111,6 +114,11 @@
             return response.text();
         }).then(function(text) {
             var result = parser.read(text);
+			// debugger;
+			var layers = result.Capability.Layer.Layer;
+			for (i = 0; i < layers.length; i++) {
+                alert (layers[i].Name);
+            }
             var extent_cantine = result.Capability.Layer.Layer.find(l => l.Name === 'cantine').EX_GeographicBoundingBox;
             var extent_cantine_3857 = ol.proj.transformExtent(extent_cantine, 'EPSG:4326', 'EPSG:3857')
 
@@ -275,7 +283,26 @@
                 })
             });
 
-            // POPUP
+            // CHECK IF LAYER INFO SHOULD DISPLAY IN POPUP OR PANEL
+            
+            // check if info layer panel is off (as default)
+            var info_tab = $("a[href$='#info']").first().parent();
+            var info_class = info_tab.attr('class');
+
+            $("#info_settings").on('change', function() {
+                if (this.checked) {
+                    // remove "class "disabled" (show panel)
+                    info_tab.removeClass(info_class);
+                    alert(info_class);
+                } else {
+                    // add "class "disabled" (hide panel) this is default
+                    info_class = 'disabled';
+                    info_tab.addClass(info_class);
+                    alert(info_class);
+                }
+            })
+
+            // LAYER INFO (POPUP OR PANEL DEPENDING ON SETTINGS)
 
             var popup = new ol.Overlay({
                 element: document.getElementById('popup')

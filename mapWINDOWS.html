@@ -8,7 +8,7 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
     <link rel="stylesheet" href="./ol/css/ol-umbe_3.css" type="text/css">
-    <link rel="stylesheet" href="./ol/sidebar-v2-master/css/ol3-sidebar.css" />
+    <link rel="stylesheet" href="./ol/sidebar-v2/css/ol3-sidebar.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- Because Bootstrap is not compatible with jquery > 3 -->
     <!-- <script src="../js/jquery-3.2.1.min.js"></script> -->
@@ -18,7 +18,7 @@
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
-    <script src="./ol/sidebar-v2-master/js/ol3-sidebar.js"></script>
+    <script src="./ol/sidebar-v2/js/ol3-sidebar.js"></script>
 </head>
 
 <body>
@@ -293,12 +293,10 @@
                 if (this.checked) {
                     // remove "class "disabled" (show panel)
                     info_tab.removeClass(info_class);
-                    alert(info_class);
                 } else {
                     // add "class "disabled" (hide panel) this is default
                     info_class = 'disabled';
                     info_tab.addClass(info_class);
-                    alert(info_class);
                 }
             })
 
@@ -311,11 +309,10 @@
 
             // Add a click handler to the map to render the popup.
 
-            map.on('singleclick', function(evt) {
-                var element = popup.getElement();
+            function getText(evt) {
                 var coordinate = evt.coordinate;
-                var viewResolution = /** @type {number} */ (view.getResolution());
                 var url = '';
+                var viewResolution = /** @type {number} */ (view.getResolution());
                 var root = map.getLayerGroup();
                 var groups = root.getLayers();
                 groups.forEach(function(group) {
@@ -327,26 +324,38 @@
                                 url += layer.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
                                     'INFO_FORMAT': 'text/html'
                                 });
-                                $.get(url, function(data) {
-                                    if (data.length != 0) {
-                                        $(element).popover('destroy');
-                                        popup.setPosition(coordinate);
-                                        $(element).popover({
-                                            'placement': 'top',
-                                            'animation': false,
-                                            'html': true,
-                                            'content': data
-                                        });
-                                        $(element).popover('show');
-                                    } else {
-                                        popup.setPosition(undefined);
-                                    }
-                                })
+                                alert("VISIBLE!!!");
+                                return url;
+                            } else {
+                                alert("NOT VISIBLE!!!");
+                                return;
                             }
                         }
                     })
                 })
-            });
+            }
+
+            map.on('singleclick', function(evt) {
+                var text = getText(evt);
+                if (text) {
+                    var element = popup.getElement();
+                    text.get(url, function(data) {
+                        if (data.length != 0) {
+                            $(element).popover('destroy');
+                            popup.setPosition(coordinate);
+                            $(element).popover({
+                                'placement': 'top',
+                                'animation': false,
+                                'html': true,
+                                'content': data
+                            });
+                            $(element).popover('show');
+                        } else {
+                            popup.setPosition(undefined);
+                        }
+                    })
+                }
+            })
 
             // SIDEBAR
 
