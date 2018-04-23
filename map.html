@@ -84,7 +84,7 @@
                track position
                <input id="track" type="checkbox"/>
                </label>
-                <p id="info" style="display: none;"></p>
+                <p id="location_err" style="display: none;"></p>
             </div>
             <div class="sidebar-pane" id="settings">
                 <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
@@ -242,9 +242,9 @@
             // handle geolocation error
 
             geolocation.on('error', function(error) {
-                var info = document.getElementById('info');
-                info.innerHTML = error.message;
-                info.style.display = '';
+                var location_err = document.getElementById('location_err');
+                location_err.innerHTML = error.message;
+                location_err.style.display = '';
             });
 
             // render position feature
@@ -283,15 +283,19 @@
             // check if info layer panel is off (as default)
             var info_tab = $("a[href$='#info']").first().parent();
             var info_class = info_tab.attr('class');
+            var info_popup = true;
+            var info_panel = $("#info.sidebar-pane");
 
+            // activate info panel if checbox is checked in settings tab
             $("#info_settings").on('change', function() {
                 if (this.checked) {
                     // remove "class "disabled" (show panel)
                     info_tab.removeClass(info_class);
+                    info_popup = false;
                 } else {
                     // add "class "disabled" (hide panel) this is default
-                    info_class = 'disabled';
                     info_tab.addClass(info_class);
+                    info_popup = true;
                 }
             })
 
@@ -301,8 +305,6 @@
                 element: document.getElementById('popup')
             });
             map.addOverlay(popup);
-
-            // Add a click handler to the map to render the popup.
 
             function getText(evt) {
                 var coordinate = evt.coordinate;
@@ -329,21 +331,30 @@
             }
 
             map.on('singleclick', function(evt) {
-                var coordinate = evt.coordinate;
+
+                // check wether to display info in popup or panel 
                 var text = getText(evt);
                 if (text) {
-                    var element = popup.getElement();
                     $.get(text, function(data) {
                         if (data.length != 0) {
-                            $(element).popover('destroy');
-                            popup.setPosition(coordinate);
-                            $(element).popover({
-                                'placement': 'top',
-                                'animation': false,
-                                'html': true,
-                                'content': data
-                            });
-                            $(element).popover('show');
+                            // if true, displays the popup...
+                            if (info_popup) {
+                                // Add a click handler to the map to render the popup.
+                                var element = popup.getElement();
+                                var coordinate = evt.coordinate;
+                                $(element).popover('destroy');
+                                popup.setPosition(coordinate);
+                                $(element).popover({
+                                    'placement': 'top',
+                                    'animation': false,
+                                    'html': true,
+                                    'content': data
+                                });
+                                $(element).popover('show');
+                            // ... else, displays in panel
+                            } else {
+                                // code
+                            }
                         } else {
                             popup.setPosition(undefined);
                         }
