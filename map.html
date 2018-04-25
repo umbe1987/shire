@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="sidebar-pane" id="info">
-                <h1 class="sidebar-header">Info<span class="sidebar-close"><i class="fa fa-info" aria-hidden="true"></i></span></h1>
+                <h1 class="sidebar-header">Info<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
             </div>
             <div class="sidebar-pane" id="query">
                 <h1 class="sidebar-header">Query<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
@@ -284,7 +284,7 @@
             var info_tab = $("a[href$='#info']").first().parent();
             var info_class = info_tab.attr('class');
             var info_popup = true;
-            var info_panel = $("#info.sidebar-pane");
+            info_panel = document.getElementById("info");
 
             // activate info panel if checbox is checked in settings tab
             $("#info_settings").on('change', function() {
@@ -353,7 +353,7 @@
                                 $(element).popover('show');
                             // ... else, displays in panel
                             } else {
-                                // code
+								info_panel.innerText = (data);
                             }
                         } else {
                             popup.setPosition(undefined);

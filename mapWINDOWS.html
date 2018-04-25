@@ -289,7 +289,7 @@
             var info_tab = $("a[href$='#info']").first().parent();
             var info_class = info_tab.attr('class');
             var info_popup = true;
-            var info_panel = $("#info.sidebar-pane");
+            info_panel = document.getElementById("info");
 
             // activate info panel if checbox is checked in settings tab
             $("#info_settings").on('change', function() {
@@ -358,7 +358,7 @@
                                 $(element).popover('show');
                             // ... else, displays in panel
                             } else {
-                                // code
+								info_panel.innerText = (data);
                             }
                         } else {
                             popup.setPosition(undefined);
