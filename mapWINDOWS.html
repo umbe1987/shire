@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="sidebar-pane" id="info">
-                <h1 class="sidebar-header">Info<span class="sidebar-close"><i class="fa fa-info" aria-hidden="true"></i></span></h1>
+                <h1 class="sidebar-header">Info<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
             </div>
             <div class="sidebar-pane" id="query">
                 <h1 class="sidebar-header">Query<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
@@ -84,7 +84,7 @@
                track position
                <input id="track" type="checkbox"/>
                </label>
-                <p id="info" style="display: none;"></p>
+                <p id="location_err" style="display: none;"></p>
             </div>
             <div class="sidebar-pane" id="settings">
                 <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
@@ -247,9 +247,9 @@
             // handle geolocation error
 
             geolocation.on('error', function(error) {
-                var info = document.getElementById('info');
-                info.innerHTML = error.message;
-                info.style.display = '';
+                var location_err = document.getElementById('location_err');
+                location_err.innerHTML = error.message;
+                location_err.style.display = '';
             });
 
             // render position feature
@@ -288,15 +288,19 @@
             // check if info layer panel is off (as default)
             var info_tab = $("a[href$='#info']").first().parent();
             var info_class = info_tab.attr('class');
+            var info_popup = true;
+            var info_panel = $("#info.sidebar-pane");
 
+            // activate info panel if checbox is checked in settings tab
             $("#info_settings").on('change', function() {
                 if (this.checked) {
                     // remove "class "disabled" (show panel)
                     info_tab.removeClass(info_class);
+                    info_popup = false;
                 } else {
                     // add "class "disabled" (hide panel) this is default
-                    info_class = 'disabled';
                     info_tab.addClass(info_class);
+                    info_popup = true;
                 }
             })
 
@@ -307,49 +311,55 @@
             });
             map.addOverlay(popup);
 
-            // Add a click handler to the map to render the popup.
-
             function getText(evt) {
                 var coordinate = evt.coordinate;
                 var url = '';
                 var viewResolution = /** @type {number} */ (view.getResolution());
                 var root = map.getLayerGroup();
-                var groups = root.getLayers();
-                groups.forEach(function(group) {
-                    layers = group.getLayers();
-                    layers.forEach(function(layer) {
+                var groups = root.getLayers().getArray();
+                for (var i = 0; i < groups.length; ++i) {
+                    var group = groups[i];
+                    layers = group.getLayers().getArray();
+                    for (var j = 0; j < layers.length; ++j) {
+                        var layer = layers[j];
                         if (layer.get('type') != 'base') {
                             var visible = layer.getVisible();
                             if (visible) {
                                 url += layer.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
                                     'INFO_FORMAT': 'text/html'
                                 });
-                                alert("VISIBLE!!!");
                                 return url;
-                            } else {
-                                alert("NOT VISIBLE!!!");
-                                return;
                             }
                         }
-                    })
-                })
+                    }
+                }
             }
 
             map.on('singleclick', function(evt) {
+
+                // check wether to display info in popup or panel 
                 var text = getText(evt);
                 if (text) {
-                    var element = popup.getElement();
-                    text.get(url, function(data) {
+                    $.get(text, function(data) {
                         if (data.length != 0) {
-                            $(element).popover('destroy');
-                            popup.setPosition(coordinate);
-                            $(element).popover({
-                                'placement': 'top',
-                                'animation': false,
-                                'html': true,
-                                'content': data
-                            });
-                            $(element).popover('show');
+                            // if true, displays the popup...
+                            if (info_popup) {
+                                // Add a click handler to the map to render the popup.
+                                var element = popup.getElement();
+                                var coordinate = evt.coordinate;
+                                $(element).popover('destroy');
+                                popup.setPosition(coordinate);
+                                $(element).popover({
+                                    'placement': 'top',
+                                    'animation': false,
+                                    'html': true,
+                                    'content': data
+                                });
+                                $(element).popover('show');
+                            // ... else, displays in panel
+                            } else {
+                                // code
+                            }
                         } else {
                             popup.setPosition(undefined);
                         }
