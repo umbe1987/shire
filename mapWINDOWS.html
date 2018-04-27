@@ -359,11 +359,12 @@
                             // ... else, displays in panel
                             } else {
 								info_panel.innerHTML = (data);
+								sidebar.open("info");
                             }
                         } else {
                             popup.setPosition(undefined);
 							while (info_panel.hasChildNodes()) {
-							info_panel.removeChild(info_panel.firstChild);
+							    info_panel.removeChild(info_panel.firstChild);
 							}
                         }
                     })
