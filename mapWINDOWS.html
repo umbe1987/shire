@@ -358,10 +358,13 @@
                                 $(element).popover('show');
                             // ... else, displays in panel
                             } else {
-								info_panel.innerText = (data);
+								info_panel.innerHTML = (data);
                             }
                         } else {
                             popup.setPosition(undefined);
+							while (info_panel.hasChildNodes()) {
+							info_panel.removeChild(info_panel.firstChild);
+							}
                         }
                     })
                 }
