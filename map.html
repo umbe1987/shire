@@ -106,25 +106,50 @@
 
         // WMS PARSER (https://bl.ocks.org/ThomasG77/5f9e62d3adeb5602d230a6eacbb9c443)
 
-        var base_url = 'https://localhost/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/shire/mapfile/mapfile/mymap.map&'
+        var wms_url = 'https://localhost/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/shire/mapfile/mapfile/mymap.map&'
         var parser = new ol.format.WMSCapabilities();
 
+        // async call to get a parseable txt WMS response from a url (using 'ol.format.WMSCapabilities()')
+        // async function always return a Promise
+        async function getWMSLayer(url){
+            try {
+                // fetch return a Promise
+                var response = await fetch(url + 'SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities');
+                var text = await response.text();
+                return parser.read(text);
+            } catch(error) {
+                return null;
+            }
+        }
+
         // Parse WMS Capabilities to retrieve layer extent
-        fetch(base_url + 'SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities').then(function(response) {
-            return response.text();
-        }).then(function(text) {
+        getWMSLayer(wms_url).then(result => {
+            var layers = result.Capability.Layer.Layer;
+            for (i = 0; i < layers.length; i++) {
+                alert (layers[i].Name);
+            }
+
+            var extent_cantine = result.Capability.Layer.Layer.find(l => l.Name === 'cantine').EX_GeographicBoundingBox;
+            extent_cantine_3857 = ol.proj.transformExtent(extent_cantine, 'EPSG:4326', 'EPSG:3857');
+            var extent_zone = result.Capability.Layer.Layer.find(l => l.Name === 'zone').EX_GeographicBoundingBox;
+            extent_zone_3857 = ol.proj.transformExtent(extent_zone, 'EPSG:4326', 'EPSG:3857');
+        }).catch(error => {
+            console.log(error);
+        })
+            /*
             var result = parser.read(text);
             var extent_cantine = result.Capability.Layer.Layer.find(l => l.Name === 'cantine').EX_GeographicBoundingBox;
             var extent_cantine_3857 = ol.proj.transformExtent(extent_cantine, 'EPSG:4326', 'EPSG:3857')
 
             var extent_zone = result.Capability.Layer.Layer.find(l => l.Name === 'zone').EX_GeographicBoundingBox;
             var extent_zone_3857 = ol.proj.transformExtent(extent_zone, 'EPSG:4326', 'EPSG:3857')
+            */
 
             // SOURCES
 
             // Mapserver WMS
             var wmsSource1 = new ol.source.ImageWMS({
-                url: base_url,
+                url: wms_url,
                 params: {
                     'LAYERS': 'cantine',
                     'CRS': 'EPSG:3857',
@@ -136,7 +161,7 @@
 
             // Mapserver WMS
             var wmsSource2 = new ol.source.ImageWMS({
-                url: base_url,
+                url: wms_url,
                 params: {
                     'LAYERS': 'zone',
                     'vitigni': '%',
@@ -160,14 +185,14 @@
                 title: 'cantine',
                 visible: false,
                 source: wmsSource1,
-                extent: extent_cantine_3857
+                // extent: extent_cantine_3857
             });
 
             var layer2 = new ol.layer.Image({
                 title: 'zone',
                 visible: false,
                 source: wmsSource2,
-                extent: extent_zone_3857
+                // extent: extent_zone_3857
             });
 
             var basemap1 = new ol.layer.Tile({
@@ -425,7 +450,6 @@
                     duration: 1000
                 });
             });
-        });
     </script>
 </body>
 
