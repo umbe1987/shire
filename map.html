@@ -96,6 +96,40 @@
     </div>
     <div id="map" class="sidebar-map"></div>
     <script>
+
+        // WMS PARSER (https://bl.ocks.org/ThomasG77/5f9e62d3adeb5602d230a6eacbb9c443)
+
+
+        // async call to get a parseable txt response from a WMS url (using 'ol.format.WMSCapabilities()')
+        // (async function always return a Promise)
+        async function getWMSResponse(url){
+            try {
+                var parser = new ol.format.WMSCapabilities();
+                // fetch return a Promise
+                var response = await fetch(url + 'SERVICE=WMS&REQUEST=GetCapabilities');
+                var text = await response.text();
+
+                return parser.read(text);
+            } catch(e) {
+                console.log(e);
+                return null;
+            }
+        }
+
+        // Get layers objects from a WMS parser
+        // (async function always return a Promise)
+        async function getWMSLayers(url){
+            try {
+                var wms_parser = await getWMSResponse(url);
+                var layers = wms_parser.Capability.Layer.Layer;
+
+                return layers;
+            } catch(e) {
+                console.log(e);
+                return null;
+            }
+        }
+
         // PROJECTION
 
         proj4.defs('EPSG:3857', '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs');
@@ -103,98 +137,46 @@
         // IMAGE EXTENT
 
         var imageExtent = [952014.59, 5571269.68, 1272301.10, 5862273.22];
-
-        // WMS PARSER (https://bl.ocks.org/ThomasG77/5f9e62d3adeb5602d230a6eacbb9c443)
-
         var wms_url = 'https://localhost/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/shire/mapfile/mapfile/mymap.map&';
-        var wms_sr = 'EPSG:3857';
-        var parser = new ol.format.WMSCapabilities();
+        var wms_crs = 'EPSG:3857';
 
-        // async call to get a parseable txt WMS response from a url (using 'ol.format.WMSCapabilities()')
-        // async function always return a Promise
-        async function getWMSResponse(url){
-            try {
-                // fetch return a Promise
-                var response = await fetch(url + 'SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities');
-                var text = await response.text();
-                return parser.read(text);
-            } catch(error) {
-                return null;
-            }
-        }
-
-        // Parse WMS Capabilities to retrieve layers
-        getWMSResponse(wms_url).then(result => {
-            var layers = result.Capability.Layer.Layer;
+        // Parse WMS Capabilities to retrieve layers and build the map
+        getWMSLayers(wms_url).then(layers => {
+            // initialize array of layers
+            var layer_array = [];
             for (i = 0; i < layers.length; i++) {
-                alert (layers[i].Name);
+                // name of ith layer
+                var layer_name = layers[i].Name;
+
+                // OPERATIONAL LAYERS
+
+                layer_array[i] = new ol.layer.Image({
+                    title: layer_name,
+                    visible: false,
+                    source: new ol.source.ImageWMS({
+                        url: wms_url,
+                        params: {
+                            'LAYERS': layer_name,
+                            'CRS': wms_crs,
+                            'FORMAT': 'image/png'
+                        },
+                    projection: wms_crs,
+                    serverType: 'mapserver',
+                    })
+                });
             }
+            
+            // BASEMAP LAYERS
 
-            var extent_cantine = result.Capability.Layer.Layer.find(l => l.Name === 'cantine').EX_GeographicBoundingBox;
-            extent_cantine_3857 = ol.proj.transformExtent(extent_cantine, 'EPSG:4326', 'EPSG:3857');
-            var extent_zone = result.Capability.Layer.Layer.find(l => l.Name === 'zone').EX_GeographicBoundingBox;
-            extent_zone_3857 = ol.proj.transformExtent(extent_zone, 'EPSG:4326', 'EPSG:3857');
-        }).catch(error => {
-            console.log(error);
-        })
-            /*
-            var result = parser.read(text);
-            var extent_cantine = result.Capability.Layer.Layer.find(l => l.Name === 'cantine').EX_GeographicBoundingBox;
-            var extent_cantine_3857 = ol.proj.transformExtent(extent_cantine, 'EPSG:4326', 'EPSG:3857')
-
-            var extent_zone = result.Capability.Layer.Layer.find(l => l.Name === 'zone').EX_GeographicBoundingBox;
-            var extent_zone_3857 = ol.proj.transformExtent(extent_zone, 'EPSG:4326', 'EPSG:3857')
-            */
-
-            // SOURCES
-
-            // Mapserver WMS
-            var wmsSource1 = new ol.source.ImageWMS({
-                url: wms_url,
-                params: {
-                    'LAYERS': 'cantine',
-                    'CRS': 'EPSG:3857',
-                    'FORMAT': 'image/png'
-                },
-                projection: 'EPSG:3857',
-                serverType: 'mapserver',
-            });
-
-            // Mapserver WMS
-            var wmsSource2 = new ol.source.ImageWMS({
-                url: wms_url,
-                params: {
-                    'LAYERS': 'zone',
-                    'vitigni': '%',
-                    'CRS': 'EPSG:3857',
-                    'FORMAT': 'image/png'
-                },
-                projection: 'EPSG:3857',
-                serverType: 'mapserver',
-            });
-
+            // OSM Basemap
             var osmBasemap = new ol.source.OSM();
 
+            // Esri Basemap
             var esriBasemap = new ol.source.XYZ({
                 url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
                 attributions: 'Tiles © Esri — Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
             });
 
-            // LAYERS
-
-            var layer1 = new ol.layer.Image({
-                title: 'cantine',
-                visible: false,
-                source: wmsSource1,
-                // extent: extent_cantine_3857
-            });
-
-            var layer2 = new ol.layer.Image({
-                title: 'zone',
-                visible: false,
-                source: wmsSource2,
-                // extent: extent_zone_3857
-            });
 
             var basemap1 = new ol.layer.Tile({
                 title: 'OSM',
@@ -210,17 +192,15 @@
                 source: esriBasemap
             });
 
-
             // LAYER GROUPS
+            // for OPERATIONAL
 
             var overlays_group = new ol.layer.Group({
                 title: 'Overlays',
-                layers: [
-                    layer1,
-                    layer2,
-                ]
+                layers: layer_array
             });
 
+            // for BASEMAP
             var basemap_group = new ol.layer.Group({
                 title: 'Basemaps',
                 layers: [
@@ -451,6 +431,9 @@
                     duration: 1000
                 });
             });
+        }).catch(error => {
+            console.log(error);
+        })
     </script>
 </body>
 
