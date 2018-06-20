@@ -1,3 +1,6 @@
 [submodule "ol/sidebar-v2"]
 	path = ol/sidebar-v2
 	url = https://github.com/Turbo87/sidebar-v2
+[submodule "ol/ol-layerswitcher"]
+	path = ol/ol-layerswitcher
+	url = https://github.com/walkermatt/ol-layerswitcher

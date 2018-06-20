@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://openlayers.org/en/v4.6.5/css/ol.css" type="text/css">
     <link rel="stylesheet" href="./ol/css/ol-umbe_3.css" type="text/css">
     <link rel="stylesheet" href="./ol/sidebar-v2/css/ol3-sidebar.css" />
+    <link rel="stylesheet" href="./ol/ol-layerswitcher/src/ol-layerswitcher.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- Because Bootstrap is not compatible with jquery > 3 -->
     <!-- <script src="../js/jquery-3.2.1.min.js"></script> -->
@@ -19,6 +20,7 @@
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://openlayers.org/en/v4.6.5/build/ol.js" type="text/javascript"></script>
     <script src="./ol/sidebar-v2/js/ol3-sidebar.js"></script>
+    <script src="./ol/ol-layerswitcher/dist/ol-layerswitcher.js"></script>
 </head>
 
 <body>
@@ -138,7 +140,7 @@
 
         var imageExtent = [952014.59, 5571269.68, 1272301.10, 5862273.22];
         var wms_url = 'https://localhost/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/shire/mapfile/mapfile/mymap.map&';
-        var wms_crs = 'EPSG:3857';
+        // var wms_crs = 'EPSG:3857';
 
         // Parse WMS Capabilities to retrieve layers and build the map
         getWMSLayers(wms_url).then(layers => {
@@ -157,10 +159,8 @@
                         url: wms_url,
                         params: {
                             'LAYERS': layer_name,
-                            'CRS': wms_crs,
                             'FORMAT': 'image/png'
                         },
-                    projection: wms_crs,
                     serverType: 'mapserver',
                     })
                 });
@@ -230,6 +230,13 @@
                 target: 'map',
                 view: view
             });
+
+            // OL-LAYERSWITCHER
+
+            var layerSwitcher = new ol.control.LayerSwitcher({
+                tipLabel: 'Legenda' // Optional label for button
+            });
+            map.addControl(layerSwitcher);
 
             // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
 
