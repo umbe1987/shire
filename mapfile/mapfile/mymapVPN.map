@@ -32,7 +32,7 @@ MAP
       #IMAGEURL ""
       METADATA
         "ows_title"                     "WFS/WMS (queryable) sample" ## REQUIRED
-        "ows_onlineresource"            "https://test.airdns.org:12010/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/shire/mapfile/mapfile/mymapVPN.map&" ## Recommended
+        "ows_onlineresource"            "https://test.airdns.org:45005/cgi-bin/mapserv?map=/home/umberto/Documents/apps/projects/shire/mapfile/mapfile/mymapVPN.map&" ## Recommended
         "ows_srs"                       "EPSG:3857"
         "ows_abstract"                  "WFS/WMS (queryable) sample Mapserver Umberto." ## Recommended
         "ows_enable_request"            "*"  # necessary
@@ -79,10 +79,10 @@ MAP
       CONNECTIONTYPE OGR
       CONNECTION "/home/umberto/Documents/apps/projects/shire/dati/wineshire.sqlite"
       DATA "zone_doc_zone_docg_zone_igt"
-      FILTER ('[vitigni]' LIKE '%vitigni%') # doesn't include NULL
-      VALIDATION
-        "vitigni" ".*"
-      END
+      # FILTER ('[vitigni]' LIKE '%vitigni%') # doesn't include NULL
+      # VALIDATION
+      #   "vitigni" ".*"
+      # END
       METADATA
         "ows_title"         "zone" ##REQUIRED
         "ows_srs"           "EPSG:3857" # REQUIRED

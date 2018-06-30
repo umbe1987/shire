@@ -132,6 +132,34 @@
             }
         }
 
+        // get layers and grouprlayers from getWMSLayers
+        function getLayers(layers, url) {
+            // if there is at least one layer
+            if (layers) {
+                let layer_array = [];
+                for (i = 0; i < layers.length; i++) {
+                    let lyr = layers[i];
+                    // name of ith layer
+                    let layer_name = layers[i].Name;
+                    layer_array[i] = new ol.layer.Image({
+                        title: layer_name,
+                        visible: false,
+                        source: new ol.source.ImageWMS({
+                            url: wms_url,
+                            params: {
+                                'LAYERS': layer_name,
+                                'FORMAT': 'image/png',
+                            },
+                        })
+                    })
+                }
+
+                return layer_array;
+            } else {
+                return
+            }
+        }
+
         // PROJECTION
 
         proj4.defs('EPSG:3857', '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs');
@@ -144,27 +172,9 @@
 
         // Parse WMS Capabilities to retrieve layers and build the map
         getWMSLayers(wms_url).then(layers => {
-            // initialize array of layers
-            var layer_array = [];
-            for (i = 0; i < layers.length; i++) {
-                // name of ith layer
-                var layer_name = layers[i].Name;
 
-                // OPERATIONAL LAYERS
-
-                layer_array[i] = new ol.layer.Image({
-                    title: layer_name,
-                    visible: false,
-                    source: new ol.source.ImageWMS({
-                        url: wms_url,
-                        params: {
-                            'LAYERS': layer_name,
-                            'FORMAT': 'image/png'
-                        },
-                    serverType: 'mapserver',
-                    })
-                });
-            }
+            // OPERATIONAL LAYERS
+            var layer_array = getLayers(layers, wms_url);
             
             // BASEMAP LAYERS
 
