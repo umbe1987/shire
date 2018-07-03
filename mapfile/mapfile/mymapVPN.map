@@ -47,6 +47,7 @@ MAP
       CONNECTIONTYPE OGR
       CONNECTION "/home/umberto/Documents/apps/projects/shire/dati/wineshire.sqlite"
       DATA "cantine"
+      GROUP "group"
       METADATA
         "ows_title"         "cantine" ##REQUIRED
         "ows_srs"           "EPSG:3857" # REQUIRED
@@ -79,6 +80,7 @@ MAP
       CONNECTIONTYPE OGR
       CONNECTION "/home/umberto/Documents/apps/projects/shire/dati/wineshire.sqlite"
       DATA "zone_doc_zone_docg_zone_igt"
+      GROUP "group"
       # FILTER ('[vitigni]' LIKE '%vitigni%') # doesn't include NULL
       # VALIDATION
       #   "vitigni" ".*"
