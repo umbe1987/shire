@@ -139,17 +139,28 @@
                     let lyr = layers[i];
                     // name of ith layer
                     let layer_name = layers[i].Name;
-                    layer_array[i] = new ol.layer.Image({
-                        title: layer_name,
-                        visible: false,
-                        source: new ol.source.ImageWMS({
-                            url: wms_url,
-                            params: {
-                                'LAYERS': layer_name,
-                                'FORMAT': 'image/png',
-                            },
+                    // check if this is a group layer
+                    if (lyr.Layer) {
+                        let sublayers = getLayers(lyr.Layer, url);
+                        ith_group = new ol.layer.Group({
+                            title: layer_name,
+                            layers: sublayers,
+                        });
+                        layer_array.push(ith_group);
+                    } else {
+                        let ith_lyr = new ol.layer.Image({
+                            title: layer_name,
+                            visible: false,
+                            source: new ol.source.ImageWMS({
+                                url: wms_url,
+                                params: {
+                                    'LAYERS': layer_name,
+                                    'FORMAT': 'image/png',
+                                },
+                            })
                         })
-                    })
+                        layer_array.push(ith_lyr);
+                    }
                 }
 
                 return layer_array;
@@ -205,7 +216,7 @@
 
             var overlays_group = new ol.layer.Group({
                 title: 'Overlays',
-                layers: layer_array
+                layers: layer_array,
             });
 
             // for BASEMAP
