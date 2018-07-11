@@ -139,17 +139,19 @@
                     let lyr = layers[i];
                     // name of ith layer
                     let layer_name = layers[i].Name;
+                    // title of ith layer
+                    let layer_title = layers[i].Title;
                     // check if this is a group layer
                     if (lyr.Layer) {
                         let sublayers = getLayers(lyr.Layer, url);
                         ith_group = new ol.layer.Group({
-                            title: layer_name,
+                            title: layer_title,
                             layers: sublayers,
                         });
                         layer_array.push(ith_group);
                     } else {
                         let ith_lyr = new ol.layer.Image({
-                            title: layer_name,
+                            title: layer_title,
                             visible: false,
                             source: new ol.source.ImageWMS({
                                 url: wms_url,
