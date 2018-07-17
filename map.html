@@ -121,9 +121,9 @@
         async function getWMSLayers(url){
             try {
                 var wms_parser = await getWMSResponse(url);
-                var layers = wms_parser.Capability.Layer.Layer;
+                var layers = wms_parser.Capability.Layer;
 
-                return layers;
+                return [layers];
             } catch(e) {
                 console.log(e);
                 return null;
