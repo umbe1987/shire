@@ -144,7 +144,7 @@
                     // check if this is a group layer
                     if (lyr.Layer) {
                         let sublayers = getLayers(lyr.Layer, url);
-                        ith_group = new ol.layer.Group({
+                        let ith_group = new ol.layer.Group({
                             title: layer_title,
                             layers: sublayers,
                         });
