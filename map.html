@@ -106,7 +106,7 @@
             try {
                 var parser = new ol.format.WMSCapabilities();
                 // fetch return a Promise
-                var response = await fetch(url + 'SERVICE=WMS&REQUEST=GetCapabilities');
+                var response = await fetch('https://cors-anywhere.herokuapp.com/' + url + 'SERVICE=WMS&REQUEST=GetCapabilities');
                 var text = await response.text();
 
                 return parser.read(text);
