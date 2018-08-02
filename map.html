@@ -150,27 +150,25 @@
                         });
                         layer_array.push(ith_group);
                     } else {
-					    let source = new ol.source.ImageWMS({
+                        let source = new ol.source.ImageWMS({
                             url: wms_url,
                             params: {
                                 'LAYERS': layer_name,
                                 'FORMAT': 'image/png',
                             },
                         });
-						// log message in case of error event
-						source.on('imageloaderror', function(event) {
-						    console.log('imageloaderror event fired');
-						});
+                            // log message in case of error event
+                            source.on('imageloaderror', function(event) {
+                                console.log('imageloaderror event fired');
+                            });
                         let ith_lyr = new ol.layer.Image({
                             title: layer_title,
                             visible: false,
                             source: source,
-                        });
-						
+                        });	
                         layer_array.push(ith_lyr);
                     }
                 }
-
                 return layer_array;
             } else {
                 return
