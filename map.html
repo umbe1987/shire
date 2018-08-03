@@ -102,8 +102,8 @@
             var img = image.getImage();
             if (typeof window.btoa == 'function') {
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', src, true);
-                xhr.responseType = 'arraybuffer';
+                xhr.open('GET', 'https://cors-anywhere.herokuapp.com/' + src, true);
+                xhr.responseType = ''; // SHOULD BE 'arraybuffer'
                 xhr.onload = function(e) {
                    if (this.status == 200) {
                        var uInt8Array = new Uint8Array(this.response);
@@ -117,7 +117,13 @@
                        if (type.indexOf('image') === 0) {
                            img.src = 'data:' + type + ';base64,' + window.btoa(data);
                        } else {
-                           alert(error($.parseJSON(data)));
+                           xmlDoc = xhr.responseXML;
+                           txt = "";
+                           x = xmlDoc.getElementsByTagName("ServiceException");
+                           for (i = 0; i < x.length; i++) {
+                               txt += x[i].childNodes[0].nodeValue + "<br>";
+                           }
+                           console.error(txt);
                        }
                    } else {
                        alert(error(this.statusText));
