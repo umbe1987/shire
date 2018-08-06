@@ -103,8 +103,8 @@
             if (typeof window.btoa == 'function') {
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', 'https://cors-anywhere.herokuapp.com/' + src, true);
-				xhr.setRequestHeader("Access-Control-Allow-Headers", "origin,x-requested-with");
-                xhr.responseType = 'arraybuffer'; // SHOULD BE 'arraybuffer'
+                xhr.setRequestHeader("Access-Control-Allow-Headers", "origin,x-requested-with");
+                xhr.responseType = 'arraybuffer';
                 xhr.onload = function(e) {
                    if (this.status == 200) {
                        var uInt8Array = new Uint8Array(this.response);
@@ -118,14 +118,16 @@
                        if (type.indexOf('image') === 0) {
                            img.src = 'data:' + type + ';base64,' + window.btoa(data);
                        } else {
-                           // xmlDoc = xhr.responseXML;
-                           var txt = String.fromCharCode.apply(null, uInt8Array);
-						   /*
-                           x = xmlDoc.getElementsByTagName("ServiceException");
-                           for (i = 0; i < x.length; i++) {
-                               txt += x[i].childNodes[0].nodeValue + "<br>";
-                           }*/
+                           var txt = '';
+                           var exceptionAsText = String.fromCharCode.apply(null, uInt8Array);
+                           var xmlParser = new DOMParser();
+                           var exceptionAsXML = xmlParser.parseFromString(exceptionAsText,"text/xml");
+                           var exceptions = exceptionAsXML.getElementsByTagName("ServiceException");
+                           for (i = 0; i < exceptions.length; i++) {
+                               txt += exceptions[i].childNodes[0].nodeValue + "\n";
+                           }
                            console.error(txt);
+                           alert(txt);
                        }
                    } else {
                        alert(error(this.statusText));
@@ -196,7 +198,7 @@
                         let source = new ol.source.ImageWMS({
                             url: wms_url,
                             params: {
-                                'LAYERS': layer_name,
+                                'LAYERS': 'FAKE', // layer_name
                                 'FORMAT': 'image/png',
                             },
                         });
