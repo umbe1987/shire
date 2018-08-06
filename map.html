@@ -22,6 +22,19 @@
 </head>
 
 <body>
+    <!-- The Modal -->
+    <div id="alertModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+
     <div style="display: none;">
         <!-- Popup -->
         <div id="popup" title="POPUP UMBE"></div>
@@ -117,7 +130,7 @@
                        var type = xhr.getResponseHeader('content-type');
                        if (type.indexOf('image') === 0) {
                            img.src = 'data:' + type + ';base64,' + window.btoa(data);
-                       } else {
+                       } else { // HANDLE WMS EXCEPTIONS
                            var txt = '';
                            var exceptionAsText = String.fromCharCode.apply(null, uInt8Array);
                            var xmlParser = new DOMParser();
@@ -126,8 +139,28 @@
                            for (i = 0; i < exceptions.length; i++) {
                                txt += exceptions[i].childNodes[0].nodeValue + "\n";
                            }
+                           // as console.error
                            console.error(txt);
-                           alert(txt);
+
+                           // as fancy alerts
+                           document.getElementsByClassName("modal-body")[0].innerHTML = txt;
+
+                           // Get the modal
+                           var modal = document.getElementById('alertModal');
+                           // Get the <span> element that closes the modal
+                           var span = document.getElementsByClassName("close")[0];
+                           modal.style.display = "block";
+                           // When the user clicks on <span> (x), close the modal
+                           span.onclick = function() {
+                               modal.style.display = "none";
+                           }
+                           // When the user clicks anywhere outside of the modal, close it
+                           window.onclick = function(event) {
+                               if (event.target == modal) {
+                                   modal.style.display = "none";
+                               }
+                           }
+                           // alert(txt);
                        }
                    } else {
                        alert(error(this.statusText));
