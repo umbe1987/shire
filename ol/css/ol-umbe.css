@@ -29,7 +29,7 @@ label{
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
+    z-index: 2001; /* because sidebar is 2000 */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
