@@ -109,7 +109,21 @@
     <div id="map" class="sidebar-map"></div>
     <script>
         // fancy alert for errors
-        function fancyAlert(text) {
+        function fancyAlert(errorType, text) {
+                // Get modal-header element
+                var modalHeader = document.getElementsByClassName("modal-header");
+                // check if modal-header has been previously set (remove H2 if so)
+                var hOld = modalHeader[0].children[1]; // .children[1] is H2 node ('undefined' if not exists)
+                if (document.contains(hOld)) {
+                    modalHeader[0].removeChild(hOld);
+                }
+                // Set modal-header content
+                var hNew = document.createElement("H2");
+                var t = document.createTextNode(errorType);
+                hNew.appendChild(t);
+                document.getElementsByClassName("modal-header")[0].appendChild(hNew);
+
+                // Set modal-body content
                 document.getElementsByClassName("modal-body")[0].innerHTML = text;
 
                 // Get the modal
@@ -151,19 +165,21 @@
                        if (type.indexOf('image') === 0) {
                            img.src = 'data:' + type + ';base64,' + window.btoa(data);
                        } else { // HANDLE WMS EXCEPTIONS
-                           var txt = '';
+                           var exceptionCode = '';
+                           var exceptionValue = '';
                            var exceptionAsText = String.fromCharCode.apply(null, uInt8Array);
                            var xmlParser = new DOMParser();
                            var exceptionAsXML = xmlParser.parseFromString(exceptionAsText,"text/xml");
-                           var exceptions = exceptionAsXML.getElementsByTagName("ServiceException");
-                           for (i = 0; i < exceptions.length; i++) {
-                               txt += exceptions[i].childNodes[0].nodeValue + "\n";
+                           var exceptionsTag = exceptionAsXML.getElementsByTagName("ServiceException");
+                           for (i = 0; i < exceptionsTag.length; i++) {
+                               exceptionCode += exceptionsTag[i].getAttribute("code") + "\n";
+                               exceptionValue += exceptionsTag[i].childNodes[0].nodeValue + "\n";
                            }
                            // as console.error
-                           console.error(txt);
+                           console.error(exceptionValue);
 
                            // as fancy alerts
-                           fancyAlert(txt);
+                           fancyAlert(exceptionCode, exceptionValue);
                        }
                    } else {
                        alert(error(this.statusText));
