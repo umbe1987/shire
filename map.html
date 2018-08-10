@@ -108,6 +108,9 @@
     </div>
     <div id="map" class="sidebar-map"></div>
     <script>
+		// global declarations
+		var cors_prefix = 'https://cors-anywhere.herokuapp.com/';
+		
         // fancy alert for errors
         function fancyAlert(errorType, text) {
                 // Get modal-header element
@@ -149,7 +152,7 @@
             var img = image.getImage();
             if (typeof window.btoa == 'function') {
                 var xhr = new XMLHttpRequest();
-                xhr.open('GET', 'https://cors-anywhere.herokuapp.com/' + src, true);
+                xhr.open('GET', cors_prefix + src, true);
                 xhr.setRequestHeader("Access-Control-Allow-Headers", "origin,x-requested-with");
                 xhr.responseType = 'arraybuffer';
                 xhr.onload = function(e) {
@@ -203,7 +206,10 @@
             try {
                 var parser = new ol.format.WMSCapabilities();
                 // fetch return a Promise
-                var response = await fetch('https://cors-anywhere.herokuapp.com/' + url + 'SERVICE=WMS&REQUEST=GetCapabilities');
+				var getCapabilities_suffix = 'SERVICE=WMS&REQUEST=GetCapabilities';
+				var compositeRequest = cors_prefix + url + getCapabilities_suffix;
+				// remove white spaces
+                var response = await fetch(compositeRequest.replace(" ", ""));
                 var text = await response.text();
 
                 return parser.read(text);
