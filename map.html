@@ -168,21 +168,11 @@
                        if (type.indexOf('image') === 0) {
                            img.src = 'data:' + type + ';base64,' + window.btoa(data);
                        } else { // HANDLE WMS EXCEPTIONS
-                           var exceptionCode = '';
-                           var exceptionValue = '';
                            var exceptionAsText = String.fromCharCode.apply(null, uInt8Array);
-                           var xmlParser = new DOMParser();
-                           var exceptionAsXML = xmlParser.parseFromString(exceptionAsText,"text/xml");
-                           var exceptionsTag = exceptionAsXML.getElementsByTagName("ServiceException");
-                           for (i = 0; i < exceptionsTag.length; i++) {
-                               exceptionCode += exceptionsTag[i].getAttribute("code") + "\n";
-                               exceptionValue += exceptionsTag[i].childNodes[0].nodeValue + "\n";
-                           }
                            // as console.error
-                           console.error(exceptionValue);
-
+                           console.error(exceptionAsText);
                            // as fancy alerts
-                           fancyAlert(exceptionCode, exceptionValue);
+                           fancyAlert('WMS Exception', exceptionAsText);
                        }
                    } else {
                        alert(error(this.statusText));
