@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="./ol/sidebar-v2/css/ol3-sidebar.css" />
     <link rel="stylesheet" href="./ol/ol-layerswitcher/src/ol-layerswitcher.css" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-	
-	<!-- Because Bootstrap is not compatible with jquery > 3 -->
+    
+    <!-- Because Bootstrap is not compatible with jquery > 3 -->
 
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script> -->
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
@@ -111,9 +111,9 @@
     </div>
     <div id="map" class="sidebar-map"></div>
     <script>
-		// global declarations
-		var cors_prefix = 'https://cors-anywhere.herokuapp.com/';
-		
+        // global declarations
+        var cors_prefix = 'https://cors-anywhere.herokuapp.com/';
+        
         // fancy alert for errors
         function fancyAlert(errorType, text) {
                 // Get modal-header element
@@ -199,9 +199,9 @@
             try {
                 var parser = new ol.format.WMSCapabilities();
                 // fetch return a Promise
-				var getCapabilities_suffix = 'SERVICE=WMS&REQUEST=GetCapabilities';
-				var compositeRequest = cors_prefix + url + getCapabilities_suffix;
-				// remove white spaces
+                var getCapabilities_suffix = 'SERVICE=WMS&REQUEST=GetCapabilities';
+                var compositeRequest = cors_prefix + url + getCapabilities_suffix;
+                // remove white spaces
                 var response = await fetch(compositeRequest.replace(" ", ""));
                 var text = await response.text();
 
@@ -440,39 +440,39 @@
                 element: document.getElementById('popup')
             });
             map.addOverlay(popup);
-			
-			// check if layer is a ol.layer.Group (return BOOLEAN)
-			function isGroup(layer) {
-			    if (layer instanceof ol.layer.Group) {
-				    return true;
-				} else {
-				    return false;
-				}
-			}
-			
-			// get layers in a group
-			function getOLLayers(group) {
-			    let ol_layers = [];
-				
-				// get single layer
-			    function getOLLayer(layer, lyr_array) {
-				    if (isGroup(layer)) {
-					    let layers = layer.getLayers().getArray();
-						for (let i = 0; i < layers.length; ++i) {
-						    getOLLayer(layers[i], lyr_array);
-						}
-					} else {
-					    lyr_array.push(layer);
-						
-						return;
-					}
-				}
-				let layers = group.getLayers().getArray();
-				for (let i = 0; i < layers.length; ++i) {
-				    let lyr = getOLLayer(layers[i], ol_layers);
-				}
-				return ol_layers;
-			}
+            
+            // check if layer is a ol.layer.Group (return BOOLEAN)
+            function isGroup(layer) {
+                if (layer instanceof ol.layer.Group) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            
+            // get layers in a group
+            function getOLLayers(group) {
+                let ol_layers = [];
+                
+                // get single layer
+                function getOLLayer(layer, lyr_array) {
+                    if (isGroup(layer)) {
+                        let layers = layer.getLayers().getArray();
+                        for (let i = 0; i < layers.length; ++i) {
+                            getOLLayer(layers[i], lyr_array);
+                        }
+                    } else {
+                        lyr_array.push(layer);
+                        
+                        return;
+                    }
+                }
+                let layers = group.getLayers().getArray();
+                for (let i = 0; i < layers.length; ++i) {
+                    let lyr = getOLLayer(layers[i], ol_layers);
+                }
+                return ol_layers;
+            }
 
             function getUrl(evt) {
                 var coordinate = evt.coordinate;
@@ -499,8 +499,8 @@
                 var text = getUrl(evt);
                 if (text) {
                     $.get(text, function(data) {
-					    if (data) {
-    						if (data.length != 0) {
+                        if (data) {
+                            if (data.length != 0) {
                                 // if true, displays the popup...
                                 if (info_popup) {
                                     // Add a click handler to the map to render the popup.
@@ -517,16 +517,16 @@
                                     $(element).popover('show');
                                 // ... else, displays in panel
                                 } else {
-    								info_panel.innerHTML = (data);
-    								sidebar.open("info");
+                                    info_panel.innerHTML = (data);
+                                    sidebar.open("info");
                                 }
                             } else {
                                 popup.setPosition(undefined);
-    							while (info_panel.hasChildNodes()) {
-    							    info_panel.removeChild(info_panel.firstChild);
-    							}
+                                while (info_panel.hasChildNodes()) {
+                                    info_panel.removeChild(info_panel.firstChild);
+                                }
                             }
-						}
+                        }
                         
                     })
                 }
