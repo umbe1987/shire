@@ -8,11 +8,14 @@
     <link rel="stylesheet" href="./ol/css/ol-umbe.css" type="text/css">
     <link rel="stylesheet" href="./ol/sidebar-v2/css/ol3-sidebar.css" />
     <link rel="stylesheet" href="./ol/ol-layerswitcher/src/ol-layerswitcher.css" />
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"> -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>
-    <!-- <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	
+	<!-- Because Bootstrap is not compatible with jquery > 3 -->
+
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script> -->
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://openlayers.org/en/v5.0.0/build/ol.js" type="text/javascript"></script>
@@ -227,7 +230,7 @@
         function getLayers(layers, url) {
             // if there is at least one layer
             if (layers) {
-                let layer_array = [];
+                let wms_layers = [];
                 for (i = 0; i < layers.length; i++) {
                     let lyr = layers[i];
                     // name of ith layer
@@ -241,7 +244,7 @@
                             title: layer_title,
                             layers: sublayers,
                         });
-                        layer_array.push(ith_group);
+                        wms_layers.push(ith_group);
                     } else {
                         let source = new ol.source.ImageWMS({
                             url: wms_url,
@@ -260,10 +263,10 @@
                             visible: false,
                             source: source,
                         });
-                        layer_array.push(ith_lyr);
+                        wms_layers.push(ith_lyr);
                     }
                 }
-                return layer_array;
+                return wms_layers;
             } else {
                 return
             }
@@ -276,14 +279,14 @@
         // IMAGE EXTENT
 
         var imageExtent = [952014.59, 5571269.68, 1272301.10, 5862273.22];
-        var wms_url = 'http://metaspatial.net/cgi-bin/ogc-wms.xml?';
+        var wms_url = 'https://ahocevar.com/geoserver/wms?';
         // var wms_crs = 'EPSG:3857';
 
         // Parse WMS Capabilities to retrieve layers and build the map
         getWMSLayers(wms_url).then(layers => {
 
             // OPERATIONAL LAYERS
-            var layer_array = getLayers(layers, wms_url);
+            var wms_layers = getLayers(layers, wms_url);
             
             // BASEMAP LAYERS
 
@@ -316,7 +319,7 @@
 
             var overlays_group = new ol.layer.Group({
                 title: 'Overlays',
-                layers: layer_array,
+                layers: wms_layers,
             });
 
             // for BASEMAP
@@ -437,26 +440,54 @@
                 element: document.getElementById('popup')
             });
             map.addOverlay(popup);
+			
+			// check if layer is a ol.layer.Group (return BOOLEAN)
+			function isGroup(layer) {
+			    if (layer instanceof ol.layer.Group) {
+				    return true;
+				} else {
+				    return false;
+				}
+			}
+			
+			// get layers in a group
+			function getOLLayers(group) {
+			    let ol_layers = [];
+				
+				// get single layer
+			    function getOLLayer(layer, lyr_array) {
+				    if (isGroup(layer)) {
+					    let layers = layer.getLayers().getArray();
+						for (let i = 0; i < layers.length; ++i) {
+						    getOLLayer(layers[i], lyr_array);
+						}
+					} else {
+					    lyr_array.push(layer);
+						
+						return;
+					}
+				}
+				let layers = group.getLayers().getArray();
+				for (let i = 0; i < layers.length; ++i) {
+				    let lyr = getOLLayer(layers[i], ol_layers);
+				}
+				return ol_layers;
+			}
 
-            function getText(evt) {
+            function getUrl(evt) {
                 var coordinate = evt.coordinate;
                 var url = '';
                 var viewResolution = /** @type {number} */ (view.getResolution());
-                var root = map.getLayerGroup();
-                var groups = root.getLayers().getArray();
-                for (var i = 0; i < groups.length; ++i) {
-                    var group = groups[i];
-                    layers = group.getLayers().getArray();
-                    for (var j = 0; j < layers.length; ++j) {
-                        var layer = layers[j];
-                        if (layer.get('type') != 'base') {
-                            var visible = layer.getVisible();
-                            if (visible) {
-                                url += layer.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
-                                    'INFO_FORMAT': 'text/html'
-                                });
-                                return url;
-                            }
+                var layers = getOLLayers(map.getLayerGroup());
+                    for (var i = 0; i < layers.length; ++i) {
+                    var layer = layers[i];
+                    if (layer.get('type') != 'base') {
+                        var visible = layer.getVisible();
+                        if (visible) {
+                            url += layer.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
+                                'INFO_FORMAT': 'text/html'
+                            });
+                            return url;
                         }
                     }
                 }
@@ -465,35 +496,38 @@
             map.on('singleclick', function(evt) {
 
                 // check wether to display info in popup or panel 
-                var text = getText(evt);
+                var text = getUrl(evt);
                 if (text) {
                     $.get(text, function(data) {
-                        if (data.length != 0) {
-                            // if true, displays the popup...
-                            if (info_popup) {
-                                // Add a click handler to the map to render the popup.
-                                var element = popup.getElement();
-                                var coordinate = evt.coordinate;
-                                $(element).popover('destroy');
-                                popup.setPosition(coordinate);
-                                $(element).popover({
-                                    'placement': 'top',
-                                    'animation': false,
-                                    'html': true,
-                                    'content': data
-                                });
-                                $(element).popover('show');
-                            // ... else, displays in panel
+					    if (data) {
+    						if (data.length != 0) {
+                                // if true, displays the popup...
+                                if (info_popup) {
+                                    // Add a click handler to the map to render the popup.
+                                    var element = popup.getElement();
+                                    var coordinate = evt.coordinate;
+                                    $(element).popover('destroy');
+                                    popup.setPosition(coordinate);
+                                    $(element).popover({
+                                        'placement': 'top',
+                                        'animation': false,
+                                        'html': true,
+                                        'content': data
+                                    });
+                                    $(element).popover('show');
+                                // ... else, displays in panel
+                                } else {
+    								info_panel.innerHTML = (data);
+    								sidebar.open("info");
+                                }
                             } else {
-								info_panel.innerHTML = (data);
-								sidebar.open("info");
+                                popup.setPosition(undefined);
+    							while (info_panel.hasChildNodes()) {
+    							    info_panel.removeChild(info_panel.firstChild);
+    							}
                             }
-                        } else {
-                            popup.setPosition(undefined);
-							while (info_panel.hasChildNodes()) {
-							    info_panel.removeChild(info_panel.firstChild);
-							}
-                        }
+						}
+                        
                     })
                 }
             })
