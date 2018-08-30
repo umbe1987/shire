@@ -231,7 +231,7 @@
             // if there is at least one layer
             if (layers) {
                 let wms_layers = [];
-                for (i = 0; i < layers.length; i++) {
+                for (let i = 0; i < layers.length; i++) {
                     let lyr = layers[i];
                     // name of ith layer
                     let layer_name = layers[i].Name;
@@ -279,7 +279,7 @@
         // IMAGE EXTENT
 
         var imageExtent = [952014.59, 5571269.68, 1272301.10, 5862273.22];
-        var wms_url = 'https://ahocevar.com/geoserver/wms?';
+        var wms_url = 'servizigis.regione.emilia-romagna.it/wms/rete_escursionistica?';
         // var wms_crs = 'EPSG:3857';
 
         // Parse WMS Capabilities to retrieve layers and build the map
