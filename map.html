@@ -474,61 +474,60 @@
                 return ol_layers;
             }
 
-            function getUrl(evt) {
+            function getUrl(evt, lyr) {
                 var coordinate = evt.coordinate;
                 var url = '';
                 var viewResolution = /** @type {number} */ (view.getResolution());
-                var layers = getOLLayers(map.getLayerGroup());
-                    for (var i = 0; i < layers.length; ++i) {
-                    var layer = layers[i];
-                    if (layer.get('type') != 'base') {
-                        var visible = layer.getVisible();
-                        if (visible) {
-                            url += layer.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
-                                'INFO_FORMAT': 'text/html'
-                            });
-                            return url;
-                        }
+                if (lyr.get('type') != 'base') {
+                    var visible = lyr.getVisible();
+                    if (visible) {
+                        url += lyr.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
+                            'INFO_FORMAT': 'text/html'
+                        });
+                        return url;
                     }
                 }
             }
 
             map.on('singleclick', function(evt) {
 
-                // check wether to display info in popup or panel 
-                var text = getUrl(evt);
-                if (text) {
-                    $.get(text, function(data) {
-                        if (data) {
-                            if (data.length != 0) {
-                                // if true, displays the popup...
-                                if (info_popup) {
-                                    // Add a click handler to the map to render the popup.
-                                    var element = popup.getElement();
-                                    var coordinate = evt.coordinate;
-                                    $(element).popover('destroy');
-                                    popup.setPosition(coordinate);
-                                    $(element).popover({
-                                        'placement': 'top',
-                                        'animation': false,
-                                        'html': true,
-                                        'content': data
-                                    });
-                                    $(element).popover('show');
-                                // ... else, displays in panel
+                // check wether to display info in popup or panel
+                var layers = getOLLayers(map.getLayerGroup());
+                for (var i = 0; i < layers.length; ++i) {
+                    var layer = layers[i];
+                    var text = getUrl(evt, layer);
+                    if (text) {
+                        $.get(text, function(data) {
+                            if (data) {
+                                if (data.length != 0) {
+                                    // if true, displays the popup...
+                                    if (info_popup) {
+                                        // Add a click handler to the map to render the popup.
+                                        var element = popup.getElement();
+                                        var coordinate = evt.coordinate;
+                                        $(element).popover('destroy');
+                                        popup.setPosition(coordinate);
+                                        $(element).popover({
+                                            'placement': 'top',
+                                            'animation': false,
+                                            'html': true,
+                                            'content': data
+                                        });
+                                        $(element).popover('show');
+                                    // ... else, displays in panel
+                                    } else {
+                                        info_panel.innerHTML = (data);
+                                        sidebar.open("info");
+                                    }
                                 } else {
-                                    info_panel.innerHTML = (data);
-                                    sidebar.open("info");
-                                }
-                            } else {
-                                popup.setPosition(undefined);
-                                while (info_panel.hasChildNodes()) {
-                                    info_panel.removeChild(info_panel.firstChild);
+                                    popup.setPosition(undefined);
+                                    while (info_panel.hasChildNodes()) {
+                                        info_panel.removeChild(info_panel.firstChild);
+                                    }
                                 }
                             }
-                        }
-                        
-                    })
+                        })
+                    }
                 }
             })
 
