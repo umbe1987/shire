@@ -105,3 +105,9 @@ label{
     to {opacity: 1}
 }
 
+/* As we've given the element we're displaying the layer tree within a class of
+ * layer-switcher (so we can benefit from the default layer-switcher styles) we
+ * need to override the position to avoid it being absolutely positioned */
+.layer-switcher {
+    position: initial;
+}

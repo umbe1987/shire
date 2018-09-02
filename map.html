@@ -5,9 +5,9 @@
     <title>Umbe MapViewer</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://openlayers.org/en/v5.0.0/css/ol.css" type="text/css">
-    <link rel="stylesheet" href="./ol/css/ol-umbe.css" type="text/css">
     <link rel="stylesheet" href="./ol/sidebar-v2/css/ol3-sidebar.css" />
     <link rel="stylesheet" href="./ol/ol-layerswitcher/src/ol-layerswitcher.css" />
+    <link rel="stylesheet" href="./ol/css/ol-umbe.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     
     <!-- Because Bootstrap is not compatible with jquery > 3 -->
@@ -45,7 +45,7 @@
         <!-- Nav tabs -->
         <div class="sidebar-tabs">
             <ul role="tablist">
-                <li><a href="#layers" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#toc" role="tab"><i class="fa fa-bars"></i></a></li>
                 <li><a href="#basemap" role="tab"><i class="fa fa-map-o"></i></a></li>
                 <li class="disabled"><a href="#info" role="tab"><i class="fa fa-info" aria-hidden="true"></i></a></li>
                 <li><a href="#query" role="tab"><i class="fa fa-filter"></i></a></li>
@@ -57,13 +57,10 @@
         </div>
         <!-- Tab panes -->
         <div class="sidebar-content">
-            <div class="sidebar-pane" id="layers">
+            <div class="sidebar-pane" id="toc">
                 <h1 class="sidebar-header">Layers<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                <div class="checkbox">
-                    <label><input type="checkbox" id="layer1">Layer 1</label><span id='zoom_to'><i class="fa fa-search" id="layer1_zoom"></i></span>
-                    <br>
-                    <label><input type="checkbox" id="layer2">Layer 2</label><span id='zoom_to'><i class="fa fa-search" id="layer2_zoom"></i></span>
-                </div>
+                <!-- !!! HERE WILL GO THE CONTENT OF LAYERSWITCHER !!! -->
+                <div id="layers" class="layer-switcher"></div>
             </div>
             <div class="sidebar-pane" id="basemap">
                 <h1 class="sidebar-header">Basemap<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
@@ -353,13 +350,6 @@
                 view: view
             });
 
-            // OL-LAYERSWITCHER
-
-            var layerSwitcher = new ol.control.LayerSwitcher({
-                tipLabel: 'Legenda' // Optional label for button
-            });
-            map.addControl(layerSwitcher);
-
             // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
 
             var geolocation = new ol.Geolocation({
@@ -537,6 +527,15 @@
                 element: 'sidebar',
                 position: 'left'
             });
+
+            // OL-LAYERSWITCHER
+
+            // Get out-of-the-map div element with the ID "layers" and renders layers to it.
+            // NOTE: If the layers are changed outside of the layer switcher then you
+            // will need to call ol.control.LayerSwitcher.renderPanel again to refesh
+            // the layer tree. Style the tree via CSS.
+            var toc = document.getElementById("layers");
+            ol.control.LayerSwitcher.renderPanel(toc, map);
 
             // add sidebar to map
 
