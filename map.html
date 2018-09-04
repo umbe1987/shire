@@ -553,22 +553,6 @@
                 layer.setVisible(!layer.getVisible());
             });
 
-            // BASEMAP RADIO BUTTONS
-            $('input[type=radio]').on('change', function() {
-                var basemaps = {
-                    basemap1: basemap1,
-                    basemap2: basemap2,
-                };
-
-                // turn off all basemaps...
-                for (i in basemaps) {
-                    basemaps[i].setVisible(false);
-                }
-
-                // then turn on only clicked basemap
-                basemaps[$(this).attr('id')].setVisible(true);
-            });
-
             // DEFINITION QUERY (GEOMETRIC FILTERS)
             // update WMS parameters (filter, see mapfile) based on user selected choice
             $('.query').on('change', function() {
