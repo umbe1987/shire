@@ -258,7 +258,8 @@
                             });
                             source.setImageLoadFunction(imageLoadFunction);
                         let ith_lyr = new ol.layer.Image({
-                            title: layer_title,
+                            name: layer_name, // needed by GetLegendGraphic
+                            title: layer_title, // needed by layerswitcher
                             visible: false,
                             source: source,
                         });
@@ -352,6 +353,95 @@
                 view: view
             });
 
+            // check if layer is a ol.layer.Group (return BOOLEAN)
+            function isGroup(layer) {
+                if (layer instanceof ol.layer.Group) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            
+            // get layers in a group
+            function getOLLayers(group) {
+                let ol_layers = [];
+                
+                // get single layer
+                function getOLLayer(layer, lyr_array) {
+                    if (isGroup(layer)) {
+                        let layers = layer.getLayers().getArray();
+                        for (let i = 0; i < layers.length; ++i) {
+                            getOLLayer(layers[i], lyr_array);
+                        }
+                    } else {
+                        lyr_array.push(layer);
+                        
+                        return;
+                    }
+                }
+                let layers = group.getLayers().getArray();
+                for (let i = 0; i < layers.length; ++i) {
+                    let lyr = getOLLayer(layers[i], ol_layers);
+                }
+                return ol_layers;
+            }
+
+            // array of ol layers in the map (excluding groups)
+            var layers = getOLLayers(map.getLayerGroup());
+
+            // SIDEBAR
+
+            var sidebar = new ol.control.Sidebar({
+                element: 'sidebar',
+                position: 'left'
+            });
+
+            // OL-LAYERSWITCHER
+
+            // Get out-of-the-map div element with the ID "layers" and renders layers to it.
+            // NOTE: If the layers are changed outside of the layer switcher then you
+            // will need to call ol.control.LayerSwitcher.renderPanel again to refesh
+            // the layer tree. Style the tree via CSS.
+            var toc = document.getElementById("layers");
+            ol.control.LayerSwitcher.renderPanel(toc, map);
+
+            // add sidebar to map
+
+            map.addControl(sidebar);
+
+            // ADD LEGEND TO TOC
+            // Insert an element after another (https://stackoverflow.com/a/4793630/1979665)
+            function insertAfter(newNode, referenceNode) {
+                referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+            }
+
+            // get all elements with class name "layer"
+            var layer_class = document.getElementsByClassName("layer");
+            // get layer names to build lgend request
+            for (let i = 0; i < layer_class.length; ++i) {
+                let class_elem = layer_class[i];
+                let elem_name = layer_class[i].innerText;
+                for (let j = 0; j < layers.length; ++j) {
+                    let layer_name = layers[j].values_["name"];
+                    if (elem_name === layer_name) {
+                        // create new li element
+                        let lyr = layers[j];
+                        let li_elem = document.createElement("LI");
+                        // build GetLegendGraphics request
+                        let img_url = lyr.get('source').url_;
+                        img_url += 'request=GetLegendGraphic&version=1.3.0&format=image/png&layer=';
+                        img_url += layer_name;
+                        // create img elem and add legend url
+                        let img_elem = document.createElement("IMG");
+                        img_elem.setAttribute("src", img_url);
+                        // add img elem to li elem
+                        li_elem.appendChild(img_elem);
+                        // add li with layer legend after layer li
+                        insertAfter(li_elem, class_elem);
+                    }
+                }
+            }
+
             // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
 
             var geolocation = new ol.Geolocation({
@@ -432,41 +522,9 @@
                 element: document.getElementById('popup')
             });
             map.addOverlay(popup);
-            
-            // check if layer is a ol.layer.Group (return BOOLEAN)
-            function isGroup(layer) {
-                if (layer instanceof ol.layer.Group) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-            
-            // get layers in a group
-            function getOLLayers(group) {
-                let ol_layers = [];
-                
-                // get single layer
-                function getOLLayer(layer, lyr_array) {
-                    if (isGroup(layer)) {
-                        let layers = layer.getLayers().getArray();
-                        for (let i = 0; i < layers.length; ++i) {
-                            getOLLayer(layers[i], lyr_array);
-                        }
-                    } else {
-                        lyr_array.push(layer);
-                        
-                        return;
-                    }
-                }
-                let layers = group.getLayers().getArray();
-                for (let i = 0; i < layers.length; ++i) {
-                    let lyr = getOLLayer(layers[i], ol_layers);
-                }
-                return ol_layers;
-            }
 
-            function getUrl(evt, lyr) {
+            // get url for GetFeatureInfo request
+            function getInfoUrl(evt, lyr) {
                 var coordinate = evt.coordinate;
                 var url = '';
                 var viewResolution = /** @type {number} */ (view.getResolution());
@@ -484,10 +542,9 @@
             map.on('singleclick', function(evt) {
 
                 // check wether to display info in popup or panel
-                var layers = getOLLayers(map.getLayerGroup());
-                for (var i = 0; i < layers.length; ++i) {
-                    var layer = layers[i];
-                    var text = getUrl(evt, layer);
+                for (let i = 0; i < layers.length; ++i) {
+                    let layer = layers[i];
+                    let text = getInfoUrl(evt, layer);
                     if (text) {
                         $.get(text, function(data) {
                             if (data) {
@@ -522,26 +579,6 @@
                     }
                 }
             })
-
-            // SIDEBAR
-
-            var sidebar = new ol.control.Sidebar({
-                element: 'sidebar',
-                position: 'left'
-            });
-
-            // OL-LAYERSWITCHER
-
-            // Get out-of-the-map div element with the ID "layers" and renders layers to it.
-            // NOTE: If the layers are changed outside of the layer switcher then you
-            // will need to call ol.control.LayerSwitcher.renderPanel again to refesh
-            // the layer tree. Style the tree via CSS.
-            var toc = document.getElementById("layers");
-            ol.control.LayerSwitcher.renderPanel(toc, map);
-
-            // add sidebar to map
-
-            map.addControl(sidebar);
 
             // LAYER VISIBILITY
 
