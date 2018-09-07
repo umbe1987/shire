@@ -279,7 +279,7 @@
         // IMAGE EXTENT
 
         var imageExtent = [952014.59, 5571269.68, 1272301.10, 5862273.22];
-        var wms_url = 'https://servizigis.regione.emilia-romagna.it/wms/rete_escursionistica?';
+        var wms_url = 'http://www.cartografia.servizirl.it/arcgis1/services/territorio/tav_previsioni_b/MapServer/WMSServer?';
         // var wms_crs = 'EPSG:3857';
 
         // Parse WMS Capabilities to retrieve layers and build the map
@@ -292,19 +292,17 @@
 
             // OSM Basemap
             var osmBasemap = new ol.source.OSM();
-
-            // Esri Basemap
-            var esriBasemap = new ol.source.XYZ({
-                url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                attributions: 'Tiles © Esri — Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
-            });
-
-
             var basemap1 = new ol.layer.Tile({
                 title: 'OSM',
                 type: 'base',
                 visible: true,
                 source: osmBasemap
+            });
+
+            // Esri Basemap
+            var esriBasemap = new ol.source.XYZ({
+                url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+                attributions: 'Tiles © Esri — Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
             });
 
             var basemap2 = new ol.layer.Tile({
@@ -429,16 +427,19 @@
                         let lyr = layers[j];
                         let li_elem = document.createElement("LI");
                         // build GetLegendGraphics request
-                        let img_url = lyr.get('source').url_;
-                        img_url += 'service=WMS&request=GetLegendGraphic&version=1.3.0&format=image/png&sld_version=1.1.0&layer=';
-                        img_url += layer_name;
-                        // create img elem and add legend url
-                        let img_elem = document.createElement("IMG");
-                        img_elem.setAttribute("src", img_url);
-                        // add img elem to li elem
-                        li_elem.appendChild(img_elem);
-                        // add li with layer legend after layer li
-                        insertAfter(li_elem, class_elem);
+                        // ignore basemaps (type === 'TILE')
+                        if (lyr.type === 'IMAGE') {
+                            let img_url = lyr.get('source').url_;
+                            img_url += 'service=WMS&request=GetLegendGraphic&version=1.3.0&format=image/png&sld_version=1.1.0&layer=';
+                            img_url += layer_name;
+                            // create img elem and add legend url
+                            let img_elem = document.createElement("IMG");
+                            img_elem.setAttribute("src", img_url);
+                            // add img elem to li elem
+                            li_elem.appendChild(img_elem);
+                            // add li with layer legend after layer li
+                            insertAfter(li_elem, class_elem);
+                        }
                     }
                 }
             }
