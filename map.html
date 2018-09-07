@@ -312,6 +312,14 @@
                 source: esriBasemap
             });
 
+            // Blank Basemap
+            var basemap3 = new ol.layer.Tile({
+                title: 'BLANK',
+                type: 'base',
+                visible: false,
+                source: null,
+            });
+
             // LAYER GROUPS
             // for OPERATIONAL
 
@@ -326,6 +334,7 @@
                 layers: [
                     basemap1,
                     basemap2,
+                    basemap3,
                 ]
             });
 
