@@ -108,7 +108,7 @@
         var cors_prefix = 'https://cors-anywhere.herokuapp.com/';
         
         // fancy alert for errors
-        function fancyAlert(errorType, text) {
+        function fancyAlert(headerText, content, alertType) {
                 // Get modal-header element
                 var modalHeader = document.getElementsByClassName("modal-header");
                 // check if modal-header has been previously set (remove H2 if so)
@@ -118,16 +118,20 @@
                 }
                 // Set modal-header content
                 var hNew = document.createElement("H2");
-                var t = document.createTextNode(errorType);
+                var t = document.createTextNode(headerText);
                 hNew.appendChild(t);
                 modalHeader[0].appendChild(hNew);
 
                 // Set modal-body content
-                document.getElementsByClassName("modal-body")[0].innerHTML = text;
+                document.getElementsByClassName("modal-body")[0].innerHTML = content;
 
-                // Add error style
-                modalHeader[0].classList.add("error-color");
-                
+                // Add style according to alert type
+                if (alertType === 'error') {
+                    modalHeader[0].classList.add("error-color");
+                }
+                if (alertType === 'info') {
+                    modalHeader[0].classList.add("info-color");
+                }
 
                 // Get the modal
                 var modal = document.getElementById('alertModal');
@@ -172,7 +176,7 @@
                            // as console.error
                            console.error(exceptionAsText);
                            // as fancy alerts
-                           fancyAlert('WMS Exception', exceptionAsText);
+                           fancyAlert('WMS Exception', exceptionAsText, "error");
                        }
                    } else {
                        alert(error(this.statusText));
