@@ -281,7 +281,7 @@
         // IMAGE EXTENT
 
         var imageExtent = [952014.59, 5571269.68, 1272301.10, 5862273.22];
-        var wms_url = 'http://metaspatial.net/cgi-bin/ogc-wms.xml?';
+        var wms_url = 'https://servizigis.regione.emilia-romagna.it/wms/rete_escursionistica?';
         // var wms_crs = 'EPSG:3857';
 
         // Parse WMS Capabilities to retrieve layers and build the map
@@ -508,34 +508,6 @@
                 })
             });
 
-            // CHECK IF LAYER INFO SHOULD DISPLAY IN POPUP OR PANEL
-            
-            // check if info layer panel is off (as default)
-            var info_tab = $("a[href$='#info']").first().parent();
-            var info_class = info_tab.attr('class');
-            var info_popup = true;
-            info_panel = document.getElementById("info");
-
-            // activate info panel if checbox is checked in settings tab
-            $("#info_settings").on('change', function() {
-                if (this.checked) {
-                    // remove "class "disabled" (show panel)
-                    info_tab.removeClass(info_class);
-                    info_popup = false;
-                } else {
-                    // add "class "disabled" (hide panel) this is default
-                    info_tab.addClass(info_class);
-                    info_popup = true;
-                }
-            })
-
-            // LAYER INFO (POPUP OR PANEL DEPENDING ON SETTINGS)
-
-            var popup = new ol.Overlay({
-                element: document.getElementById('popup')
-            });
-            map.addOverlay(popup);
-
             // get url for GetFeatureInfo request
             function getInfoUrl(evt, lyr) {
                 var coordinate = evt.coordinate;
@@ -559,36 +531,15 @@
                     let layer = layers[i];
                     let text = getInfoUrl(evt, layer);
                     if (text) {
-                        $.get(text, function(data) {
-                            if (data) {
-                                if (data.length != 0) {
-                                    // if true, displays the popup...
-                                    if (info_popup) {
-                                        // Add a click handler to the map to render the popup.
-                                        var element = popup.getElement();
-                                        var coordinate = evt.coordinate;
-                                        $(element).popover('destroy');
-                                        popup.setPosition(coordinate);
-                                        $(element).popover({
-                                            'placement': 'top',
-                                            'animation': false,
-                                            'html': true,
-                                            'content': data
-                                        });
-                                        $(element).popover('show');
-                                    // ... else, displays in panel
-                                    } else {
-                                        info_panel.innerHTML = (data);
-                                        sidebar.open("info");
-                                    }
-                                } else {
-                                    popup.setPosition(undefined);
-                                    while (info_panel.hasChildNodes()) {
-                                        info_panel.removeChild(info_panel.firstChild);
-                                    }
-                                }
+                        
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                fancyAlert('Layer Info', this.responseText, 'info');
                             }
-                        })
+                        };
+                        xhttp.open("GET", text, true);
+                        xhttp.send();
                     }
                 }
             })

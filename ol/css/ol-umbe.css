@@ -88,7 +88,10 @@ label{
     background-color: #0074d9;
 }
 
-.modal-body {padding: 16px 16px;}
+.modal-body {
+    padding: 16px 16px;
+    overflow: auto; /* Enable scroll if needed */
+}
 
 .modal-footer {
     padding: 2px 16px;
