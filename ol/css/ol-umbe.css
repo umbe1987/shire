@@ -77,8 +77,15 @@ label{
 
 .modal-header {
     padding: 2px 16px;
-    background-color: #ff0000;
     color: white;
+}
+
+.error-color{
+    background-color: #ff0000;
+}
+
+.info-blue{
+    background-color: #0074d9;
 }
 
 .modal-body {padding: 16px 16px;}

@@ -120,10 +120,14 @@
                 var hNew = document.createElement("H2");
                 var t = document.createTextNode(errorType);
                 hNew.appendChild(t);
-                document.getElementsByClassName("modal-header")[0].appendChild(hNew);
+                modalHeader[0].appendChild(hNew);
 
                 // Set modal-body content
                 document.getElementsByClassName("modal-body")[0].innerHTML = text;
+
+                // Add error style
+                modalHeader[0].classList.add("error-color");
+                
 
                 // Get the modal
                 var modal = document.getElementById('alertModal');
@@ -273,7 +277,7 @@
         // IMAGE EXTENT
 
         var imageExtent = [952014.59, 5571269.68, 1272301.10, 5862273.22];
-        var wms_url = 'https://servizigis.regione.emilia-romagna.it/wms/rete_escursionistica?';
+        var wms_url = 'http://metaspatial.net/cgi-bin/ogc-wms.xml?';
         // var wms_crs = 'EPSG:3857';
 
         // Parse WMS Capabilities to retrieve layers and build the map
