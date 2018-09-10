@@ -106,9 +106,11 @@
     <script>
         // global declarations
         var cors_prefix = 'https://cors-anywhere.herokuapp.com/';
-        
+
         // fancy alert for errors
         function fancyAlert(headerText, content, alertType) {
+            var contentAsHTML = htmlToElement(content);
+            if (content) {
                 // Get modal-header element
                 var modalHeader = document.getElementsByClassName("modal-header");
                 // check if modal-header has been previously set (remove H2 if so)
@@ -121,18 +123,15 @@
                 var t = document.createTextNode(headerText);
                 hNew.appendChild(t);
                 modalHeader[0].appendChild(hNew);
-
-                // Set modal-body content
+                 // Set modal-body content
                 document.getElementsByClassName("modal-body")[0].innerHTML = content;
-
-                // Add style according to alert type
+                 // Add style according to alert type
                 if (alertType === 'error') {
                     modalHeader[0].classList.add("error-color");
                 }
                 if (alertType === 'info') {
                     modalHeader[0].classList.add("info-color");
                 }
-
                 // Get the modal
                 var modal = document.getElementById('alertModal');
                 // Get the <span> element that closes the modal
@@ -144,10 +143,12 @@
                 }
                 // When the user clicks anywhere outside of the modal, close it
                 window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
                 }
             }
+
         };
 
 
