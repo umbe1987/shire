@@ -281,7 +281,7 @@
         // IMAGE EXTENT
 
         var imageExtent = [952014.59, 5571269.68, 1272301.10, 5862273.22];
-        var wms_url = 'https://servizigis.regione.emilia-romagna.it/wms/rete_escursionistica?';
+        var wms_url = 'http://www.cartografia.regione.lombardia.it/ArcGIS10/services/wms/dusaf21/MapServer/WMSServer?';
         // var wms_crs = 'EPSG:3857';
 
         // Parse WMS Capabilities to retrieve layers and build the map
@@ -511,7 +511,7 @@
             // get url for GetFeatureInfo request
             function getInfoUrl(evt, lyr) {
                 var coordinate = evt.coordinate;
-                var url = '';
+                var url = cors_prefix;
                 var viewResolution = /** @type {number} */ (view.getResolution());
                 if (lyr.get('type') != 'base') {
                     var visible = lyr.getVisible();
