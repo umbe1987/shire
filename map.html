@@ -13,6 +13,7 @@
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
     <script src="https://openlayers.org/en/v5.0.0/build/ol.js" type="text/javascript"></script>
+    <script src="./ol/js/ol-umbe.js" type="module"></script>
     <script src="./ol/sidebar-v2/js/ol3-sidebar.js"></script>
     <script src="./ol/ol-layerswitcher/dist/ol-layerswitcher.js"></script>
 </head>
@@ -362,28 +363,6 @@
                 view: view
             });
 
-            // return current scale in map units according to DPI
-            // (https://gis.stackexchange.com/a/242622/9518)
-            // (https://stackoverflow.com/a/37601899/1979665)
-            function mapScale(dpi) {
-                var unit = map.getView().getProjection().getUnits();
-                var resolution = map.getView().getResolution();
-                var inchesPerMetre = 39.37;
-
-                return resolution * ol.proj.Units.METERS_PER_UNIT[unit] * inchesPerMetre * dpi;
-            }
-
-            map.getView().on('propertychange', function(e) {
-                switch (e.key) {
-                    case 'resolution':
-                        // log DPI to console
-					    console.log("DPI:" + window.devicePixelRatio);
-                        // log scale in map units to console
-                        console.log("1:" + mapScale(window.devicePixelRatio * 96));
-                        break;
-                }
-            });
-
             // check if layer is a ol.layer.Group (return BOOLEAN)
             function isGroup(layer) {
                 if (layer instanceof ol.layer.Group) {
@@ -439,6 +418,12 @@
             // add sidebar to map
 
             map.addControl(sidebar);
+
+            // SCALEBAR
+
+            // add scalebar to map
+
+            map.addControl(ol.control.ScaleBar);
 
             // ADD LEGEND TO TOC
             // Insert an element after another (https://stackoverflow.com/a/4793630/1979665)
