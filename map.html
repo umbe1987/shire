@@ -363,6 +363,8 @@
             });
 
             // return current scale in map units according to DPI
+            // (https://gis.stackexchange.com/a/242622/9518)
+            // (https://stackoverflow.com/a/37601899/1979665)
             function mapScale(dpi) {
                 var unit = map.getView().getProjection().getUnits();
                 var resolution = map.getView().getResolution();
