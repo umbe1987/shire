@@ -362,6 +362,26 @@
                 view: view
             });
 
+            // return current scale in map units according to DPI
+            function mapScale(dpi) {
+                var unit = map.getView().getProjection().getUnits();
+                var resolution = map.getView().getResolution();
+                var inchesPerMetre = 39.37;
+
+                return resolution * ol.proj.Units.METERS_PER_UNIT[unit] * inchesPerMetre * dpi;
+            }
+
+            map.getView().on('propertychange', function(e) {
+                switch (e.key) {
+                    case 'resolution':
+                        // log DPI to console
+					    console.log("DPI:" + window.devicePixelRatio);
+                        // log scale in map units to console
+                        console.log("1:" + mapScale(window.devicePixelRatio * 96));
+                        break;
+                }
+            });
+
             // check if layer is a ol.layer.Group (return BOOLEAN)
             function isGroup(layer) {
                 if (layer instanceof ol.layer.Group) {
