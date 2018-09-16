@@ -4,12 +4,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Umbe MapViewer</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./ol/css/ol-umbe.css" type="text/css">
+    <link rel="stylesheet" href="/ol-umbe.65c59a63.css" type="text/css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
-</head>
+<script src="/ol-umbe.65c59a63.js"></script></head>
 
 <body>
     <!-- The Modal -->
@@ -55,7 +55,7 @@
             <div class="sidebar-pane" id="basemap">
                 <h1 class="sidebar-header">Basemap<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
                 <div class="radio">
-                    <label><input type="radio" name="optradio" id="basemap1" checked>OSM</label>
+                    <label><input type="radio" name="optradio" id="basemap1" checked="">OSM</label>
                     <br>
                     <label><input type="radio" name="optradio" id="basemap2">ESRI World Imagery</label>
                     <br>
@@ -68,7 +68,7 @@
             <div class="sidebar-pane" id="query">
                 <h1 class="sidebar-header">Query<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
                 <select class="query">
-                  <option value="%" selected>All layers</option>
+                  <option value="%" selected="">All layers</option>
                   <option value="Trebbiano di Soave">Trebbiano di Soave</option>
                   <option value="Tocai friulano">Tocai friulano</option>
                   <option value="Sangiovese, Marzemino, Barbera, Merlot, Incrocio T">Sangiovese, Marzemino, Barbera, Merlot, Incrocio T</option>
@@ -84,7 +84,7 @@
                 </h1>
                 <label for="track">
                track position
-               <input id="track" type="checkbox"/>
+               <input id="track" type="checkbox">
                </label>
                 <p id="location_err" style="display: none;"></p>
             </div>
@@ -100,4 +100,4 @@
     <script>".ol/js/main.js"</script>
 </body>
 
-</html>
+
