@@ -1,27 +1,22 @@
 // CSS imports
 import 'ol/ol.css';
 import 'ol-layerswitcher/src/ol-layerswitcher.css';
-import './node_modules/sidebar-v2/css/ol3-sidebar.css';
 
 // JS imports
 import Map from 'ol/Map';
 import View from 'ol/View';
+import Extent from 'ol/extent';
 import LayerGroup from 'ol/layer/Group';
 import LayerImage from 'ol/layer/Image';
 import LayerTile from 'ol/layer/Tile';
 import SourceOSM from 'ol/source/OSM';
+import SourceXYZ from 'ol/source/XYZ';
 
 import LayerSwitcher from 'ol-layerswitcher';
-
-import sidebar from './node_modules/sidebar-v2/js/ol3-sidebar.js';
 
 // PROJECTION
 
 proj4.defs('EPSG:3857', '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs');
-
-// IMAGE EXTENT
-
-var imageExtent = [952014.59, 5571269.68, 1272301.10, 5862273.22];
 
 // BASEMAP LAYERS
 
@@ -35,7 +30,7 @@ var basemap1 = new LayerTile({
 });
 
 // Esri Basemap
-var esriBasemap = new ol.source.XYZ({
+var esriBasemap = new SourceXYZ({
     url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     attributions: 'Tiles © Esri — Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
 });
@@ -55,6 +50,17 @@ var basemap3 = new LayerTile({
     source: null,
 });
 
+// LAYER GROUPS
+// for BASEMAP
+var basemap_group = new LayerGroup({
+title: 'Basemaps',
+layers: [
+    basemap1,
+    basemap2,
+    basemap3,
+]
+});
+
 // define array of layer groups
 
 var layer_groups = [
@@ -64,7 +70,7 @@ var layer_groups = [
 // VIEW
 
 var view = new View({
-    center: ol.extent.getCenter(imageExtent),
+    center: [952014.59, 5571269.68],
     zoom: 8
 });
 
@@ -76,22 +82,7 @@ var map = new Map({
     view: view
 });
 
-// SIDEBAR
-
-var sidebar = new sidebar({
-    element: 'sidebar',
-    position: 'left'
-});
-
 // OL-LAYERSWITCHER
 
-// Get out-of-the-map div element with the ID "layers" and renders layers to it.
-// NOTE: If the layers are changed outside of the layer switcher then you
-// will need to call ol.control.LayerSwitcher.renderPanel again to refesh
-// the layer tree. Style the tree via CSS.
-var toc = document.getElementById("layers");
-ol.control.LayerSwitcher.renderPanel(map, toc);
-
-// add sidebar to map
-
-map.addControl(sidebar);
+var layerSwitcher = new LayerSwitcher();
+map.addControl(layerSwitcher);

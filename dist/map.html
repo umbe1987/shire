@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
-<script src="/ol-umbe.65c59a63.js"></script></head>
+<script src="/ol-umbe.65c59a63.js"></script><link rel="stylesheet" href="/main.fc0e5a81.css"></head>
 
 <body>
     <!-- The Modal -->
@@ -29,75 +29,8 @@
         <!-- Popup -->
         <div id="popup" title="POPUP UMBE"></div>
     </div>
-    <div id="sidebar" class="sidebar collapsed">
-        <!-- Nav tabs -->
-        <div class="sidebar-tabs">
-            <ul role="tablist">
-                <li><a href="#toc" role="tab"><i class="fa fa-bars"></i></a></li>
-                <li><a href="#basemap" role="tab"><i class="fa fa-map-o"></i></a></li>
-                <li class="disabled"><a href="#info" role="tab"><i class="fa fa-info" aria-hidden="true"></i></a></li>
-                <li><a href="#query" role="tab"><i class="fa fa-filter"></i></a></li>
-                <li><a href="#position" role="tab"><i class="fa fa-map-marker"></i></a></li>
-            </ul>
-            <ul role="tablist">
-                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
-            </ul>
-        </div>
-        <!-- Tab panes -->
-        <div class="sidebar-content">
-            <div class="sidebar-pane" id="toc">
-                <div>
-                    <h1 class="sidebar-header">Layers<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                </div>
-                <!-- !!! HERE WILL GO THE CONTENT OF LAYERSWITCHER !!! -->
-                <div id="layers" class="sidebar-content layer-switcher" style="top: 40px;left: 0px;overflow:auto;"></div>
-            </div>
-            <div class="sidebar-pane" id="basemap">
-                <h1 class="sidebar-header">Basemap<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                <div class="radio">
-                    <label><input type="radio" name="optradio" id="basemap1" checked="">OSM</label>
-                    <br>
-                    <label><input type="radio" name="optradio" id="basemap2">ESRI World Imagery</label>
-                    <br>
-                    <label><input type="radio" name="optradio" id="basemap3">TileMill</label>
-                </div>
-            </div>
-            <div class="sidebar-pane" id="info">
-                <h1 class="sidebar-header">Info<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-            </div>
-            <div class="sidebar-pane" id="query">
-                <h1 class="sidebar-header">Query<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                <select class="query">
-                  <option value="%" selected="">All layers</option>
-                  <option value="Trebbiano di Soave">Trebbiano di Soave</option>
-                  <option value="Tocai friulano">Tocai friulano</option>
-                  <option value="Sangiovese, Marzemino, Barbera, Merlot, Incrocio T">Sangiovese, Marzemino, Barbera, Merlot, Incrocio T</option>
-                  <option value="Riesling Renano, Incrocio Manzoni, Muller Thurgau">Riesling Renano, Incrocio Manzoni, Muller Thurgau</option>
-                  <option value="Marzemino, Barbera, Schiava gentile, Cabernet">Marzemino, Barbera, Schiava gentile, Cabernet</option>
-                  <option value="Groppello">Groppello</option>
-               </select>
-            </div>
-            <div class="sidebar-pane" id="position">
-                <h1 class="sidebar-header">
-                    Geolocation
-                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
-                </h1>
-                <label for="track">
-               track position
-               <input id="track" type="checkbox">
-               </label>
-                <p id="location_err" style="display: none;"></p>
-            </div>
-            <div class="sidebar-pane" id="settings">
-                <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                <div class="checkbox">
-                    <label><input type="checkbox" id="info_settings">Display layer info in panel instead of popups</label>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="map" class="sidebar-map"></div>
-    <scriptsrc=". ol="" js="" main.js"="">
-</scriptsrc=".></body>
+    <div id="map"></div>
+    <script src="/main.fc0e5a81.js"></script>
+</body>
 
 
