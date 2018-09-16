@@ -1,7 +1,7 @@
 // CSS imports
 import 'ol/ol.css';
 import 'ol-layerswitcher/src/ol-layerswitcher.css';
-import './sidebar-v2/css/ol3-sidebar.css';
+import './node_modules/sidebar-v2/css/ol3-sidebar.css';
 
 // JS imports
 import Map from 'ol/Map';
@@ -13,7 +13,7 @@ import SourceOSM from 'ol/source/OSM';
 
 import LayerSwitcher from 'ol-layerswitcher';
 
-import sidebar from './sidebar-v2/js/ol3-sidebar.js';
+import sidebar from './node_modules/sidebar-v2/js/ol3-sidebar.js';
 
 // PROJECTION
 
@@ -78,7 +78,7 @@ var map = new Map({
 
 // SIDEBAR
 
-var sidebar = new ol.control.Sidebar({
+var sidebar = new sidebar({
     element: 'sidebar',
     position: 'left'
 });
