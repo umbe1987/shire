@@ -3,6 +3,11 @@ import 'ol/ol.css';
 import 'ol-layerswitcher/src/ol-layerswitcher.css';
 
 // JS imports
+import 'whatwg-fetch'; // A window.fetch JavaScript polyfill.
+
+import 'babel-polyfill'; // babel-polyfill package
+
+
 import Map from 'ol/Map';
 import View from 'ol/View';
 import Extent from 'ol/extent';
@@ -14,9 +19,19 @@ import SourceXYZ from 'ol/source/XYZ';
 
 import LayerSwitcher from 'ol-layerswitcher';
 
+import * as WmsParser from './js/wms_parser';
+
 // PROJECTION
 
 proj4.defs('EPSG:3857', '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs');
+
+// WMS URL
+var wms_url = 'http://www.cartografia.regione.lombardia.it/ArcGIS10/services/wms/dusaf21/MapServer/WMSServer?';
+
+// Parse WMS Capabilities to retrieve layers and build the map
+WmsParser.getWMSLayers(wms_url).then(layers => {
+    // OPERATIONAL LAYERS
+    var wms_layers = WmsParser.getLayers(layers, wms_url);
 
 // BASEMAP LAYERS
 
@@ -51,6 +66,11 @@ var basemap3 = new LayerTile({
 });
 
 // LAYER GROUPS
+var overlays_group = new LayerGroup({
+    title: 'Overlays',
+    layers: wms_layers,
+});
+
 // for BASEMAP
 var basemap_group = new LayerGroup({
 title: 'Basemaps',
@@ -65,6 +85,7 @@ layers: [
 
 var layer_groups = [
     basemap_group,
+    overlays_group,
 ]
 
 // VIEW
@@ -86,3 +107,4 @@ var map = new Map({
 
 var layerSwitcher = new LayerSwitcher();
 map.addControl(layerSwitcher);
+});
