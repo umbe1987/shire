@@ -2,7 +2,7 @@
   "name": "shire-scalebar-branch",
   "version": "0.1.0",
   "description": "A WebGIS portal made with open source projects.",
-  "main": "main.js",
+  "main": "./js/main.js",
   "scripts": {
     "dev": "parcel map.html",
     "start": "parcel map.html",
