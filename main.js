@@ -20,9 +20,15 @@ import SourceXYZ from 'ol/source/XYZ';
 import LayerSwitcher from 'ol-layerswitcher';
 
 import * as WmsParser from './js/wms_parser';
-import { fancyAlert } from './js/fancy_alert';
-import { getInfoUrl } from './js/get_info';
-import { getOLLayers } from './js/ol_layers';
+import {
+    fancyAlert
+} from './js/fancy_alert';
+import {
+    getInfoUrl
+} from './js/get_info';
+import {
+    getOLLayers
+} from './js/ol_layers';
 
 // PROJECTION
 
@@ -111,8 +117,8 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     var layerSwitcher = new LayerSwitcher();
     map.addControl(layerSwitcher);
 
-            // array of ol layers in the map (excluding groups)
-            var ol_layers = getOLLayers(map.getLayerGroup());
+    // array of ol layers in the map (excluding groups)
+    var ol_layers = getOLLayers(map.getLayerGroup());
 
     // DISPLAY INFO ONCLICK
     map.on('singleclick', function(evt) {
