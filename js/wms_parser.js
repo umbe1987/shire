@@ -1,5 +1,5 @@
-import * as Alert from './fancy_alert';
-import * as Shared form './init';
+import { CORS_PREFIX } from './init';
+import { fancyAlert } from './fancy_alert';
 
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import LayerGroup from 'ol/layer/Group';
@@ -14,7 +14,7 @@ async function getWMSResponse(url) {
         var parser = new WMSCapabilities();
         // fetch return a Promise
         var getCapabilities_suffix = 'SERVICE=WMS&REQUEST=GetCapabilities';
-        var compositeRequest = Shared.CORS_PREFIX + url + getCapabilities_suffix;
+        var compositeRequest = CORS_PREFIX + url + getCapabilities_suffix;
         // remove white spaces
         var response = await fetch(compositeRequest.replace(" ", ""));
         var text = await response.text();
@@ -30,7 +30,7 @@ function imageLoadFunction(image, src) {
     var img = image.getImage();
     if (typeof window.btoa == 'function') {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', Shared.CORS_PREFIX + src, true);
+        xhr.open('GET', CORS_PREFIX + src, true);
         xhr.setRequestHeader("Access-Control-Allow-Headers", "origin,x-requested-with");
         xhr.responseType = 'arraybuffer';
         xhr.onload = function(e) {
@@ -50,7 +50,7 @@ function imageLoadFunction(image, src) {
                     // as console.error
                     console.error(exceptionAsText);
                     // as fancy alerts
-                    Alert.fancyAlert('WMS Exception', exceptionAsText, "error");
+                    fancyAlert('WMS Exception', exceptionAsText, "error");
                 }
             } else {
                 alert(error(this.statusText));
