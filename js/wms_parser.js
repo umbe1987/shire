@@ -1,11 +1,10 @@
 import * as Alert from './fancy_alert';
+import * as Shared form './init';
 
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import LayerGroup from 'ol/layer/Group';
 import ImageWMS from 'ol/source/ImageWMS';
 import LayerImage from 'ol/layer/Image';
-
-export const CORS_PREFIX = 'https://cors-anywhere.herokuapp.com/';
 
 // WMS PARSER (https://bl.ocks.org/ThomasG77/5f9e62d3adeb5602d230a6eacbb9c443)
 // async call to get a parseable txt response from a WMS url (using 'ol.format.WMSCapabilities()')
@@ -15,7 +14,7 @@ async function getWMSResponse(url) {
         var parser = new WMSCapabilities();
         // fetch return a Promise
         var getCapabilities_suffix = 'SERVICE=WMS&REQUEST=GetCapabilities';
-        var compositeRequest = CORS_PREFIX + url + getCapabilities_suffix;
+        var compositeRequest = Shared.CORS_PREFIX + url + getCapabilities_suffix;
         // remove white spaces
         var response = await fetch(compositeRequest.replace(" ", ""));
         var text = await response.text();
@@ -31,7 +30,7 @@ function imageLoadFunction(image, src) {
     var img = image.getImage();
     if (typeof window.btoa == 'function') {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', CORS_PREFIX + src, true);
+        xhr.open('GET', Shared.CORS_PREFIX + src, true);
         xhr.setRequestHeader("Access-Control-Allow-Headers", "origin,x-requested-with");
         xhr.responseType = 'arraybuffer';
         xhr.onload = function(e) {
@@ -78,6 +77,7 @@ export async function getWMSLayers(url) {
         return null;
     }
 }
+
 // get layers and grouprlayers from getWMSLayers
 export function getLayers(layers, url) {
     // if there is at least one layer
