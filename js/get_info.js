@@ -1,6 +1,4 @@
-import {
-    CORS_PREFIX
-} from './init';
+import { CORS_PREFIX } from './init';
 
 // get url for GetFeatureInfo request
 export function getInfoUrl(evt, view, lyr) {
