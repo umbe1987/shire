@@ -1,6 +1,8 @@
 // CSS imports
 import 'ol/ol.css';
+import './external/sidebar-v2/css/ol3-sidebar.css';
 import 'ol-layerswitcher/src/ol-layerswitcher.css';
+import './css/ol-umbe.css';
 
 // JS imports
 import 'whatwg-fetch'; // A window.fetch JavaScript polyfill.
@@ -16,6 +18,8 @@ import LayerImage from 'ol/layer/Image';
 import LayerTile from 'ol/layer/Tile';
 import SourceOSM from 'ol/source/OSM';
 import SourceXYZ from 'ol/source/XYZ';
+
+import Sidebar from './external/sidebar-v2/js/ol5-sidebar';
 
 import LayerSwitcher from 'ol-layerswitcher';
 
@@ -107,9 +111,22 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
         view: view
     });
 
+    // SIDEBAR
+    var sidebar = new Sidebar({
+        element: 'sidebar',
+        position: 'left'
+    });
+
     // OL-LAYERSWITCHER
-    var layerSwitcher = new LayerSwitcher();
-    map.addControl(layerSwitcher);
+    // Get out-of-the-map div element with the ID "layers" and renders layers to it.
+    // NOTE: If the layers are changed outside of the layer switcher then you
+    // will need to call ol.control.LayerSwitcher.renderPanel again to refesh
+    // the layer tree. Style the tree via CSS.
+    var toc = document.getElementById("layers");
+    LayerSwitcher.renderPanel(map, toc);
+
+    // add sidebar to map
+    map.addControl(sidebar);
 
     // array of ol layers in the map (excluding groups)
     var ol_layers = getOLLayers(map.getLayerGroup());

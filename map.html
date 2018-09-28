@@ -4,29 +4,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Umbe MapViewer</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/ol-umbe.css" type="text/css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
 </head>
-
 <body>
     <!-- The Modal -->
     <div id="alertModal" class="modal">
-
         <!-- Modal content -->
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close">&times;</span>
             </div>
-            <div class="modal-body">
+            <div class="modal-body"></div>
+        </div>
+    </div>
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#toc" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#basemap" role="tab"><i class="fa fa-map-o"></i></a></li>
+                <li><a href="#position" role="tab"><i class="fa fa-map-marker"></i></a></li>
+            </ul>
+            <ul role="tablist">
+                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+            </ul>
+        </div>
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="toc">
+                <div>
+                    <h1 class="sidebar-header">Layers<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                </div>
+                <!-- !!! HERE WILL GO THE CONTENT OF LAYERSWITCHER !!! -->
+                <div id="layers" class="sidebar-content layer-switcher" style="top: 40px;left: 0px;overflow:auto;"></div>
+            </div>
+            <div class="sidebar-pane" id="basemap">
+                <h1 class="sidebar-header">Basemap<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+            </div>
+            <div class="sidebar-pane" id="position">
+                <h1 class="sidebar-header">
+                    Geolocation
+                    <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <label for="track">
+                track position
+                <input id="track" type="checkbox"/>
+                </label>
+                <p id="location_err" style="display: none;"></p>
+            </div>
+            <div class="sidebar-pane" id="settings">
+                <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
             </div>
         </div>
     </div>
-
-    <div id="map"></div>
+    <div id="map" class="sidebar-map"></div>
     <script src="./main.js"></script>
 </body>
-
 </html>
