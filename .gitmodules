@@ -1,0 +1,4 @@
+[submodule "external/sidebar-v2"]
+	path = external/sidebar-v2
+	url = https://github.com/umbe1987/sidebar-v2.git
+	branch = ol5-sidebar
