@@ -28,6 +28,7 @@ import { fancyAlert } from './js/fancy_alert';
 import { getInfoUrl } from './js/get_info';
 import { getOLLayers } from './js/ol_layers';
 import { renderLegend } from './js/render_legend';
+import { userLocation } from './js/user_position';
 
 // PROJECTION
 
@@ -154,4 +155,7 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
             }
         }
     })
+
+    // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
+    userLocation('track', map, view);
 });
