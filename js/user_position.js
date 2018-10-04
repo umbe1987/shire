@@ -13,7 +13,7 @@ import {
 export function userLocation(id, map, view) {
     // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
     var geolocation = new Geolocation({
-        projection: view.getProjection()
+        projection: map.getView().getProjection()
     });
 
     var el = document.getElementById(id);
@@ -48,6 +48,8 @@ export function userLocation(id, map, view) {
         var coordinates = geolocation.getPosition();
         positionFeature.setGeometry(coordinates ?
             new Point(coordinates) : null);
+        // zoom to current location
+        map.getView().animate({center: geolocation.getPosition(), zoom: 13});
     });
 
     // add position feature to map

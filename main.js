@@ -157,5 +157,5 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     })
 
     // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
-    userLocation('track', map, view);
+    userLocation('track', map);
 });
