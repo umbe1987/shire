@@ -24,15 +24,99 @@ import Sidebar from './external/sidebar-v2/js/ol5-sidebar';
 import LayerSwitcher from 'ol-layerswitcher';
 
 import * as WmsParser from './js/wms_parser';
-import { fancyAlert } from './js/fancy_alert';
-import { getInfoUrl } from './js/get_info';
-import { getOLLayers } from './js/ol_layers';
-import { renderLegend } from './js/render_legend';
-import { userLocation } from './js/user_position';
+import {
+    fancyAlert
+} from './js/fancy_alert';
+import {
+    getInfoUrl
+} from './js/get_info';
+import {
+    getOLLayers
+} from './js/ol_layers';
+import {
+    renderLegend
+} from './js/render_legend';
+import {
+    userLocation
+} from './js/user_position';
 
-// PROJECTION
 
-proj4.defs('EPSG:3857', '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs');
+// BASEMAP LAYERS
+
+// OSM Basemap
+var osmBasemap = new SourceOSM();
+var basemap1 = new LayerTile({
+    title: 'OSM',
+    type: 'base',
+    visible: true,
+    source: osmBasemap
+});
+
+// Esri Basemap
+var esriBasemap = new SourceXYZ({
+    url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    attributions: 'Tiles © Esri — Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
+});
+
+var basemap2 = new LayerTile({
+    title: 'ESRI_WorldImagery',
+    type: 'base',
+    visible: false,
+    source: esriBasemap
+});
+
+// Blank Basemap
+var basemap3 = new LayerTile({
+    title: 'BLANK',
+    type: 'base',
+    visible: false,
+    source: null,
+});
+
+// BASEMAP group
+var basemap_group = new LayerGroup({
+    title: 'Basemaps',
+    layers: [
+        basemap1,
+        basemap2,
+        basemap3,
+    ]
+});
+
+// VIEW
+
+var view = new View({
+    center: [952014.59, 5571269.68],
+    zoom: 8
+});
+
+// MAP
+
+var map = new Map({
+    layers: basemap_group,
+    target: 'map',
+    view: view
+});
+
+// SIDEBAR
+var sidebar = new Sidebar({
+    element: 'sidebar',
+    position: 'left'
+});
+
+// OL-LAYERSWITCHER
+// Get out-of-the-map div element with the ID "layers" and renders layers to it.
+// NOTE: If the layers are changed outside of the layer switcher then you
+// will need to call ol.control.LayerSwitcher.renderPanel again to refesh
+// the layer tree. Style the tree via CSS.
+var toc = document.getElementById("layers");
+LayerSwitcher.renderPanel(map, toc);
+
+// add sidebar to map
+map.addControl(sidebar);
+
+// GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
+userLocation('track', map);
 
 // WMS URL
 var wms_url = 'http://www.cartografia.regione.lombardia.it/ArcGIS10/services/wms/dusaf21/MapServer/WMSServer?';
@@ -40,39 +124,7 @@ var wms_url = 'http://www.cartografia.regione.lombardia.it/ArcGIS10/services/wms
 // Parse WMS Capabilities to retrieve layers and build the map
 WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     // OPERATIONAL LAYERS
-    var operational_layers = WmsParser.getLayers(wms_layers, wms_url);
-
-    // BASEMAP LAYERS
-
-    // OSM Basemap
-    var osmBasemap = new SourceOSM();
-    var basemap1 = new LayerTile({
-        title: 'OSM',
-        type: 'base',
-        visible: true,
-        source: osmBasemap
-    });
-
-    // Esri Basemap
-    var esriBasemap = new SourceXYZ({
-        url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        attributions: 'Tiles © Esri — Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
-    });
-
-    var basemap2 = new LayerTile({
-        title: 'ESRI_WorldImagery',
-        type: 'base',
-        visible: false,
-        source: esriBasemap
-    });
-
-    // Blank Basemap
-    var basemap3 = new LayerTile({
-        title: 'BLANK',
-        type: 'base',
-        visible: false,
-        source: null,
-    });
+    var operational_layers = WmsParser.getLayers(wms_layers, wms_url, map);
 
     // LAYER GROUPS
     var overlays_group = new LayerGroup({
@@ -80,54 +132,9 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
         layers: operational_layers,
     });
 
-    // for BASEMAP
-    var basemap_group = new LayerGroup({
-        title: 'Basemaps',
-        layers: [
-            basemap1,
-            basemap2,
-            basemap3,
-        ]
-    });
-
-    // define array of layer groups
-
-    var layer_groups = [
-        basemap_group,
-        overlays_group,
-    ]
-
-    // VIEW
-
-    var view = new View({
-        center: [952014.59, 5571269.68],
-        zoom: 8
-    });
-
-    // MAP
-
-    var map = new Map({
-        layers: layer_groups,
-        target: 'map',
-        view: view
-    });
-
-    // SIDEBAR
-    var sidebar = new Sidebar({
-        element: 'sidebar',
-        position: 'left'
-    });
-
-    // OL-LAYERSWITCHER
-    // Get out-of-the-map div element with the ID "layers" and renders layers to it.
-    // NOTE: If the layers are changed outside of the layer switcher then you
-    // will need to call ol.control.LayerSwitcher.renderPanel again to refesh
-    // the layer tree. Style the tree via CSS.
-    var toc = document.getElementById("layers");
+    // add layers to map and re-render layerswitcher to show them
+    map.addLayer(overlays_group);
     LayerSwitcher.renderPanel(map, toc);
-
-    // add sidebar to map
-    map.addControl(sidebar);
 
     // array of ol layers in the map (excluding groups)
     var ol_layers = getOLLayers(map.getLayerGroup());
@@ -155,7 +162,4 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
             }
         }
     })
-
-    // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
-    userLocation('track', map);
 });
