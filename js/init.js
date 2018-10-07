@@ -7,7 +7,9 @@ export function insertAfter(newNode, referenceNode) {
 
 // add zoom icon after "elem"
 export function zoomIcon(elem) {
-    var span = document.createElement("SPAN");
-    span.classList.add("fas", "fa-search-plus");
-    elem.appendChild(span);
+    if (elem.firstChild.getAttribute("name") !== "base") {
+        var span = document.createElement("SPAN");
+        span.classList.add("fas", "fa-search-plus");
+        elem.appendChild(span);
+    }
 }
