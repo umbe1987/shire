@@ -39,7 +39,9 @@ import {
 import {
     userLocation
 } from './js/user_position';
-
+import {
+    zoomIcon
+} from './js/init';
 
 // BASEMAP LAYERS
 
@@ -139,8 +141,15 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     // array of ol layers in the map (excluding groups)
     var ol_layers = getOLLayers(map.getLayerGroup());
 
-    // RENDER LEGEND
+    // get HTML elements with "layer" class
     var layer_class = document.getElementsByClassName("layer");
+
+    // add zoom icon
+    for (let i = 0; i < layer_class.length; ++i) {
+        zoomIcon(layer_class[i]);
+    }
+
+    // RENDER LEGEND
     renderLegend(ol_layers, layer_class);
 
     // DISPLAY INFO ONCLICK

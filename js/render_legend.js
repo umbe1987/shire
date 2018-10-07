@@ -1,12 +1,8 @@
+import { insertAfter } from './init';
+
 // ADD LEGEND TO TOC
-// Insert an element after another (https://stackoverflow.com/a/4793630/1979665)
-function insertAfter(newNode, referenceNode) {
-    referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-}
 
 export function renderLegend(ol_layers, class_layers) {
-    // get all elements with class name "layer"
-    var class_layers = document.getElementsByClassName("layer");
     // get layer names to build lgend request
     for (var i = 0; i < class_layers.length; ++i) {
         var class_elem = class_layers[i];
