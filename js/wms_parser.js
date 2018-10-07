@@ -129,7 +129,6 @@ export function getLayers(layers, url, map) {
                     extent: layer_extent_proj,
                 });
                 wms_layers.push(ith_lyr);
-                alert(layer_extent_proj);
             }
         }
         return wms_layers;

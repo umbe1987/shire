@@ -40,8 +40,8 @@ import {
     userLocation
 } from './js/user_position';
 import {
-    zoomIcon
-} from './js/init';
+    zoomIcon, ZoomToExtent
+} from './js/zoom_to_extent';
 
 // BASEMAP LAYERS
 
@@ -144,10 +144,15 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     // get HTML elements with "layer" class
     var layer_class = document.getElementsByClassName("layer");
 
+    // ZOOM TO LAYER EXTENT
     // add zoom icon
     for (let i = 0; i < layer_class.length; ++i) {
         zoomIcon(layer_class[i]);
     }
+
+    // add onclick event listener to zoom icons
+    var zoom_icons = document.getElementsByClassName("fa-search-plus");
+    ZoomToExtent(zoom_icons, ol_layers, view);
 
     // RENDER LEGEND
     renderLegend(ol_layers, layer_class);

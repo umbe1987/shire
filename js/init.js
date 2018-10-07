@@ -5,11 +5,8 @@ export function insertAfter(newNode, referenceNode) {
     referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
-// add zoom icon after "elem"
-export function zoomIcon(elem) {
-    if (elem.firstChild.getAttribute("name") !== "base") {
-        var span = document.createElement("SPAN");
-        span.classList.add("fas", "fa-search-plus");
-        elem.appendChild(span);
-    }
+export function getSiblings(elem) {
+    var siblings = elem.parentNode.childNodes;
+
+    return siblings;
 }
