@@ -132,3 +132,7 @@ label{
     width: 128px;
 }
 
+.fa-search-plus {
+    cursor: pointer;
+}
+
