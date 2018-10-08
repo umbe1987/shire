@@ -1,7 +1,4 @@
 import { insertAfter } from './init';
-import {
-    CORS_PREFIX
-} from './init';
 
 // ADD LEGEND TO TOC
 
