@@ -121,7 +121,7 @@ map.addControl(sidebar);
 userLocation('track', map);
 
 // WMS URL
-var wms_url = 'http://www.cartografia.regione.lombardia.it/ArcGIS10/services/wms/dusaf21/MapServer/WMSServer?';
+var wms_url = 'http://wms.pcn.minambiente.it/ogc?map=/ms_ogc/WMS_v1.3/Vettoriali/Carta_fitoclimatica.map&';
 
 // Parse WMS Capabilities to retrieve layers and build the map
 WmsParser.getWMSLayers(wms_url).then(wms_layers => {

@@ -30,11 +30,17 @@ export function fancyAlert(headerText, content, alertType) {
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
             modal.style.display = "none";
+            // finally remove info/error classes (otherwise next time the old ones still persist)
+            modalHeader[0].classList.remove("error-color");
+            modalHeader[0].classList.remove("info-color");
         }
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
+                // finally remove info/error classes (otherwise next time the old ones still persist)
+                modalHeader[0].classList.remove("error-color");
+                modalHeader[0].classList.remove("info-color");
             }
         }
     }
