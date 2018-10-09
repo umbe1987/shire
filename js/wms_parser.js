@@ -86,31 +86,44 @@ export async function getWMSLayers(url) {
 }
 
 // get layers and grouprlayers from getWMSLayers
-export function getLayers(layers, url, map) {
-    // get projection code from view
-    var projection = map.getView().getProjection().getCode();
+export function getLayers(layers, url, map, crs = false) {
     // if there is at least one layer
     if (layers) {
+        // get projection code from view
+        var view_projection = map.getView().getProjection().getCode();
         let wms_layers = [];
         for (let i = 0; i < layers.length; i++) {
             let lyr = layers[i];
+
+            // check if current layer has CRS array
+            if (lyr.hasOwnProperty('CRS')) {
+                // if it includes view CRS, then use it as lys CRS as well
+                if (lyr.CRS.includes(view_projection)) {
+                    var crs = view_projection;
+                // otherwise use the first CRS in the array
+                } else {
+                    var crs = lyr.CRS[0];
+                }
+            }
+
             // name of ith layer
             let layer_name = lyr.Name;
             // title of ith layer
             let layer_title = lyr.Title;
             // check if this is a group layer
             if (lyr.Layer) {
-                let sublayers = getLayers(lyr.Layer, url, map);
+                let sublayers = getLayers(lyr.Layer, url, map, crs);
                 let ith_group = new LayerGroup({
                     title: layer_title,
                     layers: sublayers,
                 });
                 wms_layers.push(ith_group);
             } else {
-                let layer_extent = lyr.EX_GeographicBoundingBox;
-                let layer_extent_proj = transformExtent(layer_extent, 'EPSG:4326', projection);
+                let layer_extent = lyr.EX_GeographicBoundingBox; // always in geographic WGS84
+                let layer_extent_proj = transformExtent(layer_extent, 'EPSG:4326', view_projection);
                 let source = new ImageWMS({
                     url: url,
+                    projection: crs,
                     params: {
                         'LAYERS': layer_name, // 'FAKE' (to test exceptions)
                         'FORMAT': 'image/png',
