@@ -121,7 +121,7 @@ map.addControl(sidebar);
 userLocation('track', map);
 
 // WMS URL
-var wms_url = 'http://metaspatial.net/cgi-bin/ogc-wms.xml?';
+var wms_url = 'https://ahocevar.com/geoserver/wms?';
 
 // Parse WMS Capabilities to retrieve layers and build the map
 WmsParser.getWMSLayers(wms_url).then(wms_layers => {
@@ -159,16 +159,24 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
 
     // DISPLAY INFO ONCLICK
     map.on('singleclick', function(evt) {
-        // display info in fancyAlert "info"
+        // display info in fancyAlert
         for (let i = 0; i < ol_layers.length; ++i) {
             let layer = ol_layers[i];
             let text = getInfoUrl(evt, view, layer);
             if (text) {
 
                 var xhttp = new XMLHttpRequest();
+                // overrideMimeType() can be used to force the response to be parsed as XML
+                xhttp.overrideMimeType('text/xml');
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        fancyAlert('Layer Info', this.responseText, 'info');
+                        // if ServiceExceptionReport occurs, place it in alert type "error"
+                        var xhr = this.responseXML;
+                        if (xhr.documentElement.nodeName === 'ServiceExceptionReport') {
+                            fancyAlert(this.responseText, 'error');
+                        } else {
+                            fancyAlert(this.responseText, 'info', 'Layer Info');
+                        }
                     }
                 };
                 xhttp.open("GET", text, true);

@@ -57,7 +57,7 @@ function imageLoadFunction(image, src) {
                     // as console.error
                     console.error(exceptionAsText);
                     // as fancy alerts
-                    fancyAlert('WMS Exception', exceptionAsText, "error");
+                    fancyAlert(exceptionAsText, "error");
                 }
             } else {
                 alert(error(this.statusText));

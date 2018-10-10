@@ -1,5 +1,5 @@
-// fancy alert for errors
-export function fancyAlert(headerText, content, alertType) {
+// fancy alert (alertType can be either 'info' or 'error')
+export function fancyAlert(content, alertType, headerText = 'Error') {
     if (content) {
         // Get modal-header element
         var modalHeader = document.getElementsByClassName("modal-header");
