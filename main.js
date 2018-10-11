@@ -121,21 +121,15 @@ map.addControl(sidebar);
 userLocation('track', map);
 
 // WMS URL
-var wms_url = 'https://ahocevar.com/geoserver/wms?';
+var wms_url = 'https://servizigis.regione.emilia-romagna.it/wms/rete_escursionistica?';
 
 // Parse WMS Capabilities to retrieve layers and build the map
 WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     // OPERATIONAL LAYERS
     var operational_layers = WmsParser.getLayers(wms_layers, wms_url, map);
 
-    // LAYER GROUPS
-    var overlays_group = new LayerGroup({
-        title: 'Overlays',
-        layers: operational_layers,
-    });
-
     // add layers to map and re-render layerswitcher to show them
-    map.addLayer(overlays_group);
+    map.addLayer(operational_layers[0]);
     LayerSwitcher.renderPanel(map, toc);
 
     // array of ol layers in the map (excluding groups)
