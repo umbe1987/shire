@@ -49,10 +49,11 @@ label{
 
 /* Modal Content */
 .modal-content {
-    position: fixed;
-    bottom: 0;
     background-color: #fefefe;
     width: 100%;
+    display:flex;
+    flex-direction: column;
+    margin-top: auto;
     -webkit-animation-name: slideIn;
     -webkit-animation-duration: 0.4s;
     animation-name: slideIn;
@@ -90,7 +91,7 @@ label{
 .modal-body {
     padding: 16px 16px;
     overflow: auto; /* Enable scroll if needed */
-	max-height: 250px;
+    max-height: 250px;
 }
 
 .modal-footer {
