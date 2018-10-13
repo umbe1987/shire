@@ -37,6 +37,9 @@ import {
     renderLegend
 } from './js/render_legend';
 import {
+    opacitySlider
+} from './js/opacity_slider';
+import {
     userLocation
 } from './js/user_position';
 import {
@@ -150,6 +153,9 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
 
     // RENDER LEGEND
     renderLegend(ol_layers, layer_class);
+
+    // DRAW OPACITY SLIDER
+    opacitySlider(layer_class);
 
     // DISPLAY INFO ONCLICK
     map.on('singleclick', function(evt) {
