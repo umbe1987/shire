@@ -124,7 +124,7 @@ map.addControl(sidebar);
 userLocation('track', map);
 
 // WMS URL
-var wms_url = 'https://servizigis.regione.emilia-romagna.it/wms/rete_escursionistica?';
+var wms_url = 'http://www.cartografia.regione.lombardia.it/ArcGIS10/services/wms/dusaf21/MapServer/WMSServer?';
 
 // Parse WMS Capabilities to retrieve layers and build the map
 WmsParser.getWMSLayers(wms_url).then(wms_layers => {
@@ -155,7 +155,7 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     renderLegend(ol_layers, layer_class);
 
     // DRAW OPACITY SLIDER
-    opacitySlider(layer_class);
+    opacitySlider(ol_layers, layer_class);
 
     // DISPLAY INFO ONCLICK
     map.on('singleclick', function(evt) {
