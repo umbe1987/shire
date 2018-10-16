@@ -46,8 +46,8 @@ import {
     zoomIcon, ZoomToExtent
 } from './js/zoom_to_extent';
 import {
-    getScale
-} from './js/get_scale';
+    greyoutLayers
+} from './js/greyout_layers';
 
 // BASEMAP LAYERS
 
@@ -126,9 +126,6 @@ map.addControl(sidebar);
 // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
 userLocation('track', map);
 
-// LOG CURRENT SCALE TO CONSOLE
-getScale(map);
-
 // WMS URL
 var wms_url = 'https://servizigis.regione.emilia-romagna.it/wms/rete_escursionistica?';
 
@@ -162,6 +159,9 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
 
     // DRAW OPACITY SLIDER
     opacitySlider(ol_layers, layer_class);
+
+    // GREY OUT LAYERS ACCORDING TO MIN AND MAX SCALE DENOMINATOR
+    greyoutLayers(ol_layers, layer_class, map);
 
     // DISPLAY INFO ONCLICK
     map.on('singleclick', function(evt) {
