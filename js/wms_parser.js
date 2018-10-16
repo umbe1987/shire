@@ -106,6 +106,21 @@ export function getLayers(layers, url, map, crs = false) {
                 }
             }
 
+            // check if current layer has Max/Min ScaleDenominator property
+            if (lyr.hasOwnProperty('MaxScaleDenominator')) {
+                // if MaxScaleDenominator is not undefined
+                if (lyr.MaxScaleDenominator) {
+                    var max_scale_den = lyr.MaxScaleDenominator;
+                }
+            }
+
+            if (lyr.hasOwnProperty('MinScaleDenominator')) {
+                // if MinScaleDenominator is not undefined
+                if (lyr.MinScaleDenominator) {
+                    var min_scale_den = lyr.MinScaleDenominator;
+                }
+            }
+
             // name of ith layer
             let layer_name = lyr.Name;
             // title of ith layer
@@ -140,6 +155,8 @@ export function getLayers(layers, url, map, crs = false) {
                     visible: false,
                     source: source,
                     extent: layer_extent_proj,
+                    minscaledenominator: min_scale_den,
+                    maxscaledenominator: max_scale_den,
                 });
                 wms_layers.push(ith_lyr);
             }

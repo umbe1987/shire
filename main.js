@@ -45,6 +45,9 @@ import {
 import {
     zoomIcon, ZoomToExtent
 } from './js/zoom_to_extent';
+import {
+    getScale
+} from './js/get_scale';
 
 // BASEMAP LAYERS
 
@@ -123,8 +126,11 @@ map.addControl(sidebar);
 // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
 userLocation('track', map);
 
+// LOG CURRENT SCALE TO CONSOLE
+getScale(map);
+
 // WMS URL
-var wms_url = 'http://www.cartografia.regione.lombardia.it/ArcGIS10/services/wms/dusaf21/MapServer/WMSServer?';
+var wms_url = 'https://servizigis.regione.emilia-romagna.it/wms/rete_escursionistica?';
 
 // Parse WMS Capabilities to retrieve layers and build the map
 WmsParser.getWMSLayers(wms_url).then(wms_layers => {
