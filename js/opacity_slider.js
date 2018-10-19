@@ -4,10 +4,10 @@ import { insertAfter } from './init';
 
 export function opacitySlider(ol_layers, class_layers) {
     // draw slider under each layer in the toc
-    for (var i = 0; i < class_layers.length; ++i) {
+    for (var i = 0, len_i = class_layers.length; i < len_i; ++i) {
         var class_elem = class_layers[i];
         var elem_name = class_layers[i].innerText;
-        for (var j = 0; j < ol_layers.length; ++j) {
+        for (var j = 0, len_j = ol_layers.length; j < len_j; ++j) {
             var current_layer = ol_layers[j];
             var layer_title = current_layer.values_["title"];
             if (elem_name === layer_title) {
@@ -40,7 +40,7 @@ export function opacitySlider(ol_layers, class_layers) {
 
 function changeOpacity(slider_elem, ol_layers) {
     slider_elem.oninput = function() {
-        for (var i = 0; i < ol_layers.length; ++i) {
+        for (var i = 0, len = ol_layers.length; i < len; ++i) {
             var lyr = ol_layers[i];
             if (lyr.get('title') === this.id) {
                 lyr.setProperties({opacity: this.value});

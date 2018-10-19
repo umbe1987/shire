@@ -2,11 +2,11 @@ import { getScale } from './get_scale';
 
 export function greyoutLayers(ol_layers, class_layers, map) {
     // for each layer class in the document
-    for (var i = 0; i < class_layers.length; ++i) {
+    for (var i = 0, len_i = class_layers.length; i < len_i; ++i) {
         var class_lyr = class_layers[i];
         var elem_name = class_lyr.innerText;
         // for each OL layer in the map
-        for (var j = 0; j < ol_layers.length; ++j) {
+        for (var j = 0, len_j = ol_layers.length; j < len_j; ++j) {
             var current_layer = ol_layers[j];
             var layer_title = current_layer.values_["title"];
             // if class layer name equals ol layer title

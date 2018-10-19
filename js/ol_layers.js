@@ -17,7 +17,7 @@ export function getOLLayers(group) {
     function getOLLayer(layer, lyr_array) {
         if (isGroup(layer)) {
             let layers = layer.getLayers().getArray();
-            for (let i = 0; i < layers.length; ++i) {
+            for (let i = 0, len = layers.length; i < len; ++i) {
                 getOLLayer(layers[i], lyr_array);
             }
         } else {
@@ -27,7 +27,7 @@ export function getOLLayers(group) {
         }
     }
     let layers = group.getLayers().getArray();
-    for (let i = 0; i < layers.length; ++i) {
+    for (let i = 0, len = layers.length; i < len; ++i) {
         let lyr = getOLLayer(layers[i], ol_layers);
     }
     return ol_layers;

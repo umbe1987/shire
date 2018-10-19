@@ -146,9 +146,7 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
 
     // ZOOM TO LAYER EXTENT
     // add zoom icon
-    for (let i = 0; i < layer_class.length; ++i) {
-        zoomIcon(layer_class[i]);
-    }
+    zoomIcon(layer_class);
 
     // add onclick event listener to zoom icons
     var zoom_icons = document.getElementsByClassName("fa-search-plus");

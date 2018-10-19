@@ -92,7 +92,7 @@ export function getLayers(layers, url, map, crs = false) {
         // get projection code from view
         var view_projection = map.getView().getProjection().getCode();
         let wms_layers = [];
-        for (let i = 0; i < layers.length; i++) {
+        for (let i = 0, len = layers.length; i < len; i++) {
             let lyr = layers[i];
 
             // check if current layer has CRS array

@@ -4,10 +4,10 @@ import { insertAfter } from './init';
 
 export function renderLegend(ol_layers, class_layers) {
     // get layer names to build lgend request
-    for (var i = 0; i < class_layers.length; ++i) {
+    for (var i = 0, len_i = class_layers.length; i < len_i; ++i) {
         var class_elem = class_layers[i];
         var elem_name = class_layers[i].innerText;
-        for (var j = 0; j < ol_layers.length; ++j) {
+        for (var j = 0, len_j = ol_layers.length; j < len_j; ++j) {
             var layer_name = ol_layers[j].values_["name"];
             var layer_title = ol_layers[j].values_["title"];
             if (elem_name === layer_title) {
