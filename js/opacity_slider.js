@@ -4,15 +4,15 @@ import { insertAfter } from './init';
 
 export function opacitySlider(ol_layers, class_layers) {
     // draw slider under each layer in the toc
-    for (var i = 0, len_i = class_layers.length; i < len_i; ++i) {
-        var class_elem = class_layers[i];
-        var elem_name = class_layers[i].innerText;
-        for (var j = 0, len_j = ol_layers.length; j < len_j; ++j) {
-            var current_layer = ol_layers[j];
+    for (var j = 0, len_j = ol_layers.length; j < len_j; ++j) {
+        var current_layer = ol_layers[j];
+        // ignore basemaps (type === 'TILE')
+        if (current_layer.type === 'IMAGE') {
             var layer_title = current_layer.values_["title"];
-            if (elem_name === layer_title) {
-                // ignore basemaps (type === 'TILE')
-                if (current_layer.type === 'IMAGE') {
+            for (var i = 0, len_i = class_layers.length; i < len_i; ++i) {
+                var class_elem = class_layers[i];
+                var elem_name = class_layers[i].innerText;
+                if (elem_name === layer_title) {
                     // create new li element
                     var li_elem = document.createElement("LI");
                     // create slider input elem
@@ -30,11 +30,11 @@ export function opacitySlider(ol_layers, class_layers) {
                     // add li with layer legend after layer li
                     insertAfter(li_elem, class_elem);
                     changeOpacity(input_slider, ol_layers);
-                }
 
+                    break;
+                }
             }
         }
-
     }
 }
 
