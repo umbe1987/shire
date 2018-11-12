@@ -160,14 +160,6 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
 
     // GREY OUT LAYERS ACCORDING TO MIN AND MAX SCALE DENOMINATOR
     greyoutLayers(ol_layers, layer_class, map);
-    // do it also whenever zoom changes
-    map.getView().on('propertychange', function(evt) {
-        switch (evt.key) {
-            case 'resolution':
-                greyoutLayers(ol_layers, layer_class, map);
-                break;
-        }
-    });
 
     // DISPLAY INFO ONCLICK
     map.on('singleclick', function(evt) {
