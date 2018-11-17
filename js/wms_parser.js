@@ -130,6 +130,7 @@ export function getLayers(layers, url, map, crs = false) {
                 let sublayers = getLayers(lyr.Layer, url, map, crs);
                 let ith_group = new LayerGroup({
                     title: layer_title,
+                    fold: 'open',
                     layers: sublayers,
                 });
                 wms_layers.push(ith_group);
