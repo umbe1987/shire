@@ -45,9 +45,6 @@ import {
 import {
     zoomIcon, ZoomToExtent
 } from './js/zoom_to_extent';
-import {
-    greyoutLayers
-} from './js/greyout_layers';
 
 // BASEMAP LAYERS
 
@@ -157,9 +154,6 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
 
     // DRAW OPACITY SLIDER
     opacitySlider(ol_layers, layer_class);
-
-    // GREY OUT LAYERS ACCORDING TO MIN AND MAX SCALE DENOMINATOR
-    greyoutLayers(ol_layers, layer_class, map);
 
     // DISPLAY INFO ONCLICK
     map.on('singleclick', function(evt) {
