@@ -99,10 +99,10 @@ export function getLayers(layers, url, map, crs = false) {
             if (lyr.hasOwnProperty('CRS')) {
                 // if it includes view CRS, then use it as lys CRS as well
                 if (lyr.CRS.includes(view_projection)) {
-                    var crs = view_projection;
+                    let crs = view_projection;
                 // otherwise use the first CRS in the array
                 } else {
-                    var crs = lyr.CRS[0];
+                    let crs = lyr.CRS[0];
                 }
             }
 
