@@ -16,7 +16,7 @@ export function greyoutLayers(ol_layers, class_layers, map) {
                 var input_child = class_lyr.firstChild;
                 // if class layer name equals ol layer title
                 var elem_name = class_lyr.innerText;
-                if (elem_name === layer_title) {
+                if (elem_name.replace('\t','') === layer_title) {
                     // get current map scale
                     var current_scale = getScale(map);
                     console.log("1:" + current_layer.values_["maxscaledenominator"]);

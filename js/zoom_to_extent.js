@@ -32,7 +32,7 @@ export function ZoomToExtent(zoom_icons, ol_layers, view) {
                 for (var j = 0, len_j = ol_layers.length; j < len_j; ++j) {
                     var lyr = ol_layers[j];
                     // if ol layer name corresponds to label layer name, zoom to its extent
-                    if (lyr.get("title") === layer_title) {
+                    if (lyr.get("title") === layer_title.replace('\t','')) {
                         view.fit(lyr.getExtent(), {
                             duration: 1000
                         });

@@ -139,7 +139,6 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
 
     updateToc(map, ol_layers, layer_class, zoom_icons, toc);
 
-/*
     map.getView().on('propertychange', function(evt) {
         switch (evt.key) {
             case 'resolution':
@@ -148,7 +147,6 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
                 break;
         }
     });
-*/
 
     // DISPLAY INFO ONCLICK
     map.on('singleclick', function(evt) {
