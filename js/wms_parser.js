@@ -156,8 +156,8 @@ export function getLayers(layers, url, map, crs = false) {
                     visible: false,
                     source: source,
                     extent: layer_extent_proj,
-                    minResolution: min_scale_den,
-                    maxResolution: max_scale_den,
+                    minscaledenominator: min_scale_den,
+                    maxscaledenominator: max_scale_den,
                 });
                 wms_layers.push(ith_lyr);
             }

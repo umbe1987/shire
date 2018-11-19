@@ -34,17 +34,11 @@ import {
     getOLLayers
 } from './js/ol_layers';
 import {
-    renderLegend
-} from './js/render_legend';
-import {
-    opacitySlider
-} from './js/opacity_slider';
-import {
     userLocation
 } from './js/user_position';
 import {
-    zoomIcon, ZoomToExtent
-} from './js/zoom_to_extent';
+    updateToc
+} from './js/update_toc';
 
 // BASEMAP LAYERS
 
@@ -133,7 +127,6 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
 
     // add layers to map and re-render layerswitcher to show them
     map.addLayer(operational_layers[0]);
-    LayerSwitcher.renderPanel(map, toc);
 
     // array of ol layers in the map (excluding groups)
     var ol_layers = getOLLayers(map.getLayerGroup());
@@ -141,19 +134,21 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     // get HTML elements with "layer" class
     var layer_class = document.getElementsByClassName("layer");
 
-    // ZOOM TO LAYER EXTENT
-    // add zoom icon
-    zoomIcon(layer_class);
-
     // add onclick event listener to zoom icons
     var zoom_icons = document.getElementsByClassName("fa-search-plus");
-    ZoomToExtent(zoom_icons, ol_layers, view);
 
-    // RENDER LEGEND
-    renderLegend(ol_layers, layer_class);
+    updateToc(map, ol_layers, layer_class, zoom_icons, toc);
 
-    // DRAW OPACITY SLIDER
-    opacitySlider(ol_layers, layer_class);
+/*
+    map.getView().on('propertychange', function(evt) {
+        switch (evt.key) {
+            case 'resolution':
+                updateToc(map, ol_layers, layer_class, zoom_icons, toc);
+
+                break;
+        }
+    });
+*/
 
     // DISPLAY INFO ONCLICK
     map.on('singleclick', function(evt) {
