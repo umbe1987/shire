@@ -18,6 +18,7 @@ import LayerImage from 'ol/layer/Image';
 import LayerTile from 'ol/layer/Tile';
 import SourceOSM from 'ol/source/OSM';
 import SourceXYZ from 'ol/source/XYZ';
+import {defaults as defaultControls, Attribution} from 'ol/control.js';
 
 import Sidebar from './external/sidebar-v2/js/ol5-sidebar';
 
@@ -82,6 +83,11 @@ var basemap_group = new LayerGroup({
     ]
 });
 
+// SET ATTRIBUTION CONTROL (SINCE OL v5.3.0)
+var attribution = new Attribution({
+    collapsible: false
+});
+
 // VIEW
 
 var view = new View({
@@ -94,7 +100,8 @@ var view = new View({
 var map = new Map({
     layers: basemap_group,
     target: 'map',
-    view: view
+    view: view,
+    controls: defaultControls({attribution: false}).extend([attribution]),
 });
 
 // SIDEBAR
@@ -102,6 +109,16 @@ var sidebar = new Sidebar({
     element: 'sidebar',
     position: 'left'
 });
+
+// When the map gets too small (<600px) because of a resize, the attribution will be collapsed
+function checkSize() {
+    var small = map.getSize()[0] < 600;
+    attribution.setCollapsible(small);
+    attribution.setCollapsed(small);
+}
+
+window.addEventListener('resize', checkSize);
+checkSize();
 
 // OL-LAYERSWITCHER
 // Get out-of-the-map div element with the ID "layers" and renders layers to it.
@@ -116,6 +133,12 @@ map.addControl(sidebar);
 
 // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
 userLocation('track', map);
+
+function checkSize() {
+    var small = map.getSize()[0] < 600;
+    attribution.setCollapsible(small);
+    attribution.setCollapsed(small);
+}
 
 // WMS URL
 var wms_url = 'https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?&map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&';
