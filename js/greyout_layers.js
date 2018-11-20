@@ -12,8 +12,10 @@ export function greyoutLayers(ol_layers, class_layers, map) {
             // for each layer class in the document
             for (var i = 0, len_i = class_layers.length; i < len_i; ++i) {
                 var class_lyr = class_layers[i];
-                // get lyr_class firstChild which is <input>
-                var input_child = class_lyr.firstChild;
+                // get class_lyr firstChild which is <input>
+                var input_child = class_lyr.children[0];
+                // get class_lyr <label> child
+                var label_child = class_lyr.children[1];
                 // if class layer name equals ol layer title
                 var elem_name = class_lyr.innerText;
                 if (elem_name.replace('\t','') === layer_title) {
@@ -23,8 +25,10 @@ export function greyoutLayers(ol_layers, class_layers, map) {
                     // if layer MaxScaleDenominator is higher than current map scale
                     if (current_scale > current_layer.values_["maxscaledenominator"] || current_scale < current_layer.values_["minscaledenominator"]) {
                         input_child.disabled = true;
+                        label_child.classList.add('disabled');
                     } else {
                         input_child.disabled = false;
+                        label_child.classList.remove('disabled');
                     }
 
                     break;
