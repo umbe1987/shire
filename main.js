@@ -40,6 +40,9 @@ import {
 import {
     updateToc
 } from './js/update_toc';
+import {
+    opacitySlider
+} from './js/opacity_slider';
 
 // BASEMAP LAYERS
 
@@ -151,6 +154,9 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     // add layers to map and re-render layerswitcher to show them
     map.addLayer(operational_layers[0]);
 
+    // rerender layerswitcher to add the operational layers
+    LayerSwitcher.renderPanel(map, toc);
+
     // array of ol layers in the map (excluding groups)
     var ol_layers = getOLLayers(map.getLayerGroup());
 
@@ -160,12 +166,17 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     // add onclick event listener to zoom icons
     var zoom_icons = document.getElementsByClassName("fa-search-plus");
 
-    updateToc(map, ol_layers, layer_class, zoom_icons, toc);
+    // initialize the opacity sliders
+    var input_sliders = opacitySlider(ol_layers, layer_class);
+
+    // DRAW THE COMPONENTS OF THE TOC
+    updateToc(map, ol_layers, layer_class, zoom_icons, input_sliders, toc);
 
     map.getView().on('propertychange', function(evt) {
         switch (evt.key) {
             case 'resolution':
-                updateToc(map, ol_layers, layer_class, zoom_icons, toc);
+                // update the ToC at each zoom
+                updateToc(map, ol_layers, layer_class, zoom_icons, input_sliders, toc);
 
                 break;
         }

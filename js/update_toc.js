@@ -2,7 +2,7 @@ import {
     renderLegend
 } from './render_legend';
 import {
-    opacitySlider
+    updateSlider
 } from './opacity_slider';
 import {
     zoomIcon, ZoomToExtent
@@ -12,7 +12,7 @@ import {
 } from './greyout_layers';
 import LayerSwitcher from 'ol-layerswitcher';
 
-export function updateToc(map, ol_layers, layer_class, zoom_icons, toc) {
+export function updateToc(map, ol_layers, layer_class, zoom_icons, sliders, toc) {
     // RENDER LAYERSWITCHER
     LayerSwitcher.renderPanel(map, toc);
 
@@ -25,7 +25,7 @@ export function updateToc(map, ol_layers, layer_class, zoom_icons, toc) {
     renderLegend(ol_layers, layer_class);
 
     // DRAW OPACITY SLIDER
-    opacitySlider(ol_layers, layer_class);
+    updateSlider(sliders, ol_layers, layer_class);
 
     // GREY OUT LAYERS ACCORDING TO MIN AND MAX SCALE DENOMINATOR
     greyoutLayers(ol_layers, layer_class, map);
