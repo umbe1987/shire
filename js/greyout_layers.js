@@ -24,10 +24,8 @@ export function greyoutLayers(ol_layers, class_layers, map) {
                     console.log("1:" + current_layer.values_["maxscaledenominator"]);
                     // if layer MaxScaleDenominator is higher than current map scale
                     if (current_scale > current_layer.values_["maxscaledenominator"] || current_scale < current_layer.values_["minscaledenominator"]) {
-                        input_child.disabled = true;
                         label_child.classList.add('disabled');
                     } else {
-                        input_child.disabled = false;
                         label_child.classList.remove('disabled');
                     }
 
