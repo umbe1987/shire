@@ -144,7 +144,7 @@ function checkSize() {
 }
 
 // WMS URL
-var wms_url = 'https://servizigis.regione.emilia-romagna.it/wms/rete_escursionistica?';
+var wms_url = 'https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&';
 
 // Parse WMS Capabilities to retrieve layers and build the map
 WmsParser.getWMSLayers(wms_url).then(wms_layers => {
