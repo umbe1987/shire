@@ -1,4 +1,4 @@
-export const CORS_PREFIX = '';
+export const CORS_PREFIX = 'https://cors-anywhere.herokuapp.com/';
 
 // Insert an element after another (https://stackoverflow.com/a/4793630/1979665)
 export function insertAfter(newNode, referenceNode) {

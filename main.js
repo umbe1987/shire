@@ -144,7 +144,7 @@ function checkSize() {
 }
 
 // WMS URL
-var wms_url = 'https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?&map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&';
+var wms_url = 'https://servizigis.regione.emilia-romagna.it/wms/rete_escursionistica?';
 
 // Parse WMS Capabilities to retrieve layers and build the map
 WmsParser.getWMSLayers(wms_url).then(wms_layers => {
@@ -172,11 +172,13 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     // DRAW THE COMPONENTS OF THE TOC
     updateToc(map, ol_layers, layer_class, zoom_icons, input_sliders, toc);
 
+    var toc_height; // initialize toc height
+
     map.getView().on('propertychange', function(evt) {
         switch (evt.key) {
             case 'resolution':
                 // update the ToC at each zoom
-                updateToc(map, ol_layers, layer_class, zoom_icons, input_sliders, toc);
+                toc_height = updateToc(map, ol_layers, layer_class, zoom_icons, input_sliders, toc, toc_height);
 
                 break;
         }
