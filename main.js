@@ -172,13 +172,13 @@ WmsParser.getWMSLayers(wms_url).then(wms_layers => {
     // DRAW THE COMPONENTS OF THE TOC
     updateToc(map, ol_layers, layer_class, zoom_icons, input_sliders, toc);
 
-    var toc_height; // initialize toc height
+    var toc_scroll_y; // initialize toc height
 
     map.getView().on('propertychange', function(evt) {
         switch (evt.key) {
             case 'resolution':
                 // update the ToC at each zoom
-                toc_height = updateToc(map, ol_layers, layer_class, zoom_icons, input_sliders, toc, toc_height);
+                toc_scroll_y = updateToc(map, ol_layers, layer_class, zoom_icons, input_sliders, toc, toc_scroll_y);
 
                 break;
         }
