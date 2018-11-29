@@ -24,6 +24,7 @@ import Sidebar from './external/sidebar-v2/js/ol5-sidebar';
 
 import LayerSwitcher from 'ol-layerswitcher';
 
+// ToC imports
 import * as WmsParser from './js/wms_parser';
 import {
     fancyAlert
@@ -43,6 +44,13 @@ import {
 import {
     opacitySlider
 } from './js/opacity_slider';
+
+// Attribute Table imports
+import {
+    testWFS
+} from './js/attribute_table/build_table';
+
+testWFS();
 
 // BASEMAP LAYERS
 

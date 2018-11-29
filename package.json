@@ -16,6 +16,7 @@
     "babel-polyfill": "^6.26.0",
     "ol": "^5.3.0",
     "ol-layerswitcher": "^3.2.0",
+    "proj4": "^2.5.0",
     "sidebar-v2": "^0.4.0",
     "whatwg-fetch": "^3.0.0"
   }
