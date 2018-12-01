@@ -178,11 +178,14 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
     // add onclick event listener to zoom icons
     var zoom_icons = document.getElementsByClassName("fa-search-plus");
 
+    // add onclick event listener to zoom icons
+    var table_icons = document.getElementsByClassName("fa-table");
+
     // initialize the opacity sliders
     var input_sliders = opacitySlider(ol_layers, layer_class);
 
     // DRAW THE COMPONENTS OF THE TOC
-    updateToc(map, ol_layers, layer_class, zoom_icons, input_sliders, toc);
+    updateToc(map, EPSG32632, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc);
 
     var toc_scroll_y; // initialize toc height
 
@@ -190,7 +193,7 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
         switch (evt.key) {
             case 'resolution':
                 // update the ToC at each zoom
-                toc_scroll_y = updateToc(map, ol_layers, layer_class, zoom_icons, input_sliders, toc, toc_scroll_y);
+                toc_scroll_y = updateToc(map, EPSG32632, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, toc_scroll_y);
 
                 break;
         }

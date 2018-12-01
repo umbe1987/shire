@@ -16,7 +16,7 @@ import {
 import LayerSwitcher from 'ol-layerswitcher';
 
 
-export function updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, sliders, toc, toc_scroll_y=false) {
+export function updateToc(map, proj, ol_layers, layer_class, zoom_icons, table_icons, sliders, toc, toc_scroll_y=false) {
     if (toc_scroll_y === false) {
         toc_scroll_y = toc.scrollTop;
     }
@@ -31,7 +31,7 @@ export function updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, 
 
     // ATTRIBUTE TABLE
     tableIcon(layer_class);
-    OpenTable(table_icons, ol_layers, url, projection);
+    OpenTable(table_icons, ol_layers, proj);
 
     // RENDER LEGEND
     renderLegend(ol_layers, layer_class);

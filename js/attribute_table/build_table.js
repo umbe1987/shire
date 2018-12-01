@@ -2,7 +2,7 @@ import {
     WFSfeatures
 } from './get_features';
 
-async export function buildTable(url, typename, projection, filter = null) {
+export async function buildTable(url, typename, projection, filter = null) {
     // get all features from a single typename of a WFS
     var features = await WFSfeatures(url, typename, projection, filter)
     // get the FILEDS of the table from the first record (FIELDS are shared by each feature)
@@ -26,6 +26,7 @@ async export function buildTable(url, typename, projection, filter = null) {
 
 export function drawTable(headers, rows) {
     // start drawing headers
+    var table = document.createElement('TABLE');
     var t_row = table.insertRow(0);
     for (var j = 0, len_j = headers.length; j < len_j; ++j){
         var th = document.createElement('TH');
@@ -42,4 +43,6 @@ export function drawTable(headers, rows) {
             t_row.insertCell(y).innerHTML = rows[z][y];
         }
     }
+
+    return table;
 }

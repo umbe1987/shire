@@ -138,6 +138,11 @@ label{
     margin-left: 10px;
 }
 
+.fa-table {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
 .slider{
     margin: 0 !important;
 }

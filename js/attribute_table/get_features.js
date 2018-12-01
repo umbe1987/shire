@@ -34,7 +34,6 @@ export async function WFSfeatures(url, typename, projection, filter = null) {
         var features = new WFS().readFeatures(text, {
             dataProjection: projection,
         });
-        console.log(features);
 
         return features;
 
