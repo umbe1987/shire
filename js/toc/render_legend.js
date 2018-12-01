@@ -1,4 +1,4 @@
-import { insertAfter } from './init';
+import { insertAfter } from '../init';
 
 // ADD LEGEND TO TOC
 

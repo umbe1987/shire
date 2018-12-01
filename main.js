@@ -24,8 +24,14 @@ import Sidebar from './external/sidebar-v2/js/ol5-sidebar';
 
 import LayerSwitcher from 'ol-layerswitcher';
 
+// WONDERMAP IMPORTS
+// generic imports
+import {
+    EPSG32632
+} from './js/init';
+
 // ToC imports
-import * as WmsParser from './js/wms_parser';
+import * as WmsParser from './js/toc/wms_parser';
 import {
     fancyAlert
 } from './js/fancy_alert';
@@ -40,17 +46,15 @@ import {
 } from './js/user_position';
 import {
     updateToc
-} from './js/update_toc';
+} from './js/toc/update_toc';
 import {
     opacitySlider
-} from './js/opacity_slider';
+} from './js/toc/opacity_slider';
 
 // Attribute Table imports
 import {
     testWFS
 } from './js/attribute_table/build_table';
-
-testWFS();
 
 // BASEMAP LAYERS
 
@@ -151,13 +155,13 @@ function checkSize() {
     attribution.setCollapsed(small);
 }
 
-// WMS URL
-var wms_url = 'https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&';
+// WMS/WFS URL
+var service_url = 'https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&';
 
-// Parse WMS Capabilities to retrieve layers and build the map
-WmsParser.getWMSLayers(wms_url).then(wms_layers => {
+// Parse WMS Capabilities to retrieve layers and build the ToC
+WmsParser.getWMSLayers(service_url).then(wms_layers => {
     // OPERATIONAL LAYERS
-    var operational_layers = WmsParser.getLayers(wms_layers, wms_url, map);
+    var operational_layers = WmsParser.getLayers(wms_layers, service_url, map);
 
     // add layers to map and re-render layerswitcher to show them
     map.addLayer(operational_layers[0]);

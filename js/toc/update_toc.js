@@ -10,10 +10,13 @@ import {
 import {
     greyoutLayers
 } from './greyout_layers';
+import {
+    tableIcon, OpenTable
+} from './attribute_table';
 import LayerSwitcher from 'ol-layerswitcher';
 
 
-export function updateToc(map, ol_layers, layer_class, zoom_icons, sliders, toc, toc_scroll_y=false) {
+export function updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, sliders, toc, toc_scroll_y=false) {
     if (toc_scroll_y === false) {
         toc_scroll_y = toc.scrollTop;
     }
@@ -25,6 +28,10 @@ export function updateToc(map, ol_layers, layer_class, zoom_icons, sliders, toc,
     // add zoom icon
     zoomIcon(layer_class);
     ZoomToExtent(zoom_icons, ol_layers, map.getView());
+
+    // ATTRIBUTE TABLE
+    tableIcon(layer_class);
+    OpenTable(table_icons, ol_layers, url, projection);
 
     // RENDER LEGEND
     renderLegend(ol_layers, layer_class);

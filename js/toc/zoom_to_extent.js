@@ -1,6 +1,6 @@
 import {
     getSiblings
-} from '../init';
+} from './init';
 
 // add zoom icon after "elem"
 export function zoomIcon(class_layers) {

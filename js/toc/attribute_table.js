@@ -1,24 +1,27 @@
 import {
     getSiblings
 } from '../init';
+import {
+    buildTable, drawTable
+} from '../attribute_table/build_table';
 
-// add zoom icon after "elem"
-export function zoomIcon(class_layers) {
+// add table icon after "elem"
+export function tableIcon(class_layers) {
     for (var i = 0, len = class_layers.length; i < len; ++i) {
         var elem = class_layers[i];
-        // avoid adding zoom to base layers
+        // avoid adding table to base layers
         if (elem.firstChild.getAttribute("name") !== "base") {
             var span = document.createElement("SPAN");
-            span.classList.add("fas", "fa-search-plus");
+            span.classList.add("fas", "fa-table");
             elem.appendChild(span);
         }
     }
 
 }
 
-export function ZoomToExtent(zoom_icons, ol_layers, view) {
-    for (let i = 0, len = zoom_icons.length; i < len; ++i) {
-        zoom_icons[i].addEventListener('click', fn, false);
+export function OpenTable(table_icons, ol_layers, url, projection) {
+    for (let i = 0, len = table_icons.length; i < len; ++i) {
+        table_icons[i].addEventListener('click', fn, false);
     }
 
     function fn(evt) {
@@ -31,11 +34,9 @@ export function ZoomToExtent(zoom_icons, ol_layers, view) {
                 // loop through ol layers
                 for (var j = 0, len_j = ol_layers.length; j < len_j; ++j) {
                     var lyr = ol_layers[j];
-                    // if ol layer name corresponds to label layer name, zoom to its extent
+                    // if ol layer name corresponds to label layer name, open its table
                     if (lyr.get("title") === layer_title.replace('\t','')) {
-                        view.fit(lyr.getExtent(), {
-                            duration: 1000
-                        });
+                        console.log("HAI CLICCATO SULLA TABELLA!!!");
                     }
                 }
             }

@@ -1,4 +1,4 @@
-import { getScale } from './get_scale';
+import { getScale } from '../get_scale';
 
 export function greyoutLayers(ol_layers, class_layers, map) {
     // this function needs to be called whenever zoom changes

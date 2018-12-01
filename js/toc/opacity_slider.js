@@ -1,4 +1,4 @@
-import { insertAfter } from './init';
+import { insertAfter } from '../init';
 
 // ADD OPACITY SLIDER TO EACH OPERATIONAL LAYER
 

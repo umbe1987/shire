@@ -1,9 +1,9 @@
 import {
     CORS_PREFIX
-} from './init';
+} from '../init';
 import {
     fancyAlert
-} from './fancy_alert';
+} from '../fancy_alert';
 
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import LayerGroup from 'ol/layer/Group';

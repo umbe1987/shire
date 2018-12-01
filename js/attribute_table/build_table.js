@@ -1,33 +1,45 @@
-import {WFS, GeoJSON} from 'ol/format.js';
-import proj4 from 'proj4';
-import {register} from 'ol/proj/proj4';
-import {get as getProjection} from 'ol/proj';
+import {
+    WFSfeatures
+} from './get_features';
 
-export async function testWFS() {
+async export function buildTable(url, typename, projection, filter = null) {
+    // get all features from a single typename of a WFS
+    var features = await WFSfeatures(url, typename, projection, filter)
+    // get the FILEDS of the table from the first record (FIELDS are shared by each feature)
+    var headers = Object.keys(features[0].values_);
+    // initilaize rows for inserting the fileds' values
+    var rows = [];
 
-    // To use other projections, you have to register the projection in OpenLayers.
-    // This can easily be done with [https://proj4js.org](proj4)
-    //
-    // By default OpenLayers does not know about the EPSG:21781 (Swiss) projection.
-    // So we create a projection instance for EPSG:32632 and pass it to
-    // register to make it available to the library for lookup by its
-    // code.
-    proj4.defs("EPSG:32632","+proj=utm +zone=32 +datum=WGS84 +units=m +no_defs");
-    register(proj4);
-    const itaProjection = getProjection('EPSG:32632');
+    // build the rows for the table, filling with the values from each field of each record
+    for (var i = 0, len = features.length; i < len; ++i) {
+        var row =features[i].values_;
+        var rowToPush = [];
+        // fill the single row and then push in the final table
+        for (const key of Object.keys(row)) {
+            rowToPush.push(row[key]);
+        }
+        rows.push(rowToPush);
+    }
 
-    var url = 'https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs';
-    // generate a GetFeature request
-    var featureRequest = new WFS().writeGetFeature({
-        featureNS: 'http://www.qgis.org/gml',
-        featureTypes: ['domini_sciabili'],
-    });
+    return [headers, rows];
+}
 
-    // then post the request and add the received features to a layer
-    var response = await fetch(url,{method: 'POST',body: new XMLSerializer().serializeToString(featureRequest),});
-    var text = await response.text();
-    var features = new WFS().readFeatures(text, {dataProjection:itaProjection,});
-    console.log(features);
+export function drawTable(headers, rows) {
+    // start drawing headers
+    var t_row = table.insertRow(0);
+    for (var j = 0, len_j = headers.length; j < len_j; ++j){
+        var th = document.createElement('TH');
+        var cell = document.createTextNode(headers[j]);
+        th.appendChild(cell);
+        t_row.appendChild(th);
+    }
+    table.appendChild(t_row);
 
-    return features;
+    // then draw the records with their values
+    for (var z = 0, len_z = rows.length; z < len_z; ++z){
+        var t_row = table.insertRow(z + 1);
+        for (var y = 0, len_y = rows[z].length; y < len_y; ++y){
+            t_row.insertCell(y).innerHTML = rows[z][y];
+        }
+    }
 }
