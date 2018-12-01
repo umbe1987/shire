@@ -42,12 +42,18 @@ export function OpenTable(table_icons, ol_layers, projection) {
                         // get WMS-WFS base URI
                         var url = lyr.get("source")["url_"]
                         // generate headers and record values of the attr table
-                        var rows = buildTable(url, lyr.get("name"), projection);
-                        var headers = rows[0];
-                        var rows = rows[1];
-                        // then draw it!
-                        var attr_table = drawTable(headers, rows);
-                        fancyAlert(attr_table, "info");
+                        buildTable(url, lyr.get("name"), projection).then(rows => {
+                            var headers = rows[0];
+                            var rows = rows[1];
+                            // then draw it!
+                            var attr_table = drawTable(headers, rows);
+                            // we need to use XMLSerializer().serializeToString to convert attr_tbl which is a [object HTMLTableElement] to he serialized subtree of a string
+                            // (https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer)
+                            fancyAlert(new XMLSerializer().serializeToString(attr_table), "info", "Attribute Table");
+                        }).catch(err => {
+                            fancyAlert(err, "error");
+                        });
+
                     }
                 }
             }
