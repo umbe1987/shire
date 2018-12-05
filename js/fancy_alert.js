@@ -14,7 +14,8 @@ export function fancyAlert(content, alertType, headerText = 'Error') {
         hNew.appendChild(t);
         modalHeader[0].appendChild(hNew);
         // Set modal-body content
-        document.getElementsByClassName("modal-body")[0].innerHTML = content;
+        var modalBody = document.getElementsByClassName("modal-body")[0];
+        modalBody.innerHTML = content;
         // Add style according to alert type
         if (alertType === 'error') {
             modalHeader[0].classList.add("error-color");
@@ -29,6 +30,8 @@ export function fancyAlert(content, alertType, headerText = 'Error') {
         modal.style.display = "flex";
         // When the user clicks on <span> (x), close the modal
         span.onclick = function() {
+            // scroll the modal_body to top
+            modalBody.scrollTop = 0;
             modal.style.display = "none";
             // finally remove info/error classes (otherwise next time the old ones still persist)
             modalHeader[0].classList.remove("error-color");
@@ -37,6 +40,8 @@ export function fancyAlert(content, alertType, headerText = 'Error') {
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target == modal) {
+                // scroll the modal_body to top
+                modalBody.scrollTop = 0;
                 modal.style.display = "none";
                 // finally remove info/error classes (otherwise next time the old ones still persist)
                 modalHeader[0].classList.remove("error-color");
