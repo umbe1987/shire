@@ -147,6 +147,16 @@ label{
     margin: 0 !important;
 }
 
+.tableFixHead {
+    overflow-y: auto;
+    height: 100px;
+}
+
+.tableFixHead th {
+    position: sticky;
+    top: -16px;
+}
+
 table {
     border-collapse: collapse;
     width: 100%;
