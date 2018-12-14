@@ -178,7 +178,7 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
     // add onclick event listener to zoom icons
     var zoom_icons = document.getElementsByClassName("fa-search-plus");
 
-    // add onclick event listener to zoom icons
+    // add onclick event listener to table icons
     var table_icons = document.getElementsByClassName("fa-table");
 
     // initialize the opacity sliders
