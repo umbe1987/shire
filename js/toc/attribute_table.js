@@ -40,7 +40,7 @@ export function OpenTable(table_icons, ol_layers, projection) {
                     // if ol layer name corresponds to label layer name, open its table
                     if (lyr.get("title") === layer_title.replace('\t','')) {
                         // get WMS-WFS base URI
-                        var url = lyr.get("source")["url_"]
+                        var url = lyr.get("source")["url_"];
                         // generate headers and record values of the attr table
                         buildTable(url, lyr.get("name"), projection).then(rows => {
                             var headers = rows[0];
