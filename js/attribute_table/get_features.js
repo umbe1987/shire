@@ -19,17 +19,11 @@ import {
 export async function WFSfeatures(url, typename, projection, filter = null) {
     try {
         // generate a GetFeature request
-        var featureRequest = new WFS().writeGetFeature({
-            featureNS: 'http://www.qgis.org/gml',
-            featureTypes: [typename],
-            filter: filter,
-        });
+        url += "SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&";
+        url = url + "TYPENAME=" + typename + "&";
 
         // then post the request and add the received features to a layer
-        var response = await fetch(url, {
-            method: 'POST',
-            body: new XMLSerializer().serializeToString(featureRequest),
-        });
+        var response = await fetch(url);
         var text = await response.text();
         var features = new WFS().readFeatures(text, {
             dataProjection: projection,
