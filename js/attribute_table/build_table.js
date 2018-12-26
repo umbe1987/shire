@@ -1,10 +1,11 @@
 import {
-    WFSfeatures
+    GetFeatureURL, WFSfeatures
 } from './get_features';
 
-export async function buildTable(url, typename, projection, filter = null) {
+export async function buildTable(lyr_source, typename, projection, filter = null) {
+    var url = GetFeatureURL(lyr_source, typename);
     // get all features from a single typename of a WFS
-    var features = await WFSfeatures(url, typename, projection, filter)
+    var features = await WFSfeatures(url, projection, filter)
     // get the FILEDS of the table from the first record (FIELDS are shared by each feature)
     var headers = Object.keys(features[0].values_);
     // initilaize rows for inserting the fileds' values

@@ -7,6 +7,14 @@ import {
     fancyAlert
 } from '../fancy_alert';
 
+export function GetFeatureURL(url, typename) {
+    // generate a GetFeature request
+    url += "SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&";
+    url = url + "TYPENAME=" + typename + "&";
+
+    return url;
+}
+
 /**
  * Tries to return all features for a single typename with
  * a getFeature request to a valid WFS.
@@ -16,14 +24,9 @@ import {
  * @param {proj4} typename of the single layer to request (proj4)
  * @param {module:ol/format/filter/Filter~Filter} [filter=null] Filter condition
  */
-export async function WFSfeatures(url, typename, projection, filter = null) {
+export async function WFSfeatures(getfeature_request, projection, filter = null) {
     try {
-        // generate a GetFeature request
-        url += "SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&";
-        url = url + "TYPENAME=" + typename + "&";
-
-        // then post the request and add the received features to a layer
-        var response = await fetch(url);
+        var response = await fetch(getfeature_request);
         var text = await response.text();
         var features = new WFS().readFeatures(text, {
             dataProjection: projection,
