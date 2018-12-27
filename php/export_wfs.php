@@ -5,10 +5,11 @@
     $tmpdir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tmp'; // !!! EVERYTHING WILL BE CREATED HERE !!!
     //$tmpdir = sys_get_temp_dir(); // !!! EVERYTHING WILL BE CREATED HERE !!!
     $outdir = tempdir($tmpdir);
-    $format = "ESRI Shapefile";
+    $format = $_GET["format"]; // e.g. "ESRI Shapefile";
+    $getfeature_url = $_GET["wfs_url"];
 
     // convert WFS into a given format and place result in folder
-    $ogr2ogr = "ogr2ogr -f \"$format\" $outdir WFS:\"https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?&map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&typename=domini_sciabili\"";
+    $ogr2ogr = "ogr2ogr -f \"$format\" $outdir WFS:\"$getfeature_url\"";
 
     echo $ogr2ogr;
     exec($ogr2ogr);
