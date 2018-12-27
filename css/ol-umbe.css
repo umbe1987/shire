@@ -89,7 +89,7 @@ label{
 }
 
 .modal-body {
-    padding: 16px 16px;
+    margin: 8px 8px;
     overflow: auto; /* Enable scroll if needed */
     max-height: 250px;
 }
@@ -154,7 +154,7 @@ label{
 
 .tableFixHead th {
     position: sticky;
-    top: -16px;
+    top: 0;
 }
 
 table {
