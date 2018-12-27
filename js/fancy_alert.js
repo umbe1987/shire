@@ -1,5 +1,5 @@
 // fancy alert (alertType can be either 'info' or 'error')
-export function fancyAlert(content, alertType, headerText = 'Error') {
+export function fancyAlert(content, alertType, headerText = 'Error', footer = false) {
     if (content) {
         // Get modal-header element
         var modalHeader = document.getElementsByClassName("modal-header");
@@ -16,6 +16,11 @@ export function fancyAlert(content, alertType, headerText = 'Error') {
         // Set modal-body content
         var modalBody = document.getElementsByClassName("modal-body")[0];
         modalBody.innerHTML = content;
+        // if specified, set modal-footer content
+        if (footer) {
+            var modalFooter = document.getElementsByClassName("modal-footer")[0];
+            modalBody.innerHTML = footer;
+        }
         // Add style according to alert type
         if (alertType === 'error') {
             modalHeader[0].classList.add("error-color");
