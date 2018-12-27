@@ -165,3 +165,13 @@ th { background:#eee; }
 tr:nth-child(even) { background-color: #f2f2f2; }
 
 tr:hover{ background-color: lightblue; }
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 8px;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+}

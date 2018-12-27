@@ -46,5 +46,18 @@ export function drawTable(headers, rows) {
         }
     }
 
-    return table;
+    // finally creates the download button (to be placed in the footer)
+    var button = downloadBtn();
+
+    return [table, button];
+}
+
+// draw a dropdown button with export functionality to be placed in the table footer
+function downloadBtn() {
+    var btn = document.createElement("BUTTON");
+    btn.classList.add("dropbtn");
+    var t = document.createTextNode("Download");
+    btn.appendChild(t);
+
+    return btn;
 }
