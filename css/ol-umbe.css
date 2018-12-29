@@ -54,6 +54,7 @@ label{
     display:flex;
     flex-direction: column;
     margin-top: auto;
+    max-height: 100%;
     -webkit-animation-name: slideIn;
     -webkit-animation-duration: 0.4s;
     animation-name: slideIn;
