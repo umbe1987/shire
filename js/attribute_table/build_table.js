@@ -78,6 +78,10 @@ function downloadBtn() {
         for (var i = 0, len = format_list.length; i < len; ++i){
             var anchor = document.createElement("A");
             anchor.href = "#";
+            // Prevent a link from opening the URL
+            anchor.addEventListener("click", function(event){
+                event.preventDefault();
+            });
             var format = document.createTextNode(format_list[i]);
             anchor.appendChild(format);
             list.appendChild(anchor);
