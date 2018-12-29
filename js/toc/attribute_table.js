@@ -49,6 +49,7 @@ export function OpenTable(table_icons, ol_layers, projection) {
                             var attr_table = drawTable(headers, rows);
                             var table_content = attr_table[0];
                             var download_btn = attr_table[1];
+                            // place the table within a fancyAlert
                             // we need to use XMLSerializer().serializeToString to convert attr_tbl which is a [object HTMLTableElement] to he serialized subtree of a string
                             // (https://developer.mozilla.org/en-US/docs/Web/API/XMLSerializer)
                             fancyAlert(new XMLSerializer().serializeToString(table_content), "info", "Attribute Table", download_btn);

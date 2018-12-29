@@ -44,7 +44,7 @@ export function fancyAlert(content, alertType, headerText = 'Error', footer = fa
             modalFooter[0].removeChild(footer);
         }
         // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
+        window.addEventListener('click', function(event) {
             if (event.target == modal) {
                 // scroll the modal_body to top
                 modalBody.scrollTop = 0;
@@ -54,6 +54,6 @@ export function fancyAlert(content, alertType, headerText = 'Error', footer = fa
                 modalHeader[0].classList.remove("info-color");
                 modalFooter[0].removeChild(footer);
             }
-        }
+        });
     }
 };

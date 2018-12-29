@@ -54,10 +54,42 @@ export function drawTable(headers, rows) {
 
 // draw a dropdown button with export functionality to be placed in the table footer
 function downloadBtn() {
-    var btn = document.createElement("BUTTON");
-    btn.classList.add("dropbtn");
-    var t = document.createTextNode("Download");
-    btn.appendChild(t);
+    function toggleBtn(btn, dropdown_list) {
+        btn.onclick = function() {
+            dropdown_list.classList.toggle("show");
+            };
+    }
 
-    return btn;
+    function drawBtn() {
+        var dropdown = document.createElement("DIV");
+        //  create the button
+        dropdown.classList.add("dropdown");
+        var btn = document.createElement("BUTTON");
+        btn.classList.add("dropbtn");
+        var t = document.createTextNode("Download");
+        btn.appendChild(t);
+        dropdown.appendChild(btn);
+        // format list for conversion with ogr2ogr
+        var format_list = ["ESRI Shapefile"];
+        // create the list
+        var list = document.createElement("DIV");
+        list.id = "myDropdown";
+        list.classList.add("dropdown-content");
+        for (var i = 0, len = format_list.length; i < len; ++i){
+            var anchor = document.createElement("A");
+            anchor.href = "#";
+            var format = document.createTextNode(format_list[i]);
+            anchor.appendChild(format);
+            list.appendChild(anchor);
+        }
+        dropdown.appendChild(list);
+
+        toggleBtn(btn, list);
+
+        return dropdown;
+        }
+
+    var download_btn = drawBtn();
+
+    return download_btn;
 }

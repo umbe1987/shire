@@ -158,6 +158,21 @@ function checkSize() {
 // WMS/WFS URL
 var service_url = 'https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&';
 
+// When the user clicks anywhere outside of a dropdown button, close the drodown
+// (https://www.w3schools.com/howto/howto_js_dropdown.asp)
+window.addEventListener('click',function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+});
+
 // Parse WMS Capabilities to retrieve layers and build the ToC
 WmsParser.getWMSLayers(service_url).then(wms_layers => {
     // OPERATIONAL LAYERS
