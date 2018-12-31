@@ -7,7 +7,9 @@
     //$tmpdir = sys_get_temp_dir(); // !!! EVERYTHING WILL BE CREATED HERE !!!
     $outdir = tempdir($tmpdir);
     $format = $_POST["format"]; // e.g. "ESRI Shapefile";
+    //$format = "ESRI Shapefile";
     $getfeature_url = $_POST["wfs_url"];
+    //$getfeature_url = "https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&TYPENAME=domini_sciabili&";
 
     // convert WFS into a given format and place result in folder
     $ogr2ogr = "ogr2ogr -f \"$format\" $outdir WFS:\"$getfeature_url\"";
@@ -17,7 +19,7 @@
 
     // zip up the contents
     // chdir($tmpdir);
-    $zipName = uniqid('wondermap_', 'wondermap_') . '.zip'; // uniqid('prefix', true) . '.pdf';
+    $zipName = uniqid('wondermap_') . '.zip'; // uniqid('prefix', true) . '.pdf';
     $zipFile = $tmpdir . DIRECTORY_SEPARATOR . $zipName;
     $zipCommand = "zip -rj $zipFile $outdir";
 
@@ -55,11 +57,11 @@
     // delete zip afterwards
     if (!unlink($zipFile)) {
         echo ("Error deleting $zipFile");
-    } else {
+    } /*else {
         echo ("Deleted $zipFile");
-    }
+    }*/
 
     // delete folder afterwards
-    array_map('unlink', glob("$outdir/*.*"));
-    rmdir($outdir);
+    // array_map('unlink', glob("$outdir/*.*"));
+    // rmdir($outdir);
 ?>
