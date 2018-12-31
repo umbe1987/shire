@@ -3,9 +3,9 @@ import {
 } from './get_features';
 
 export async function buildTable(lyr_source, typename, projection, filter = null) {
-    var url = GetFeatureURL(lyr_source, typename);
+    var getfeature_url = GetFeatureURL(lyr_source, typename);
     // get all features from a single typename of a WFS
-    var features = await WFSfeatures(url, projection, filter)
+    var features = await WFSfeatures(getfeature_url, projection, filter)
     // get the FILEDS of the table from the first record (FIELDS are shared by each feature)
     var headers = Object.keys(features[0].values_);
     // initilaize rows for inserting the fileds' values
@@ -22,10 +22,10 @@ export async function buildTable(lyr_source, typename, projection, filter = null
         rows.push(rowToPush);
     }
 
-    return [headers, rows];
+    return [headers, rows, getfeature_url];
 }
 
-export function drawTable(headers, rows) {
+export function drawTable(headers, rows, url) {
     // start drawing headers
     var table = document.createElement('TABLE');
     table.classList.add('tableFixHead');
@@ -47,13 +47,14 @@ export function drawTable(headers, rows) {
     }
 
     // finally creates the download button (to be placed in the footer)
-    var button = downloadBtn();
+    var button = downloadBtn(url);
 
     return [table, button];
 }
 
 // draw a dropdown button with export functionality to be placed in the table footer
-function downloadBtn() {
+// works with a php (it passes its params to a php to execute download)
+function downloadBtn(url) {
     function toggleBtn(btn, dropdown_list) {
         btn.onclick = function() {
             dropdown_list.classList.toggle("show");
@@ -75,12 +76,35 @@ function downloadBtn() {
         var list = document.createElement("DIV");
         list.id = "myDropdown";
         list.classList.add("dropdown-content");
+        // create list of formats and attach onclick events to perform download with php
         for (var i = 0, len = format_list.length; i < len; ++i){
             var anchor = document.createElement("A");
             anchor.href = "#";
             // Prevent a link from opening the URL
             anchor.addEventListener("click", function(event){
-                event.preventDefault();
+                // event.preventDefault();
+                // (https://w3epic.com/how-to-pass-variable-from-php-to-javascript-javascript-to-php/)
+                var xhr;
+                if (window.XMLHttpRequest) xhr = new XMLHttpRequest(); // all browsers
+                else xhr = new ActiveXObject("Microsoft.XMLHTTP"); // for IE
+
+                // window.location.hostname for (e.g.) http://www.mysite.com/somepage is www.mysite.com
+                // window.location.protocol for (e.g.) http://www.mysite.com/somepage is http
+                // NOTE: in my url there's already a "&" at the end (../project.qgs&)
+                var php_url = '/shire/php/export_wfs.php' // ?wfs_url=' + url + 'format=' + format_list[0];
+                // (https://stackoverflow.com/a/53982364/1979665)
+                var formData = new FormData();
+                formData.append('wfs_url', url);
+                formData.append('format', format_list[0]);
+                xhr.open('POST', php_url);
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState===4 && xhr.status===200) {
+                        alert('Server reply: ' + xhr.responseText);
+                    }
+                }
+                xhr.send(formData);
+
+                return false;
             });
             var format = document.createTextNode(format_list[i]);
             anchor.appendChild(format);

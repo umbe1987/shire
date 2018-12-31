@@ -42,11 +42,13 @@ export function OpenTable(table_icons, ol_layers, projection) {
                         // get WMS-WFS base URI
                         var url = lyr.get("source")["url_"];
                         // generate headers and record values of the attr table
-                        buildTable(url, lyr.get("name"), projection).then(rows => {
-                            var headers = rows[0];
-                            var rows = rows[1];
+                        buildTable(url, lyr.get("name"), projection).then(result => {
+                            var headers = result[0];
+                            var rows = result[1];
+                            var getfeature_url = result[2];
+                            alert(getfeature_url);
                             // then draw it!
-                            var attr_table = drawTable(headers, rows);
+                            var attr_table = drawTable(headers, rows, getfeature_url);
                             var table_content = attr_table[0];
                             var download_btn = attr_table[1];
                             // place the table within a fancyAlert
