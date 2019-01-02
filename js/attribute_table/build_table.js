@@ -66,7 +66,6 @@ function downloadBtn(url) {
             list.classList.add("dropdown-content");
             // create list of formats and attach onclick events to perform download with php
             for (var i = 0, len = format_list.length; i < len; ++i) {
-                alert(i);
                 var anchor = document.createElement("A");
                 anchor.href = "#";
                 // Prevent a link from opening the URL
@@ -84,7 +83,7 @@ function downloadBtn(url) {
                     // (https://stackoverflow.com/a/53982364/1979665)
                     var formData = new FormData();
                     formData.append('wfs_url', url);
-                    formData.append('format', format_list[0]);
+                    formData.append('format', anchor.text);
                     xhr.open('POST', php_url, true);
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState === 4 && xhr.status === 200) {
