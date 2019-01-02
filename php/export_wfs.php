@@ -6,15 +6,27 @@
     //$tmpdir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tmp'; // !!! EVERYTHING WILL BE CREATED HERE !!!
     //$tmpdir = sys_get_temp_dir(); // !!! EVERYTHING WILL BE CREATED HERE !!!
     $outdir = tempdir($tmpdir);
-    $format = escapeshellarg ($_POST["format"]); // e.g. "ESRI Shapefile";
-    //$format = "ESRI Shapefile";
-    $getfeature_url = escapeshellarg ($_POST["wfs_url"]);
+    $format = escapeshellarg($_POST["format"]); // e.g. "ESRI Shapefile";
+    switch ($format) {
+        case "'ESRI Shapefile'":
+            $output =  $outdir . DIRECTORY_SEPARATOR . "export.shp";
+            break;
+        case "'CSV'":
+            $output =  $outdir . DIRECTORY_SEPARATOR . "export.csv";
+            break;
+        case "'KML'":
+            $output =  $outdir . DIRECTORY_SEPARATOR . "export.kml";
+            break;
+        case "'DXF'":
+            $output =  $outdir . DIRECTORY_SEPARATOR . "export.dxf";
+            break;
+    }
+
+    $getfeature_url = escapeshellarg($_POST["wfs_url"]);
     //$getfeature_url = "https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&TYPENAME=domini_sciabili&";
 
     // convert WFS into a given format and place result in folder
-    $ogr2ogr = "ogr2ogr -f $format $outdir WFS:$getfeature_url";
-
-    echo $ogr2ogr;
+    $ogr2ogr = "ogr2ogr -f $format $output WFS:$getfeature_url";
     exec($ogr2ogr);
 
     // zip up the contents
@@ -22,7 +34,6 @@
     $zipName = uniqid('wondermap_') . '.zip'; // uniqid('prefix', true) . '.pdf';
     $zipFile = $tmpdir . DIRECTORY_SEPARATOR . $zipName;
     $zipCommand = "zip -rj $zipFile $outdir";
-
     exec($zipCommand);
 
     // force client download

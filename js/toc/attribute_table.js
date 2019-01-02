@@ -46,7 +46,6 @@ export function OpenTable(table_icons, ol_layers, projection) {
                             var headers = result[0];
                             var rows = result[1];
                             var getfeature_url = result[2];
-                            alert(getfeature_url);
                             // then draw it!
                             var attr_table = drawTable(headers, rows, getfeature_url);
                             var table_content = attr_table[0];

@@ -59,7 +59,10 @@ function downloadBtn(url) {
     function toggleBtn(btn, dropdown) {
         btn.onclick = function() {
             // format list for conversion with ogr2ogr
-            var format_list = ["ESRI Shapefile"];
+            var format_list = ["ESRI Shapefile",
+                               "CSV",
+                               "KML",
+                               "DXF"];
             // create the list
             var list = document.createElement("DIV");
             list.id = "myDropdown";
@@ -83,7 +86,7 @@ function downloadBtn(url) {
                     // (https://stackoverflow.com/a/53982364/1979665)
                     var formData = new FormData();
                     formData.append('wfs_url', url);
-                    formData.append('format', anchor.text);
+                    formData.append('format', this.text);
                     xhr.open('POST', php_url, true);
                     xhr.onreadystatechange = function() {
                         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -112,7 +115,7 @@ function downloadBtn(url) {
 
                     return false;
                 });
-                var format = document.createTextNode(format_list[0]);
+                var format = document.createTextNode(format_list[i]);
                 anchor.appendChild(format);
                 list.appendChild(anchor);
             }
