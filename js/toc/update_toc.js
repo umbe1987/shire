@@ -16,11 +16,7 @@ import {
 import LayerSwitcher from 'ol-layerswitcher';
 
 
-export function updateToc(map, proj, ol_layers, layer_class, zoom_icons, table_icons, sliders, toc, toc_scroll_y=false) {
-    if (toc_scroll_y === false) {
-        toc_scroll_y = toc.scrollTop;
-    }
-
+export function updateToc(map, proj, ol_layers, layer_class, zoom_icons, table_icons, sliders, toc, toc_scroll_x, toc_scroll_y) {
     // RENDER LAYERSWITCHER
     LayerSwitcher.renderPanel(map, toc);
 
@@ -42,7 +38,12 @@ export function updateToc(map, proj, ol_layers, layer_class, zoom_icons, table_i
     // GREY OUT LAYERS ACCORDING TO MIN AND MAX SCALE DENOMINATOR
     greyoutLayers(ol_layers, layer_class, map);
 
-    toc.scrollTo(0,toc_scroll_y);
+    // set former scroll position
+    toc.scrollTo(toc_scroll_x, toc_scroll_y);
 
-    return toc_scroll_y;
+    // update scroll position
+    toc_scroll_x = toc.scrollLeft;
+	toc_scroll_y = toc.scrollTop;
+
+    return [toc_scroll_x, toc_scroll_y];
 }

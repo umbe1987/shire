@@ -200,15 +200,17 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
     var input_sliders = opacitySlider(ol_layers, layer_class);
 
     // DRAW THE COMPONENTS OF THE TOC
-    updateToc(map, EPSG32632, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc);
-
-    var toc_scroll_y; // initialize toc height
+    // initialize empty array to store toc scroll [x, y] position
+    var toc_scroll = [];
+    toc_scroll = updateToc(map, EPSG32632, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, 0, 0);
 
     map.getView().on('propertychange', function(evt) {
         switch (evt.key) {
             case 'resolution':
                 // update the ToC at each zoom
-                toc_scroll_y = updateToc(map, EPSG32632, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, toc_scroll_y);
+                toc_scroll[0] = toc.scrollLeft; // toc horizontal position
+                toc_scroll[1] = toc.scrollTop; // toc vertical position
+                toc_scroll = updateToc(map, EPSG32632, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, toc_scroll[0], toc_scroll[1]);
 
                 break;
         }
