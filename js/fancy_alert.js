@@ -41,7 +41,9 @@ export function fancyAlert(content, alertType, headerText = 'Error', footer = fa
             // finally remove header content/classes (otherwise next time the old ones still persist)
             modalHeader[0].classList.remove("error-color");
             modalHeader[0].classList.remove("info-color");
-            modalFooter[0].removeChild(footer);
+            if (footer) {
+                modalFooter[0].removeChild(footer);
+            }
         }
         // When the user clicks anywhere outside of the modal, close it
         window.addEventListener('click', function(event) {
@@ -52,7 +54,9 @@ export function fancyAlert(content, alertType, headerText = 'Error', footer = fa
                 // finally remove header content/classes (otherwise next time the old ones still persist)
                 modalHeader[0].classList.remove("error-color");
                 modalHeader[0].classList.remove("info-color");
-                modalFooter[0].removeChild(footer);
+                    if (footer) {
+                        modalFooter[0].removeChild(footer);
+                    }
             }
         });
     }
