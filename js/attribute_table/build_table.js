@@ -79,10 +79,21 @@ function downloadBtn(url) {
                     if (window.XMLHttpRequest) xhr = new XMLHttpRequest(); // all browsers
                     else xhr = new ActiveXObject("Microsoft.XMLHTTP"); // for IE
 
-                    // window.location.hostname for (e.g.) http://www.mysite.com/somepage is www.mysite.com
-                    // window.location.protocol for (e.g.) http://www.mysite.com/somepage is http
-                    // NOTE: in my url there's already a "&" at the end (../project.qgs&)
-                    var php_url = '/shire/php/export_wfs.php' // ?wfs_url=' + url + 'format=' + format_list[0];
+                    // build a URL to the php (e.g. https://localhost/wondermap/php/export_wfs.php)
+                    // window.location (https://www.w3schools.com/js/js_window_location.asp)
+                    // (https://css-tricks.com/snippets/javascript/get-url-and-url-parts-in-javascript/)
+                    var php_url = window.location.protocol + "//" + window.location.host;
+                    var root_path =  window.location.pathname.split("/");
+                    for (var j = 0, len_j = root_path.length; j < len_j - 1; ++j) {
+                        // this is to avoid placing "/" in case of empty part
+                        if (root_path[j]) {
+                            php_url += '/';
+                            php_url += root_path[j];
+                        }
+                    }
+                    php_url += '/php/export_wfs.php';
+                    alert(php_url);
+                    //var php_url = '/shire/php/export_wfs.php';
                     // (https://stackoverflow.com/a/53982364/1979665)
                     var formData = new FormData();
                     formData.append('wfs_url', url);

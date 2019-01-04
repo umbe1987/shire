@@ -2,8 +2,8 @@
     include('tempdir.php');
 
     // will write to temp dir
-    $tmpdir = "/home/umberto/Documents/apps/projects/shire/tmp";
-    //$tmpdir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tmp'; // !!! EVERYTHING WILL BE CREATED HERE !!!
+    //$tmpdir = "/home/umberto/Documents/apps/projects/shire/tmp";
+    $tmpdir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tmp'; // !!! EVERYTHING WILL BE CREATED HERE !!!
     //$tmpdir = sys_get_temp_dir(); // !!! EVERYTHING WILL BE CREATED HERE !!!
     $outdir = tempdir($tmpdir);
     $format = escapeshellarg($_POST["format"]); // e.g. "ESRI Shapefile";
