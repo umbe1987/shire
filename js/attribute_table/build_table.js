@@ -92,8 +92,6 @@ function downloadBtn(url) {
                         }
                     }
                     php_url += '/php/export_wfs.php';
-                    alert(php_url);
-                    //var php_url = '/shire/php/export_wfs.php';
                     // (https://stackoverflow.com/a/53982364/1979665)
                     var formData = new FormData();
                     formData.append('wfs_url', url);
