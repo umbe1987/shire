@@ -5,7 +5,7 @@ export function fancyAlert(content, alertType, headerText = 'Error', footer = fa
         var modalHeader = document.getElementsByClassName("modal-header");
         // check if modal-header has been previously set (remove H2 if so)
         var hOld = modalHeader[0].children[1]; // .children[1] is H2 node ('undefined' if not exists)
-        if (document.contains(hOld)) {
+        if (document.body.contains(hOld)) {
             modalHeader[0].removeChild(hOld);
         }
         // Set modal-header content
@@ -54,9 +54,9 @@ export function fancyAlert(content, alertType, headerText = 'Error', footer = fa
                 // finally remove header content/classes (otherwise next time the old ones still persist)
                 modalHeader[0].classList.remove("error-color");
                 modalHeader[0].classList.remove("info-color");
-                    if (footer) {
-                        modalFooter[0].removeChild(footer);
-                    }
+                if (footer) {
+                    modalFooter[0].removeChild(footer);
+                }
             }
         });
     }
