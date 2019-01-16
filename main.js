@@ -27,7 +27,7 @@ import LayerSwitcher from 'ol-layerswitcher';
 // WONDERMAP IMPORTS
 // generic imports
 import {
-    EPSG32632
+    EPSG32632, JD
 } from './js/init';
 
 // ToC imports
@@ -214,7 +214,7 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
         toc_scroll = updateToc(map, EPSG32632, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, toc_scroll[0], toc_scroll[1]);
     }
 
-    map.getView().on('change:resolution', onResolutionChange);
+    map.getView().on('change:resolution', JD.debounce(onResolutionChange, 400));
 
     // DISPLAY INFO ONCLICK
     map.on('singleclick', function(evt) {

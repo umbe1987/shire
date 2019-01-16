@@ -12,8 +12,8 @@ export function renderLegend(ol_layers, class_layers) {
             var layer_name = ol_layers[j].values_["name"];
             for (var i = 0, len_i = class_layers.length; i < len_i; ++i) {
                 var class_elem = class_layers[i];
-                var elem_name = class_layers[i].innerText;
-                if (elem_name.replace('\t','') === layer_title) {
+                var curr_lyr = class_layers[i];
+                if (curr_lyr.innerHTML.includes(layer_title)) {
                     // create new li element
                     var li_elem = document.createElement("LI");
                     // build GetLegendGraphics request

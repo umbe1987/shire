@@ -59,7 +59,7 @@ export function updateSlider(all_sliders, ol_layers, class_layers) {
         // (first we need to convert class_layers from HTMLCollection to array otherwise .find will fail)
         var class_layers_arr = Array.from(class_layers);
         var class_elem = class_layers_arr.find(obj => {
-            return obj.innerText.replace('\t','') === curr_slider.getAttribute("id")
+            return obj.innerHTML.includes(curr_slider.getAttribute("id"))
         });
         // get current layer opacity and set it as the value of current slider
         var curr_opacity = lyr.values_["opacity"];
