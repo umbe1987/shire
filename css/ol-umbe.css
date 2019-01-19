@@ -1,3 +1,7 @@
+:root {
+  --main-bg-color: 0,116,217;
+}
+
 .popover-content {
 	max-height: 200px;
 	overflow: auto;
@@ -86,7 +90,7 @@ label{
 }
 
 .info-color{
-    background-color: #0074d9;
+    background-color: rgb(var(--main-bg-color));
 }
 
 .modal-body {
@@ -165,12 +169,12 @@ th { background:#eee; }
 
 tr:nth-child(even) { background-color: #f2f2f2; }
 
-tr:hover{ background-color: lightblue; }
+tr:hover{ background-color: rgba(var(--main-bg-color), 0.5); }
 
 /* https://www.w3schools.com/howto/howto_js_dropdown.asp */
 /* Dropdown Button */
 .dropbtn {
-    background-color: #3498DB;
+    background-color: rgb(var(--main-bg-color));
     color: white;
     padding: 8px;
     font-size: 12px;
@@ -180,7 +184,7 @@ tr:hover{ background-color: lightblue; }
 
 /* Dropdown button on hover & focus */
 .dropbtn:hover, .dropbtn:focus {
-    background-color: #2980B9;
+    background-color: rgb(var(--main-bg-color));
 }
 
 /* The container <div> - needed to position the dropdown content */
@@ -210,8 +214,30 @@ tr:hover{ background-color: lightblue; }
 
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {
-    background-color: #ddd
+    background-color: rgba(var(--main-bg-color), 0.5);
 }
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display:block;}
+
+/* Overwrites sidebar default colors */
+.sidebar-header {
+    background-color: rgb(var(--main-bg-color));
+}
+
+.sidebar-tabs {
+    background-color: rgba(var(--main-bg-color), 0.5);
+}
+
+.sidebar-tabs > li:hover, .sidebar-tabs > ul > li:hover {
+    background-color: rgba(var(--main-bg-color), 0.6);
+}
+
+.sidebar-tabs > li.active, .sidebar-tabs > ul > li.active {
+    background-color: rgb(var(--main-bg-color));
+}
+
+/* Overwrites OL default colors */
+.ol-control button {
+    background-color: rgba(var(--main-bg-color), 0.7);
+}
