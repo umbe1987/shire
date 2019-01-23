@@ -52,3 +52,16 @@ JD.debounce = function(func, wait, immediate) {
         }
     };
 };
+
+export function toggleTitle() {
+    var toggle_title = document.getElementsByClassName("arrow-down")[0];
+    var title_bar = document.getElementById("mapTitle");
+
+    toggle_title.addEventListener("click", function() {
+        if (title_bar.classList.contains("hidden")) {
+            title_bar.classList.remove("hidden");
+        } else {
+            title_bar.classList.add("hidden");
+        }
+    });
+}

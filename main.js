@@ -27,7 +27,7 @@ import LayerSwitcher from 'ol-layerswitcher';
 // WONDERMAP IMPORTS
 // generic imports
 import {
-    EPSG32632, JD
+    EPSG32632, JD, toggleTitle
 } from './js/init';
 
 // ToC imports
@@ -55,6 +55,9 @@ import {
 import {
     testWFS
 } from './js/attribute_table/build_table';
+
+// TOGGLE TITLE BAR
+toggleTitle();
 
 // BASEMAP LAYERS
 
