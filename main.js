@@ -228,15 +228,9 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
             if (text) {
 
                 var xhttp = new XMLHttpRequest();
-                // overrideMimeType() can be used to force the response to be parsed as XML
-                xhttp.overrideMimeType('text/xml');
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        // if ServiceExceptionReport occurs, place it in alert type "error"
-                        var xhr = this.responseXML;
-                        if (xhr.documentElement.nodeName === 'ServiceExceptionReport') {
-                            fancyAlert(this.responseText, 'error');
-                        } else {
+                        if (this.responseText.indexOf('</TABLE>') != this.responseText.lastIndexOf('</TABLE>')) {
                             fancyAlert(this.responseText, 'info', 'Layer Info');
                         }
                     }
