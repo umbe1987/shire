@@ -109,8 +109,8 @@ var attribution = new Attribution({
 // VIEW
 
 var view = new View({
-    center: [952014.59, 5571269.68],
-    zoom: 8
+    center: [1103837, 5830388],
+    zoom: 10
 });
 
 // MAP

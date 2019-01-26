@@ -153,7 +153,7 @@ export function getLayers(layers, url, map, crs = false) {
                 let ith_lyr = new LayerImage({
                     name: layer_name, // needed by GetLegendGraphic
                     title: layer_title, // needed by layerswitcher
-                    visible: false,
+                    visible: true,
                     source: source,
                     extent: layer_extent_proj,
                     minscaledenominator: min_scale_den,
