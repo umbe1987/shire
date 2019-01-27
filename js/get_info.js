@@ -22,7 +22,7 @@ function getInfoUrl(evt, view, lyr) {
 }
 
 export function getInfo(evt, view, ol_layers) {
-    // display info in fancyAlert
+    // display info in fancyAlert at map's 'singleclick' events
     for (let i = 0; i < ol_layers.length; ++i) {
         let layer = ol_layers[i];
         let text = getInfoUrl(evt, view, layer);
