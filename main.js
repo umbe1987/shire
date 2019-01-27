@@ -33,10 +33,7 @@ import {
 // ToC imports
 import * as WmsParser from './js/toc/wms_parser';
 import {
-    fancyAlert
-} from './js/fancy_alert';
-import {
-    getInfoUrl
+    getInfo
 } from './js/get_info';
 import {
     getOLLayers
@@ -222,22 +219,6 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
     // DISPLAY INFO ONCLICK
     map.on('singleclick', function(evt) {
         // display info in fancyAlert
-        for (let i = 0; i < ol_layers.length; ++i) {
-            let layer = ol_layers[i];
-            let text = getInfoUrl(evt, view, layer);
-            if (text) {
-
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        if (this.responseText.indexOf('</TABLE>') != this.responseText.lastIndexOf('</TABLE>')) {
-                            fancyAlert(this.responseText, 'info', 'Layer Info');
-                        }
-                    }
-                };
-                xhttp.open("GET", text, true);
-                xhttp.send();
-            }
-        }
+        getInfo(evt, view, ol_layers);
     })
 });
