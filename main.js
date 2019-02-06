@@ -108,7 +108,7 @@ var extent = [1014471, 5742425, 1199987, 5905241];
 // VIEW
 
 var view = new View({
-    extent: extent,
+    extent: extent, // this will constrain where the user can navigate!
     center: [1103837, 5830388],
     minZoom: 8,
 });
