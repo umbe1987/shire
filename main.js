@@ -102,10 +102,15 @@ var attribution = new Attribution({
     collapsible: false
 });
 
+// SET VIEW EXTENT
+var extent = [1014471, 5742425, 1199987, 5905241];
+
 // VIEW
 
 var view = new View({
+    extent: extent,
     center: [1103837, 5830388],
+    minZoom: 8,
 });
 
 // MAP
@@ -116,9 +121,6 @@ var map = new Map({
     view: view,
     controls: defaultControls({attribution: false}).extend([attribution]),
 });
-
-// SET VIEW EXTENT
-var extent = [1014471, 5742425, 1199987, 5905241];
 
 // fit the view to a given extent (for more responsiveness)
 view.fit(extent);
