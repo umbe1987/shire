@@ -12,7 +12,6 @@ import 'babel-polyfill'; // babel-polyfill package
 
 import Map from 'ol/Map';
 import View from 'ol/View';
-import Extent from 'ol/extent';
 import LayerGroup from 'ol/layer/Group';
 import LayerImage from 'ol/layer/Image';
 import LayerTile from 'ol/layer/Tile';
@@ -107,7 +106,6 @@ var attribution = new Attribution({
 
 var view = new View({
     center: [1103837, 5830388],
-    zoom: 10
 });
 
 // MAP
@@ -118,6 +116,12 @@ var map = new Map({
     view: view,
     controls: defaultControls({attribution: false}).extend([attribution]),
 });
+
+// SET VIEW EXTENT
+var extent = [1014471, 5742425, 1199987, 5905241];
+
+// fit the view to a given extent (for more responsiveness)
+view.fit(extent);
 
 // SIDEBAR
 var sidebar = new Sidebar({
