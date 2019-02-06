@@ -17,9 +17,12 @@ export function fancyAlert(content, alertType, headerText = 'Error', footer = fa
         var modalBody = document.getElementsByClassName("modal-body")[0];
         modalBody.innerHTML = content;
         // if specified, set modal-footer content
+        var modalFooter = document.getElementsByClassName("modal-footer");
         if (footer) {
-            var modalFooter = document.getElementsByClassName("modal-footer");
             modalFooter[0].appendChild(footer);
+            modalFooter[0].classList.remove("hidden");
+        } else {
+            modalFooter[0].classList.add("hidden");
         }
         // Add style according to alert type
         if (alertType === 'error') {

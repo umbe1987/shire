@@ -145,6 +145,10 @@ label{
     color: rgb(var(--main-color));
 }
 
+.modal-footer.hidden {
+    display: none;
+}
+
 /* Add Animation */
 @-webkit-keyframes slideIn {
     from {bottom: -300px; opacity: 0} 
