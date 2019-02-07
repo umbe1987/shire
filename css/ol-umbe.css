@@ -269,10 +269,15 @@ tr:hover{ background-color: rgba(var(--main-bg-color), 0.5); }
 .switch {
     background-color: rgb(var(--main-bg-color));
     color: white;
-    padding: 8px 16px;
-    display: inline-block;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-decoration: none;
-    border-radius: 50%;
     border: none;
     cursor: pointer;
 }
