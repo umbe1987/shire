@@ -1,5 +1,5 @@
 :root {
-  --main-bg-color: 0,116,217;
+  --main-bg-color: 0, 116, 217;
   --main-color: 255, 255, 255;
 }
 
@@ -264,6 +264,21 @@ tr:hover{ background-color: rgba(var(--main-bg-color), 0.5); }
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display:block;}
+
+/* Prev/Next buttons to switch info pages */
+.switch {
+    background-color: rgb(var(--main-bg-color));
+    color: white;
+    padding: 8px 16px;
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 50%;
+}
+
+.switch:hover {
+    background-color: rgba(var(--main-bg-color), 0.5);
+    color: black;
+}
 
 /* Overwrites sidebar default colors */
 .sidebar-header {

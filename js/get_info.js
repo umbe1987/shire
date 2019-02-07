@@ -35,7 +35,10 @@ function getHTML(url) {
     });
 }
 
-export async function getInfo(evt, view, ol_layers) {
+async function infoArray(evt, view, ol_layers) {
+    // initialyze page numbers and iframe array
+    var pNum = 0;
+    var iframeArr = [];
     // display info in fancyAlert at map's 'singleclick' events
     for (let i = 0; i < ol_layers.length; ++i) {
         let layer = ol_layers[i];
@@ -48,10 +51,43 @@ export async function getInfo(evt, view, ol_layers) {
                 if (gfi_url) {
                     var remoteCode = await getHTML(gfi_url);
                     if (remoteCode.indexOf('</table>') != remoteCode.lastIndexOf('</table>')) {
-                        fancyAlert(remoteCode, 'info', 'Layer Info');
+                        // fancyAlert(remoteCode, 'info', 'Layer Info');
+                        iframeArr[pNum] = remoteCode;
+                        pNum += 1;
                     }
                 }
             }
         }
     }
+
+    return iframeArr;
+}
+
+export function getInfo(evt, view, ol_layers) {
+    var info_arr = infoArray(evt, view, ol_layers);
+    var switch_page = switchPage();
+    fancyAlert("test", 'info', 'Layer Info', switch_page);
+    for (let i = 0; i < info_arr.length; ++i) {
+        // TO BE CONTINUED ...
+	}
+}
+
+// build next/prev buttons to switch info page when multiple layers are queried
+function switchPage() {
+    var switch_page = document.createElement("DIV");
+
+    var prevBtn = document.createElement("BUTTON");
+    var prevText = document.createTextNode("<");
+    prevBtn.appendChild(prevText);
+    prevBtn.classList.add("switch");
+
+    var nextBtn = document.createElement("BUTTON");
+    var nextText = document.createTextNode(">");
+    nextBtn.appendChild(nextText);
+    nextBtn.classList.add("switch");
+
+    switch_page.appendChild(prevBtn);
+    switch_page.appendChild(nextBtn);
+
+    return switch_page;
 }
