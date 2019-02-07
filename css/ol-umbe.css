@@ -273,6 +273,8 @@ tr:hover{ background-color: rgba(var(--main-bg-color), 0.5); }
     display: inline-block;
     text-decoration: none;
     border-radius: 50%;
+    border: none;
+    cursor: pointer;
 }
 
 .switch:hover {
