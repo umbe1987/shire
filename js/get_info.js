@@ -90,7 +90,7 @@ function switchPage(maxPage, pSrc) {
 
     var pagination = document.createElement("P");
     pagination.id = "info-page";
-    var pText = document.createTextNode(currPage + " of " + maxPage);
+    var pText = document.createTextNode(String(currPage+1) + " of " + String(maxPage+1));
     pagination.appendChild(pText);
 
     switch_page.appendChild(prevBtn);
@@ -100,13 +100,13 @@ function switchPage(maxPage, pSrc) {
     prevBtn.onclick = function() {
         currPage--;
         if (currPage < 0) currPage = 0;
-        document.getElementById("info-page").innerHTML = currPage + " of " + maxPage;
+        document.getElementById("info-page").innerHTML = String(currPage+1) + " of " + String(maxPage+1);
         fancyAlert(pSrc[currPage], 'info', 'Layer Info', switch_page);
     }
     nextBtn.onclick = function() {
         currPage++;
         if (currPage > maxPage) currPage -= 1;
-        document.getElementById("info-page").innerHTML = currPage + " of " + maxPage;
+        document.getElementById("info-page").innerHTML = String(currPage+1) + " of " + String(maxPage+1);
         fancyAlert(pSrc[currPage], 'info', 'Layer Info', switch_page);
     }
 
