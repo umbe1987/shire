@@ -142,6 +142,7 @@ label{
 
 .modal-footer {
     padding: 2px 16px;
+    background-color: #eee;
 }
 
 .modal-footer.hidden {
