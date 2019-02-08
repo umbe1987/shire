@@ -110,7 +110,7 @@ var extent = [1029056, 5759179, 1178602, 5890239];
 var view = new View({
     extent: extent, // this will constrain where the user can navigate!
     center: [1103837, 5830388],
-    minZoom: 9,
+    minZoom: 8,
 });
 
 // MAP
