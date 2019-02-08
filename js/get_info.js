@@ -11,7 +11,10 @@ function getInfoUrl(evt, view, lyr) {
     var url = CORS_PREFIX;
     var viewResolution = /** @type {number} */ (view.getResolution());
     url += lyr.get('source').getGetFeatureInfoUrl(evt.coordinate, viewResolution, 'EPSG:3857', {
-        'INFO_FORMAT': 'text/html'
+        'INFO_FORMAT': 'text/html',
+        'FI_POINT_TOLERANCE': 10,
+        'FI_LINE_TOLERANCE': 10,
+        'FI_POLYGON_TOLERANCE': 0,
     });
 
     return url;
