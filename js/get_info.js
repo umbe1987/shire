@@ -88,17 +88,25 @@ function switchPage(maxPage, pSrc) {
     nextBtn.appendChild(nextText);
     nextBtn.classList.add("switch");
 
+    var pagination = document.createElement("P");
+    pagination.id = "info-page";
+    var pText = document.createTextNode(currPage + " of " + maxPage);
+    pagination.appendChild(pText);
+
     switch_page.appendChild(prevBtn);
     switch_page.appendChild(nextBtn);
+    switch_page.appendChild(pagination);
 
     prevBtn.onclick = function() {
         currPage--;
         if (currPage < 0) currPage = 0;
+        document.getElementById("info-page").innerHTML = currPage + " of " + maxPage;
         fancyAlert(pSrc[currPage], 'info', 'Layer Info', switch_page);
     }
     nextBtn.onclick = function() {
         currPage++;
         if (currPage > maxPage) currPage -= 1;
+        document.getElementById("info-page").innerHTML = currPage + " of " + maxPage;
         fancyAlert(pSrc[currPage], 'info', 'Layer Info', switch_page);
     }
 

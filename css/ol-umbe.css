@@ -142,7 +142,6 @@ label{
 
 .modal-footer {
     padding: 2px 16px;
-    color: rgb(var(--main-color));
 }
 
 .modal-footer.hidden {
@@ -280,6 +279,8 @@ tr:hover{ background-color: rgba(var(--main-bg-color), 0.5); }
     text-decoration: none;
     border: none;
     cursor: pointer;
+    float:left; /* Display all footer elements on a single line */
+    margin: 0px 5px;
 }
 
 .switch:hover {
