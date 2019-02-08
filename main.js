@@ -103,14 +103,14 @@ var attribution = new Attribution({
 });
 
 // SET VIEW EXTENT
-var extent = [1014471, 5742425, 1199987, 5905241];
+var extent = [1029056, 5759179, 1178602, 5890239];
 
 // VIEW
 
 var view = new View({
     extent: extent, // this will constrain where the user can navigate!
     center: [1103837, 5830388],
-    minZoom: 8,
+    minZoom: 9,
 });
 
 // MAP
