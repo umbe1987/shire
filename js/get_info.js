@@ -67,16 +67,15 @@ export async function getInfo(evt, view, ol_layers) {
     var info_arr = await infoArray(evt, view, ol_layers);
     var pNum = info_arr[0];
     var pSrc = info_arr[1];
-    var switch_page = switchPage(pNum, pSrc);
+    var switch_page = switchPage(pNum-1, pSrc);
     if (pSrc) {
-        alert(pNum);
         fancyAlert(pSrc[0], 'info', 'Layer Info', switch_page);
 	}
 }
 
 // build next/prev buttons to switch info page when multiple layers are queried
-function switchPage(pNum, pSrc) {
-    var maxPage = pNum-1;
+function switchPage(maxPage, pSrc) {
+    var currPage = 0;
     var switch_page = document.createElement("DIV");
 
     var prevBtn = document.createElement("BUTTON");
@@ -93,18 +92,14 @@ function switchPage(pNum, pSrc) {
     switch_page.appendChild(nextBtn);
 
     prevBtn.onclick = function() {
-        pNum--;
-        if (pNum < 0) pNum = 0;
-        alert(pNum);
-        alert(maxPage);
-        fancyAlert(pSrc[pNum], 'info', 'Layer Info', switch_page);
+        currPage--;
+        if (currPage < 0) currPage = 0;
+        fancyAlert(pSrc[currPage], 'info', 'Layer Info', switch_page);
     }
     nextBtn.onclick = function() {
-        pNum++;
-        if (pNum > maxPage) pNum = 0;
-        alert(pNum);
-        alert(maxPage);
-        fancyAlert(pSrc[pNum], 'info', 'Layer Info', switch_page);
+        currPage++;
+        if (currPage > maxPage) currPage -= 1;
+        fancyAlert(pSrc[currPage], 'info', 'Layer Info', switch_page);
     }
 
     return switch_page;
