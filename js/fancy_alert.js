@@ -3,6 +3,14 @@ export function fancyAlert(content, alertType, headerText = 'Error', footer = fa
     if (content) {
         // Get modal-header element
         var modalHeader = document.getElementsByClassName("modal-header");
+        // Get modal-footer element
+        var modalFooter = document.getElementsByClassName("modal-footer");
+        // remove any remnant footer
+        if (modalFooter[0].firstChild) {
+            while (modalFooter[0].firstChild) {
+                modalFooter[0].removeChild(modalFooter[0].firstChild);
+            }
+        }
         // check if modal-header has been previously set (remove H2 if so)
         var hOld = modalHeader[0].children[1]; // .children[1] is H2 node ('undefined' if not exists)
         if (document.body.contains(hOld)) {
@@ -17,7 +25,6 @@ export function fancyAlert(content, alertType, headerText = 'Error', footer = fa
         var modalBody = document.getElementsByClassName("modal-body")[0];
         modalBody.innerHTML = content;
         // if specified, set modal-footer content
-        var modalFooter = document.getElementsByClassName("modal-footer");
         if (footer) {
             modalFooter[0].appendChild(footer);
             modalFooter[0].classList.remove("hidden");
