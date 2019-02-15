@@ -176,11 +176,12 @@ var dims = {
     a5: [210, 148]
 };
 var exportButton = document.getElementById("export-pdf");
-var format = document.getElementById("format").value;
-var resolution = document.getElementById('resolution').value;
 
 function onPrintBtnClick() {
-    print_map(map, exportButton, format, resolution, dims);
+    var format = document.getElementById("format").value;
+    var orientation = document.getElementById("orientation").value;
+    var resolution = document.getElementById('resolution').value;
+    print_map(map, exportButton, orientation, format, resolution, dims);
 };
 
 exportButton.addEventListener('click', onPrintBtnClick, false);

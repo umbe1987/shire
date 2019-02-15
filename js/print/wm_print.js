@@ -1,4 +1,4 @@
-export function print_map(map, exportButton, format, resolution, dims) {
+export function print_map(map, exportButton, orientation, format, resolution, dims) {
     exportButton.disabled = true;
     document.body.style.cursor = 'progress';
     var dim = dims[format];
@@ -10,7 +10,7 @@ export function print_map(map, exportButton, format, resolution, dims) {
     map.once('rendercomplete', function(event) {
         var canvas = event.context.canvas;
         var data = canvas.toDataURL('image/jpeg');
-        var pdf = new jsPDF('landscape', undefined, format);
+        var pdf = new jsPDF(orientation, 'mm', format);
         pdf.addImage(data, 'JPEG', 0, 0, dim[0], dim[1]);
         pdf.save('map.pdf');
         // Reset original map size

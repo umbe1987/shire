@@ -7,7 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.2.61/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.1/jspdf.debug.js" integrity="sha384-X4GDYnzplvo6FyFvNVyh5H6VQKJ1yYkkzUDmxppFT/GAYvnhB6y+zoHdCQweNJ1T" crossorigin="anonymous"></script>
 </head>
 <body>
     <!-- Map Title -->
@@ -59,6 +59,11 @@
                         <option value="a3">A3</option>
                         <option value="a4" selected>A4</option>
                         <option value="a5">A5 (fast)</option>
+                    </select><br>
+                    <label>Orientation </label>
+                    <select id="orientation">
+                        <option value="p">portrait</option>
+                        <option value="l">landscape</option>
                     </select><br>
                     <label>Resolution </label>
                     <select id="resolution">
