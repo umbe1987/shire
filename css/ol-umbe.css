@@ -291,7 +291,7 @@ tr:hover{ background-color: rgba(var(--main-bg-color), 0.5); }
 }
 
 select {
-  width: 100%;
+  width: 95%;
   padding: 16px 20px;
   border: none;
   border-radius: 4px;
