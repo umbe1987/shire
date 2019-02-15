@@ -52,6 +52,11 @@ import {
     testWFS
 } from './js/attribute_table/build_table';
 
+// Print imports
+import {
+    print_map
+} from './js/print/wm_print';
+
 // TOGGLE TITLE BAR
 toggleTitle();
 
@@ -160,6 +165,25 @@ function checkSize() {
     attribution.setCollapsible(small);
     attribution.setCollapsed(small);
 }
+
+// PRINT (https://openlayers.org/en/latest/examples/export-pdf.html)
+var dims = {
+    a0: [1189, 841],
+    a1: [841, 594],
+    a2: [594, 420],
+    a3: [420, 297],
+    a4: [297, 210],
+    a5: [210, 148]
+};
+var exportButton = document.getElementById("export-pdf");
+var format = document.getElementById("format").value;
+var resolution = document.getElementById('resolution').value;
+
+function onPrintBtnClick() {
+    print_map(map, exportButton, format, resolution, dims);
+};
+
+exportButton.addEventListener('click', onPrintBtnClick, false);
 
 // WMS/WFS URL
 var service_url = 'https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&';
