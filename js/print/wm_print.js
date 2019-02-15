@@ -12,7 +12,8 @@ export function print_map(map, exportButton, orientation, format, resolution, di
         var data = canvas.toDataURL('image/jpeg');
         var pdf = new jsPDF(orientation, 'mm', format);
         pdf.addImage(data, 'JPEG', 0, 0, dim[0], dim[1]);
-        pdf.save('map.pdf');
+        window.open(pdf.output('bloburl'))
+        // pdf.save('map.pdf');
         // Reset original map size
         map.setSize(size);
         map.getView().fit(extent, {size: size});
