@@ -289,6 +289,14 @@ tr:hover{ background-color: rgba(var(--main-bg-color), 0.5); }
     color: black;
 }
 
+select {
+  width: 100%;
+  padding: 16px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #f1f1f1;
+}
+
 /* Overwrites sidebar default colors */
 .sidebar-header {
     background-color: rgb(var(--main-bg-color));
