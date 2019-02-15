@@ -192,7 +192,7 @@ var service_url = 'https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/
 // When the user clicks anywhere outside of a dropdown button, close the drodown
 // (https://www.w3schools.com/howto/howto_js_dropdown.asp)
 window.addEventListener('click',function(event) {
-    var matches = event.target.matches ? event.target.matches('.dropbtn') : event.target.msMatchesSelector('.dropbtn');
+    var matches = event.target.matches ? event.target.matches('.wm-btn') : event.target.msMatchesSelector('.wm-btn');
     if (!matches) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;

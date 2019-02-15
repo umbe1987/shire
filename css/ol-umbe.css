@@ -218,17 +218,17 @@ tr:hover{ background-color: rgba(var(--main-bg-color), 0.5); }
 
 /* https://www.w3schools.com/howto/howto_js_dropdown.asp */
 /* Dropdown Button */
-.dropbtn {
+.wm-btn {
     background-color: rgb(var(--main-bg-color));
     color: white;
     padding: 8px;
-    font-size: 12px;
+    margin: 16px 0px;
     border: none;
     cursor: pointer;
 }
 
 /* Dropdown button on hover & focus */
-.dropbtn:hover, .dropbtn:focus {
+.wm-btn:hover, .wm-btn:focus {
     background-color: rgb(var(--main-bg-color));
 }
 
@@ -247,6 +247,7 @@ tr:hover{ background-color: rgba(var(--main-bg-color), 0.5); }
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
     bottom: 100%; /* added this attribute */
+    margin-bottom: -16px;  /* account for the margin of .wm-btn */
 }
 
 /* Links inside the dropdown */

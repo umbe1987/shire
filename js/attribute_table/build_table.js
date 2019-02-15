@@ -138,7 +138,7 @@ function downloadBtn(url) {
         //  create the button
         dropdown.classList.add("dropdown");
         var btn = document.createElement("BUTTON");
-        btn.classList.add("dropbtn");
+        btn.classList.add("wm-btn");
         var t = document.createTextNode("Download");
         btn.appendChild(t);
         dropdown.appendChild(btn);
