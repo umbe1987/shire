@@ -1,4 +1,10 @@
+import {
+    fancyAlert
+} from '../fancy_alert';
+
 export function print_map(map, exportButton, orientation, format, resolution, dims) {
+    var loader = buildLoader();
+    fancyAlert(new XMLSerializer().serializeToString(loader), "info", "Printing...");
     exportButton.disabled = true;
     document.body.style.cursor = 'progress';
     var dim = dims[format];
@@ -27,4 +33,11 @@ export function print_map(map, exportButton, orientation, format, resolution, di
     var printSize = [width, height];
     map.setSize(printSize);
     map.getView().fit(extent, {size: printSize});
+}
+
+function buildLoader(){
+    var loader = document.createElement('div');
+    loader.className = "loader";
+    
+    return loader
 }
