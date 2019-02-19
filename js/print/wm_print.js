@@ -6,7 +6,6 @@ export function print_map(map, exportButton, orientation, format, resolution, di
     var height = Math.round(dim[1] * resolution / 25.4);
     var size = /** @type {module:ol/size~Size} */ (map.getSize());
     var extent = map.getView().calculateExtent(size);
-    var zoom =  map.getView().getZoom();
     
     map.once('rendercomplete', function(event) {
         var canvas = event.context.canvas;
@@ -17,8 +16,9 @@ export function print_map(map, exportButton, orientation, format, resolution, di
         // pdf.save('map.pdf');
         // Reset original map size
         map.setSize(size);
-        map.getView().fit(extent, {size: size});
-        map.getView().setZoom(zoom);
+        map.getView().fit(extent, {
+            size: size,
+            constrainResolution: false});
         exportButton.disabled = false;
         document.body.style.cursor = 'auto';
     });
