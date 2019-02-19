@@ -1,10 +1,10 @@
 import {
-    fancyAlert
+    FancyAlert
 } from '../fancy_alert';
 
 export function print_map(map, exportButton, orientation, format, resolution, dims) {
     var loader = buildLoader();
-    fancyAlert(new XMLSerializer().serializeToString(loader), "info", "Printing...");
+    var print_alert = new FancyAlert(new XMLSerializer().serializeToString(loader), "info", "Printing...");
     exportButton.disabled = true;
     document.body.style.cursor = 'progress';
     var dim = dims[format];

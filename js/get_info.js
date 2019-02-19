@@ -2,7 +2,7 @@ import {
     CORS_PREFIX
     } from './init';
 import {
-    fancyAlert
+    FancyAlert
 } from './fancy_alert';
 
 // get url for GetFeatureInfo request
@@ -72,7 +72,7 @@ export async function getInfo(evt, view, ol_layers) {
     var pSrc = info_arr[1];
     var switch_page = switchPage(pNum-1, pSrc);
     if (pSrc) {
-        fancyAlert(pSrc[0], 'info', 'Layer Info', switch_page);
+        new FancyAlert(pSrc[0], 'info', 'Layer Info', switch_page);
 	}
 }
 
@@ -104,13 +104,13 @@ function switchPage(maxPage, pSrc) {
         currPage--;
         if (currPage < 0) currPage = 0;
         document.getElementById("info-page").innerHTML = String(currPage+1) + " of " + String(maxPage+1);
-        fancyAlert(pSrc[currPage], 'info', 'Layer Info', switch_page);
+        new FancyAlert(pSrc[currPage], 'info', 'Layer Info', switch_page);
     }
     nextBtn.onclick = function() {
         currPage++;
         if (currPage > maxPage) currPage -= 1;
         document.getElementById("info-page").innerHTML = String(currPage+1) + " of " + String(maxPage+1);
-        fancyAlert(pSrc[currPage], 'info', 'Layer Info', switch_page);
+        new FancyAlert(pSrc[currPage], 'info', 'Layer Info', switch_page);
     }
 
     return switch_page;

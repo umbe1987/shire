@@ -4,7 +4,7 @@ import {
 } from 'ol/format.js';
 
 import {
-    fancyAlert
+    FancyAlert
 } from '../fancy_alert';
 
 export function GetFeatureURL(url, typename) {
@@ -38,7 +38,7 @@ export async function WFSfeatures(getfeature_request, projection, filter = null)
         // as console.error
         console.error(error);
         // as fancy alerts
-        fancyAlert(error, "error");
+        new FancyAlert(error, "error");
 
         return null;
     }

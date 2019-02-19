@@ -2,7 +2,7 @@ import {
     CORS_PREFIX
 } from '../init';
 import {
-    fancyAlert
+    FancyAlert
 } from '../fancy_alert';
 
 import WMSCapabilities from 'ol/format/WMSCapabilities';
@@ -57,7 +57,7 @@ function imageLoadFunction(image, src) {
                     // as console.error
                     console.error(exceptionAsText);
                     // as fancy alerts
-                    fancyAlert(exceptionAsText, "error");
+                    new FancyAlert(exceptionAsText, "error");
                 }
             } else {
                 alert(error(this.statusText));
