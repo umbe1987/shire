@@ -27,6 +27,7 @@ export function print_map(map, exportButton, orientation, format, resolution, di
             constrainResolution: false});
         exportButton.disabled = false;
         document.body.style.cursor = 'auto';
+        print_alert.closeAlert();
     });
     
     // Set print size
