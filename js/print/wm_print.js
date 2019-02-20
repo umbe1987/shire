@@ -1,3 +1,5 @@
+import jsPDF from 'jspdf';
+
 import {
     FancyAlert
 } from '../fancy_alert';
