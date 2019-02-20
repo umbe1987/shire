@@ -1,11 +1,15 @@
 import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 import {
     FancyAlert
 } from '../fancy_alert';
 
+window.html2canvas = html2canvas;
+
 export function print_map(map, exportButton, orientation, format, resolution, dims) {
     var loader = buildLoader();
+    var legend = buildLegend();
     var print_alert = new FancyAlert(new XMLSerializer().serializeToString(loader), "info", "Printing...");
     exportButton.disabled = true;
     document.body.style.cursor = 'progress';
@@ -31,7 +35,15 @@ export function print_map(map, exportButton, orientation, format, resolution, di
         } else if (orientation === 'l') {
             pdf.addImage(data, 'JPEG', 0, 0, dim[0], dim[1]);
         }
-        window.open(pdf.output('bloburl'))
+        // code to generate PDf from legend (UNCOMMENT WHEN READY!)
+        /*
+        pdf.html(legend, {
+            callback: function () {
+                window.open(pdf.output('bloburl'));
+            }
+        });
+        */
+        window.open(pdf.output('bloburl'));
         // pdf.save('map.pdf');
         // Reset original map size
         map.setSize(size);
@@ -55,3 +67,21 @@ function buildLoader(){
     
     return loader
 }
+
+function buildLegend() {
+    // function to build the legend from the layers symbols
+    var legend = document.createElement("TABLE");
+    var legend_items = document.getElementsByClassName("lyr_symbol");
+    for (var i = 0, len = legend_items.length; i < len; ++i) {
+        var tr = document.createElement("TR");
+        var td = document.createElement("TD");
+        var img = document.createElement("IMG");
+        img.src = legend_items[i].src;
+        td.appendChild(img);
+        tr.appendChild(td);
+        legend.appendChild(tr);
+    }
+
+    return legend;
+}
+

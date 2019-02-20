@@ -22,6 +22,8 @@ export function renderLegend(ol_layers, class_layers) {
                     img_url += layer_name;
                     // create img elem and add legend url
                     var img_elem = document.createElement("IMG");
+                    // give the img element a class name to get it when printing
+                    img_elem.className = "lyr_symbol";
                     img_elem.setAttribute("src", img_url);
                     // add img elem to li elem
                     li_elem.appendChild(img_elem);
