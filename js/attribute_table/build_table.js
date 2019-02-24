@@ -30,6 +30,7 @@ export function drawTable(headers, rows, url) {
     // start drawing headers
     var table = document.createElement('TABLE');
     table.classList.add('tableFixHead');
+    table.classList.add('attr-tbl');
     var t_row = table.insertRow(0);
     for (var j = 0, len_j = headers.length; j < len_j; ++j) {
         var th = document.createElement('TH');
