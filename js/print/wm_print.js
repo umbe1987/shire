@@ -36,14 +36,15 @@ export function print_map(map, exportButton, orientation, format, resolution, di
             pdf.addImage(data, 'JPEG', 0, 0, dim[0], dim[1]);
         }
         // code to generate PDf from legend (UNCOMMENT WHEN READY!)
-        /*
         pdf.html(legend, {
+            html2canvas: {
+                scale: 0.5,
+            },
             callback: function () {
                 window.open(pdf.output('bloburl'));
             }
         });
-        */
-        window.open(pdf.output('bloburl'));
+        // window.open(pdf.output('bloburl'));
         // pdf.save('map.pdf');
         // Reset original map size
         map.setSize(size);
@@ -80,6 +81,7 @@ function buildLegend() {
         td.appendChild(img);
         tr.appendChild(td);
         legend.appendChild(tr);
+        legend.style.backgroundColor = "white";
     }
 
     return legend;
