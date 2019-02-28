@@ -17,7 +17,7 @@ import LayerImage from 'ol/layer/Image';
 import LayerTile from 'ol/layer/Tile';
 import SourceOSM from 'ol/source/OSM';
 import SourceXYZ from 'ol/source/XYZ';
-import {defaults as defaultControls, Attribution} from 'ol/control.js';
+import {defaults as defaultControls, Attribution, ScaleLine} from 'ol/control.js';
 
 import Sidebar from './external/sidebar-v2/js/ol5-sidebar';
 
@@ -26,7 +26,7 @@ import LayerSwitcher from 'ol-layerswitcher';
 // WONDERMAP IMPORTS
 // generic imports
 import {
-    EPSG32632, JD, toggleTitle
+    EPSG32632, JD, toggleTitle, scaleline_units_converter
 } from './js/init';
 
 // ToC imports
@@ -118,13 +118,22 @@ var view = new View({
     minZoom: 8,
 });
 
+// SCALE LINE
+
+var scaleLineControl = new ScaleLine();
+
 // MAP
 
 var map = new Map({
     layers: basemap_group,
     target: 'map',
     view: view,
-    controls: defaultControls({attribution: false}).extend([attribution]),
+    controls: defaultControls({
+        attribution: false,
+    }).extend([
+        attribution,
+        scaleLineControl,
+    ]),
 });
 
 // fit the view to a given extent (for more responsiveness)
