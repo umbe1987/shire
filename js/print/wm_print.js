@@ -43,6 +43,7 @@ export function print_map(map, exportButton, orientation, format, resolution, di
                 },
                 callback: function () {
                     window.open(pdf.output('bloburl'));
+                    print_alert.closeAlert();
                 }
             });
             // window.open(pdf.output('bloburl'));
