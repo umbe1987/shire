@@ -1,6 +1,6 @@
 // CSS imports
 import 'ol/ol.css';
-import './external/sidebar-v2/css/ol3-sidebar.css';
+import 'sidebar-v2/css/ol3-sidebar.css';
 import 'ol-layerswitcher/src/ol-layerswitcher.css';
 import './css/ol-umbe.css';
 
@@ -19,7 +19,7 @@ import SourceOSM from 'ol/source/OSM';
 import SourceXYZ from 'ol/source/XYZ';
 import {defaults as defaultControls, Attribution, ScaleLine} from 'ol/control.js';
 
-import Sidebar from './external/sidebar-v2/js/ol5-sidebar';
+import Sidebar from 'sidebar-v2/js/ol5-sidebar';
 
 import LayerSwitcher from 'ol-layerswitcher';
 
