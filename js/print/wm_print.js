@@ -27,25 +27,31 @@ export function print_map(map, exportButton, orientation, format, resolution, di
     var extent = map.getView().calculateExtent(size);
     
     map.once('rendercomplete', function(event) {
-        var canvas = event.context.canvas;
-        var data = canvas.toDataURL('image/jpeg');
-        var pdf = new jsPDF(orientation, undefined, format);
-        if (orientation === 'p') {
-            pdf.addImage(data, 'JPEG', 0, 0, dim[1], dim[0]);
-        } else if (orientation === 'l') {
-            pdf.addImage(data, 'JPEG', 0, 0, dim[0], dim[1]);
-        }
-        // code to generate PDf from legend (UNCOMMENT WHEN READY!)
-        pdf.html(legend, {
-            html2canvas: {
-                scale: 0.5,
-            },
-            callback: function () {
-                window.open(pdf.output('bloburl'));
+        try {
+            var canvas = event.context.canvas;
+            var data = canvas.toDataURL('image/jpeg');
+            var pdf = new jsPDF(orientation, undefined, format);
+            if (orientation === 'p') {
+                pdf.addImage(data, 'JPEG', 0, 0, dim[1], dim[0]);
+            } else if (orientation === 'l') {
+                pdf.addImage(data, 'JPEG', 0, 0, dim[0], dim[1]);
             }
-        });
-        // window.open(pdf.output('bloburl'));
-        // pdf.save('map.pdf');
+            // code to generate PDf from legend (UNCOMMENT WHEN READY!)
+            pdf.html(legend, {
+                html2canvas: {
+                    scale: 0.5,
+                },
+                callback: function () {
+                    window.open(pdf.output('bloburl'));
+                    print_alert.closeAlert();
+                }
+            });
+            // window.open(pdf.output('bloburl'));
+            // pdf.save('map.pdf');
+        } catch(e) {
+            print_alert.closeAlert();
+            new FancyAlert(e.message, 'error');
+		}
         // Reset original map size
         map.setSize(size);
         map.getView().fit(extent, {
@@ -53,7 +59,6 @@ export function print_map(map, exportButton, orientation, format, resolution, di
             constrainResolution: false});
         exportButton.disabled = false;
         document.body.style.cursor = 'auto';
-        print_alert.closeAlert();
     });
     
     // Set print size
