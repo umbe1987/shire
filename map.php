@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.4.4/proj4.js"></script>
     <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
     <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+    <link rel="stylesheet" type="text/css" href="dist/main.css">
 </head>
 <body>
     <!-- Map Title -->
@@ -95,6 +96,6 @@
     </div>
     <div id="map" class="sidebar-map"></div>
     </div>
-    <script src="./main.js"></script>
+    <script src="dist/main.js"></script>
 </body>
 </html>

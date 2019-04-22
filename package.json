@@ -4,9 +4,7 @@
   "description": "A WebGIS portal made with open source projects.",
   "main": "./main.js",
   "scripts": {
-    "dev": "parcel map.html",
-    "start": "parcel map.html",
-    "build": "parcel build --public-url ./ map.html"
+    "build": "parcel build --public-url ./ main.js"
   },
   "license": "ISC",
   "devDependencies": {
