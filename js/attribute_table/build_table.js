@@ -92,7 +92,7 @@ function downloadBtn(url) {
                             php_url += root_path[j];
                         }
                     }
-                    php_url += 'dist/php/export_wfs.php';
+                    php_url += '/dist/php/export_wfs.php';
                     // (https://stackoverflow.com/a/53982364/1979665)
                     var formData = new FormData();
                     formData.append('wfs_url', url);
