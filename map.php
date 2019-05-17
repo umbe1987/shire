@@ -1,6 +1,22 @@
 <?php
   session_start();
   if (isset($_SESSION['userId'])) {
+    if (isset($_GET['mapid'])) {
+    
+      require '../includes/dbh.inc.php';
+      
+      $mapid = $_GET['mapid']; // e.g. 1
+      $sql = "SELECT \"titleMaps\", \"wmsMaps\" FROM maps WHERE \"idMaps\" = $1;";
+      $result = pg_query_params($conn, $sql, array($mapid));
+      if ($result) {
+        $records = pg_num_rows($result);
+        if ($records < 1) {
+        header("Location: ../index.php?error=mapnotfound");
+        exit();
+      }
+      else {
+        while ($row = pg_fetch_row($result)) {
+          // HTML GOES HERE
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +33,7 @@
 <body>
     <!-- Map Title -->
     <div id="mapTitle">
-        <h2>DOMINI SCIABILI</h2>
+        <h2><?php echo $row[0]; ?></h2>
     </div>
     <!-- The Modal -->
     <div id="alertModal" class="modal">
@@ -101,12 +117,25 @@
     </div>
     <div id="map" class="sidebar-map"></div>
     </div>
+    <script type="text/javascript">
+        var service_url = '<?php echo $row[1];?>';
+    </script>
     <script src="dist/main.js"></script>
 </body>
 </html>
 
 <?php
-  } else {
+        }
+      }
+    }
+    else {
+      header("Location: ../index.php?error=sqlerror");
+      exit();
+    }
+  }
+  pg_close($conn);
+  }
+  else {
       header("Location: ../index.php");
   }
 ?>

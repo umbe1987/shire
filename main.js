@@ -196,7 +196,7 @@ function onPrintBtnClick() {
 exportButton.addEventListener('click', onPrintBtnClick, false);
 
 // WMS/WFS URL
-var service_url = 'https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&';
+// var service_url = 'https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&';
 
 // When the user clicks anywhere outside of a dropdown button, close the drodown
 // (https://www.w3schools.com/howto/howto_js_dropdown.asp)
