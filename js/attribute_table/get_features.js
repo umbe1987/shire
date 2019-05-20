@@ -9,7 +9,8 @@ import {
 
 export function GetFeatureURL(url, typename) {
     // generate a GetFeature request
-    url += "SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&";
+    // WARNING: MAXFEATURES set to 200 not to stress the server!!!
+    url += "SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&MAXFEATURES=200&";
     url = url + "TYPENAME=" + typename + "&";
 
     return url;
