@@ -71,21 +71,8 @@ var basemap1 = new LayerTile({
     source: osmBasemap
 });
 
-// Esri Basemap
-var esriBasemap = new SourceXYZ({
-    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    attributions: 'Tiles © Esri — Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community',
-});
-
-var basemap2 = new LayerTile({
-    title: 'ESRI_WorldImagery',
-    type: 'base',
-    visible: false,
-    source: esriBasemap
-});
-
 // Blank Basemap
-var basemap3 = new LayerTile({
+var basemap2 = new LayerTile({
     title: 'BLANK',
     type: 'base',
     visible: false,
@@ -98,7 +85,6 @@ var basemap_group = new LayerGroup({
     layers: [
         basemap1,
         basemap2,
-        basemap3,
     ]
 });
 
