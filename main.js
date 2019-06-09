@@ -26,7 +26,7 @@ import LayerSwitcher from 'ol-layerswitcher';
 // WONDERMAP IMPORTS
 // generic imports
 import {
-    EPSG32632, JD, toggleTitle, scaleline_units_converter
+    JD, toggleTitle, scaleline_units_converter
 } from './js/init';
 
 // ToC imports
@@ -229,7 +229,7 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
     // DRAW THE COMPONENTS OF THE TOC
     // initialize empty array to store toc scroll [x, y] position
     var toc_scroll = [];
-    toc_scroll = updateToc(map, EPSG32632, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, 0, 0);
+    toc_scroll = updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, 0, 0);
 
     function onResolutionChange() {
         if (map.getView().getAnimating()) {
@@ -237,7 +237,7 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
         }
         toc_scroll[0] = toc.scrollLeft; // toc horizontal position
         toc_scroll[1] = toc.scrollTop; // toc vertical position
-        toc_scroll = updateToc(map, EPSG32632, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, toc_scroll[0], toc_scroll[1]);
+        toc_scroll = updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, toc_scroll[0], toc_scroll[1]);
     }
 
     map.getView().on('change:resolution', JD.debounce(onResolutionChange, 400));

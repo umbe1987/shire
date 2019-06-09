@@ -16,7 +16,7 @@ import {
 import LayerSwitcher from 'ol-layerswitcher';
 
 
-export function updateToc(map, proj, ol_layers, layer_class, zoom_icons, table_icons, sliders, toc, toc_scroll_x, toc_scroll_y) {
+export function updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, sliders, toc, toc_scroll_x, toc_scroll_y) {
     // RENDER LAYERSWITCHER
     LayerSwitcher.renderPanel(map, toc);
 
@@ -27,7 +27,7 @@ export function updateToc(map, proj, ol_layers, layer_class, zoom_icons, table_i
 
     // ATTRIBUTE TABLE
     tableIcon(layer_class);
-    OpenTable(table_icons, ol_layers, proj);
+    OpenTable(table_icons, ol_layers);
 
     // RENDER LEGEND
     renderLegend(ol_layers, layer_class);

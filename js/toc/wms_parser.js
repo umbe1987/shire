@@ -86,7 +86,7 @@ export async function getWMSLayers(url) {
 }
 
 // get layers and grouprlayers from getWMSLayers
-export function getLayers(layers, url, map, crs = false) {
+export function getLayers(layers, url, map) {
     // if there is at least one layer
     if (layers) {
         // get projection code from view
@@ -99,10 +99,10 @@ export function getLayers(layers, url, map, crs = false) {
             if (lyr.hasOwnProperty('CRS')) {
                 // if it includes view CRS, then use it as lys CRS as well
                 if (lyr.CRS.includes(view_projection)) {
-                    let crs = view_projection;
+                    var crs = view_projection;
                 // otherwise use the first CRS in the array
                 } else {
-                    let crs = lyr.CRS[0];
+                    var crs = lyr.CRS[lyr.CRS.length-1];
                 }
             }
 
@@ -127,7 +127,7 @@ export function getLayers(layers, url, map, crs = false) {
             let layer_title = lyr.Title;
             // check if this is a group layer
             if (lyr.Layer) {
-                let sublayers = getLayers(lyr.Layer, url, map, crs);
+                let sublayers = getLayers(lyr.Layer, url, map);
                 let ith_group = new LayerGroup({
                     title: layer_title,
                     fold: 'open',

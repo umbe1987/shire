@@ -22,7 +22,7 @@ export function tableIcon(class_layers) {
 
 }
 
-export function OpenTable(table_icons, ol_layers, projection) {
+export function OpenTable(table_icons, ol_layers) {
     for (let i = 0, len = table_icons.length; i < len; ++i) {
         table_icons[i].addEventListener('click', fn, false);
     }
@@ -41,6 +41,8 @@ export function OpenTable(table_icons, ol_layers, projection) {
                     if (lyr.get("title") === layer_title.replace('\t','')) {
                         // get WMS-WFS base URI
                         var url = lyr.get("source")["url_"];
+                        // get lyr CRS
+                        var projection = lyr.getSource().getProjection().getCode();
                         // generate headers and record values of the attr table
                         buildTable(url, lyr.get("name"), projection).then(result => {
                             var headers = result[0];
