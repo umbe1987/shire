@@ -102,7 +102,7 @@ export function getLayers(layers, url, map) {
                     var crs = view_projection;
                 // otherwise use the first CRS in the array
                 } else {
-                    var crs = lyr.CRS[lyr.CRS.length-1];
+                    var crs = lyr.CRS[0];
                 }
             }
 
