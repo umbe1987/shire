@@ -1,5 +1,5 @@
 {
-  "name": "shire-scalebar-branch",
+  "name": "wondermap-viewer",
   "version": "0.1.0",
   "description": "A WebGIS portal made with open source projects.",
   "main": "./main.js",
