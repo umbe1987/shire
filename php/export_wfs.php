@@ -6,24 +6,35 @@
     $tmpdir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'tmp'; // !!! EVERYTHING WILL BE CREATED HERE !!!
     //$tmpdir = sys_get_temp_dir(); // !!! EVERYTHING WILL BE CREATED HERE !!!
     $outdir = tempdir($tmpdir);
+    
+    $getfeature_url = escapeshellarg($_POST["wfs_url"]);
+    //$getfeature_url = "https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&TYPENAME=domini_sciabili&";
+
     $format = escapeshellarg($_POST["format"]); // e.g. "ESRI Shapefile";
     switch ($format) {
         case "'ESRI Shapefile'":
             $output =  $outdir . DIRECTORY_SEPARATOR . "export.shp";
+            // add the geometry back (was removed in the Attribute table with '&GEOMETRYNAME=none')
+            $getfeature_url = $getfeature_url . "&GEOMETRYNAME=extent&";
+            echo $getfeature_url;
             break;
         case "'CSV'":
             $output =  $outdir . DIRECTORY_SEPARATOR . "export.csv";
+            echo $getfeature_url;
             break;
         case "'KML'":
             $output =  $outdir . DIRECTORY_SEPARATOR . "export.kml";
+            // add the geometry back (was removed in the Attribute table with '&GEOMETRYNAME=none')
+            $getfeature_url = $getfeature_url . "&GEOMETRYNAME=extent&";
+            echo $getfeature_url;
             break;
         case "'DXF'":
             $output =  $outdir . DIRECTORY_SEPARATOR . "export.dxf";
+            // add the geometry back (was removed in the Attribute table with '&GEOMETRYNAME=none')
+            $getfeature_url = $getfeature_url . "&GEOMETRYNAME=extent&";
+            echo $getfeature_url;
             break;
     }
-
-    $getfeature_url = escapeshellarg($_POST["wfs_url"]);
-    //$getfeature_url = "https://www.wondermap.it/cgi-bin/qgis_mapserv.fcgi?map=/home/ubuntu/qgis/projects/Demo_sci_WMS/demo_sci.qgs&SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&TYPENAME=domini_sciabili&";
 
     // convert WFS into a given format and place result in folder
     $ogr2ogr = "ogr2ogr -f $format $output WFS:$getfeature_url";
