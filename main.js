@@ -221,6 +221,7 @@ window.addEventListener('click',function(event) {
 });
 
 // Parse WMS Capabilities to retrieve layers and build the ToC
+// service_url is a global var defined in map.php before calling this js!
 WmsParser.getWMSLayers(service_url).then(wms_layers => {
     // OPERATIONAL LAYERS
     var operational_layers = WmsParser.getLayers(wms_layers, service_url, map);
