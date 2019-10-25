@@ -59,6 +59,10 @@ export function drawTable(headers, rows, url) {
 function downloadBtn(url) {
     function toggleBtn(btn, dropdown) {
         btn.onclick = function() {
+    	    // delete the dropdown list if it exists and it is already shown
+		    if (document.getElementById("myDropdown")) {
+		    	document.getElementById("myDropdown").remove();
+		    }
             // format list for conversion with ogr2ogr
             var format_list = ["ESRI Shapefile",
                                "CSV",
