@@ -4,6 +4,8 @@ import {
 
 // add zoom icon after "elem"
 export function zoomIcon(class_layers) {
+    // remove zoom-icons if they exist
+    document.querySelectorAll('.fa-search-plus').forEach(e => e.remove());
     for (var i = 0, len = class_layers.length; i < len; ++i) {
         var elem = class_layers[i];
         // avoid adding zoom to base layers

@@ -13,15 +13,12 @@ import {
 import {
     tableIcon, OpenTable
 } from './attribute_table';
-import LayerSwitcher from 'ol-layerswitcher';
 
 
 export function updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, sliders, toc, toc_scroll_x, toc_scroll_y) {
-    // RENDER LAYERSWITCHER
-    LayerSwitcher.renderPanel(map, toc);
-
     // ZOOM TO LAYER EXTENT
     // add zoom icon
+    console.log("UPDATING TOC");
     zoomIcon(layer_class);
     ZoomToExtent(zoom_icons, ol_layers, map.getView());
 

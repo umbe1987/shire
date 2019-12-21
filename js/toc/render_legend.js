@@ -3,6 +3,8 @@ import { insertAfter } from '../init';
 // ADD LEGEND TO TOC
 
 export function renderLegend(ol_layers, class_layers) {
+    // remove layer images if they exist
+    document.querySelectorAll('.lyr-img').forEach(e => e.remove());
     // get layer names to build lgend request
     for (var j = 0, len_j = ol_layers.length; j < len_j; ++j) {
         var lyr = ol_layers[j];
@@ -23,7 +25,7 @@ export function renderLegend(ol_layers, class_layers) {
                     // create img elem and add legend url
                     var img_elem = document.createElement("IMG");
                     // give the img element a class name to get it when printing
-                    img_elem.className = "lyr_symbol";
+                    img_elem.className = "lyr-img";
                     img_elem.setAttribute("src", img_url);
                     // add img elem to li elem
                     li_elem.appendChild(img_elem);

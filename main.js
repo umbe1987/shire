@@ -17,7 +17,7 @@ import LayerImage from 'ol/layer/Image';
 import LayerTile from 'ol/layer/Tile';
 import SourceOSM from 'ol/source/OSM';
 import SourceXYZ from 'ol/source/XYZ';
-import {defaults as defaultControls, Attribution, ScaleLine} from 'ol/control.js';
+import { defaults as defaultControls, Attribution, ScaleLine } from 'ol/control.js';
 
 import Sidebar from 'sidebar-v2/js/ol5-sidebar';
 
@@ -60,13 +60,13 @@ import {
 // CORS ANYWHERE
 
 // https://github.com/Rob--W/cors-anywhere/#client
-(function() {
+(function () {
     var cors_api_host = 'cors-anywhere.herokuapp.com';
     var cors_api_url = 'https://' + cors_api_host + '/';
     var slice = [].slice;
     var origin = window.location.protocol + '//' + window.location.host;
     var open = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function() {
+    XMLHttpRequest.prototype.open = function () {
         var args = slice.call(arguments);
         var targetOrigin = /^https?:\/\/([^\/]+)/i.exec(args[1]);
         if (targetOrigin && targetOrigin[0].toLowerCase() !== origin &&
@@ -206,7 +206,7 @@ exportButton.addEventListener('click', onPrintBtnClick, false);
 
 // When the user clicks anywhere outside of a dropdown button, close the drodown
 // (https://www.w3schools.com/howto/howto_js_dropdown.asp)
-window.addEventListener('click',function(event) {
+window.addEventListener('click', function (event) {
     var matches = event.target.matches ? event.target.matches('.wm-btn') : event.target.msMatchesSelector('.wm-btn');
     if (!matches) {
         var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -252,19 +252,34 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
     var toc_scroll = [];
     toc_scroll = updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, 0, 0);
 
-    function onResolutionChange() {
-        if (map.getView().getAnimating()) {
-            return;
+    function drawToc(layer_switcher = false) {
+        if (layer_switcher) {
+            LayerSwitcher.renderPanel(map, toc);
         }
         toc_scroll[0] = toc.scrollLeft; // toc horizontal position
         toc_scroll[1] = toc.scrollTop; // toc vertical position
         toc_scroll = updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, toc_scroll[0], toc_scroll[1]);
     }
 
-    map.getView().on('change:resolution', JD.debounce(onResolutionChange, 400));
+    var currZoom = map.getView().getZoom();
+
+    // redraw the toc whenever the zoom changes
+    map.on('moveend', function (e) {
+        var newZoom = map.getView().getZoom();
+        if (currZoom != newZoom) {
+            drawToc();
+            currZoom = newZoom;
+        }
+    });
+
+    // redraw the toc whenever layerswitcher has to render
+    toc.addEventListener("rendercomplete", function () {
+        console.log("REDRAWING TOC");
+        drawToc();
+    });
 
     // DISPLAY INFO ONCLICK
-    map.on('singleclick', function(evt) {
+    map.on('singleclick', function (evt) {
         // display info in fancyAlert
         getInfo(evt, view, ol_layers);
     })

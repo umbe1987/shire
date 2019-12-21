@@ -10,6 +10,8 @@ import {
 
 // add table icon after "elem"
 export function tableIcon(class_layers) {
+     // remove table-icons if they exist
+     document.querySelectorAll('.fa-table').forEach(e => e.remove());
     for (var i = 0, len = class_layers.length; i < len; ++i) {
         var elem = class_layers[i];
         // avoid adding table to base layers
