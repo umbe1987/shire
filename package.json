@@ -2,9 +2,9 @@
   "name": "wondermap-viewer",
   "version": "0.1.0",
   "description": "A WebGIS portal made with open source projects.",
-  "main": "./main.js",
+  "main": "./index.ts",
   "scripts": {
-    "build": "parcel build --public-url ./ main.js"
+    "build": "parcel build --public-url ./ index.ts"
   },
   "license": "ISC",
   "devDependencies": {
