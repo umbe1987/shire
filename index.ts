@@ -13,10 +13,8 @@ import 'babel-polyfill'; // babel-polyfill package
 import Map from 'ol/Map';
 import View from 'ol/View';
 import LayerGroup from 'ol/layer/Group';
-import LayerImage from 'ol/layer/Image';
 import LayerTile from 'ol/layer/Tile';
 import SourceOSM from 'ol/source/OSM';
-import SourceXYZ from 'ol/source/XYZ';
 import { defaults as defaultControls, Attribution, ScaleLine } from 'ol/control.js';
 
 import Sidebar from 'sidebar-v2/js/ol5-sidebar';
@@ -26,36 +24,31 @@ import LayerSwitcher from 'ol-layerswitcher';
 // WONDERMAP IMPORTS
 // generic imports
 import {
-    JD, toggleTitle, scaleline_units_converter
-} from './js/init';
+    JD, toggleTitle
+} from './src/init';
 
 // ToC imports
-import * as WmsParser from './js/toc/wms_parser';
+import * as WmsParser from './src/toc/wms_parser';
 import {
     getInfo
-} from './js/get_info';
+} from './src/get_info';
 import {
     getOLLayers
-} from './js/ol_layers';
+} from './src/ol_layers';
 import {
     userLocation
-} from './js/user_position';
+} from './src/user_position';
 import {
     updateToc
-} from './js/toc/update_toc';
+} from './src/toc/update_toc';
 import {
     opacitySlider
-} from './js/toc/opacity_slider';
-
-// Attribute Table imports
-import {
-    testWFS
-} from './js/attribute_table/build_table';
+} from './src/toc/opacity_slider';
 
 // Print imports
 import {
     print_map
-} from './js/print/wm_print';
+} from './src/print/wm_print';
 
 // CORS ANYWHERE
 
@@ -174,12 +167,6 @@ map.addControl(sidebar);
 
 // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
 userLocation('track', map);
-
-function checkSize() {
-    var small = map.getSize()[0] < 600;
-    attribution.setCollapsible(small);
-    attribution.setCollapsed(small);
-}
 
 // PRINT (https://openlayers.org/en/latest/examples/export-pdf.html)
 var dims = {

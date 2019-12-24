@@ -10,7 +10,7 @@ import {
     Style
 } from 'ol/style.js';
 
-export function userLocation(id, map, view) {
+export function userLocation(id, map) {
     // GEOLOCATION (https://openlayers.org/en/latest/examples/geolocation.html)
     var geolocation = new Geolocation({
         projection: map.getView().getProjection()
