@@ -180,9 +180,9 @@ var dims = {
 var exportButton = document.getElementById("export-pdf");
 
 function onPrintBtnClick() {
-    var format = document.getElementById("format").value;
-    var orientation = document.getElementById("orientation").value;
-    var resolution = document.getElementById('resolution').value;
+    var format = (<HTMLInputElement>document.getElementById("format")).value;
+    var orientation = (<HTMLInputElement>document.getElementById("orientation")).value;
+    var resolution = (<HTMLInputElement>document.getElementById("resolution")).value;
     print_map(map, exportButton, orientation, format, resolution, dims);
 };
 
