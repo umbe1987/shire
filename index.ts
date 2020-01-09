@@ -251,9 +251,11 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
 
     // redraw the toc whenever the zoom changes
     map.on('moveend', function (e) {
+        toc_scroll[0] = toc.scrollLeft; // toc horizontal position
+        toc_scroll[1] = toc.scrollTop; // toc vertical position
         var newZoom = map.getView().getZoom();
         if (currZoom != newZoom) {
-            drawToc();
+            drawToc(toc_scroll);
             currZoom = newZoom;
         }
     });
