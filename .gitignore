@@ -3,6 +3,5 @@ package-lock.json
 npm-debug.log
 dist/*
 .cache
-DEVMACHINE
 .vscode
 yarn.lock
