@@ -236,15 +236,14 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
 
     // DRAW THE COMPONENTS OF THE TOC
     // initialize empty array to store toc scroll [x, y] position
-    var toc_scroll = [];
-    toc_scroll = updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, 0, 0);
+    var toc_scroll = [0, 0];
+    toc_scroll = updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, toc_scroll[0], toc_scroll[1]);
 
-    function drawToc(layer_switcher = false) {
+    function drawToc(toc_scroll, layer_switcher = false) {
+        
         if (layer_switcher) {
             LayerSwitcher.renderPanel(map, toc);
         }
-        toc_scroll[0] = toc.scrollLeft; // toc horizontal position
-        toc_scroll[1] = toc.scrollTop; // toc vertical position
         toc_scroll = updateToc(map, ol_layers, layer_class, zoom_icons, table_icons, input_sliders, toc, toc_scroll[0], toc_scroll[1]);
     }
 
@@ -259,10 +258,17 @@ WmsParser.getWMSLayers(service_url).then(wms_layers => {
         }
     });
 
-    // redraw the toc whenever layerswitcher has to render
+    // get toc scroll position whenever layerswitcher starts rendering
+    toc.addEventListener("render", function () {
+        console.log("RENDENRING LAYERSWITCHER");
+        toc_scroll[0] = toc.scrollLeft; // toc horizontal position
+        toc_scroll[1] = toc.scrollTop; // toc vertical position
+    });
+
+    // redraw the toc whenever layerswitcher has finished rendering
     toc.addEventListener("rendercomplete", function () {
-        console.log("REDRAWING TOC");
-        drawToc();
+        console.log("RENDER COMPLETED");
+        drawToc(toc_scroll);
     });
 
     // DISPLAY INFO ONCLICK
