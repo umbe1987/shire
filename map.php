@@ -136,7 +136,7 @@
   pg_close($conn);
   }
   elseif (file_exists('./DEVMACHINE')) {
-      // HTML GOES HERE
+      // HTML GOES HERE (FOR DEBUG)
 ?>
 
 <!DOCTYPE html>
