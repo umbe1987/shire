@@ -60,13 +60,13 @@ function imageLoadFunction(image, src) {
                     new FancyAlert(exceptionAsText, "error");
                 }
             } else {
-                alert(error(this.statusText));
+                alert(Error(this.statusText));
             }
         };
         xhr.send();
     } else {
         img.onerror = function() {
-            alert(error());
+            alert(Error());
         };
         img.src = src;
     }

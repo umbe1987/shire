@@ -153,7 +153,7 @@
 <body>
     <!-- Map Title -->
     <div id="mapTitle">
-        <h2><DEBUG></h2>
+        <h2>DEBUG</h2>
     </div>
     <!-- The Modal -->
     <div id="alertModal" class="modal">
