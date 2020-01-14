@@ -1,31 +1,3 @@
-import {
-    GetFeatureURL,
-    WFSfeatures
-} from './get_features';
-
-export async function buildTable(lyr_source, typename, projection, filter = null) {
-    var getfeature_url = GetFeatureURL(lyr_source, typename);
-    // get all features from a single typename of a WFS
-    var features = await WFSfeatures(getfeature_url, projection, filter)
-    // get the FILEDS of the table from the first record (FIELDS are shared by each feature)
-    var headers = Object.keys(features[0].values_);
-    // initilaize rows for inserting the fileds' values
-    var rows = [];
-
-    // build the rows for the table, filling with the values from each field of each record
-    for (var i = 0, len = features.length; i < len; ++i) {
-        var row = features[i].values_;
-        var rowToPush = [];
-        // fill the single row and then push in the final table
-        for (const key of Object.keys(row)) {
-            rowToPush.push(row[key]);
-        }
-        rows.push(rowToPush);
-    }
-
-    return [headers, rows, getfeature_url];
-}
-
 export function drawTable(headers, rows, url) {
     // start drawing headers
     var table = document.createElement('TABLE');
